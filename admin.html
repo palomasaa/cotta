@@ -217,6 +217,7 @@ async function importarExterno() {
   let novos = 0;
   for (let i = 0; i < ok.length; i += 400) { const b = F.writeBatch(db);
     for (const x of ok.slice(i, i + 400)) { const id = String(x.id).replace(/[^\w.-]/g, "_").slice(0, 140); const ref = F.doc(db, "lancamentos/" + id);
+      if (x.pedido && /custo/i.test(String(x.categoria || ""))) { const pv = String(x.pedido).replace(/[^\w-]/g, ""); const dup = await F.getDoc(F.doc(db, "lancamentos/shopmix-custo-" + pv)); if (dup.exists() && id !== "shopmix-custo-" + pv) continue; } // já lançado pela Venda rápida
       const ex = await F.getDoc(ref); if (!ex.exists()) novos++;
       b.set(ref, { empresa: x.empresa === "chef" ? "chef" : "loja", data: x.data, tipo: x.tipo, categoria: String(x.categoria || "Outra saída"), loja: String(x.loja || "Empresa (geral)"), descricao: String(x.descricao || ""), valor: Math.round(Number(x.valor)), pagoPor: x.tipo === "saida" ? String(x.pagoPor || "Caixa da empresa") : "", origem: origem, importadoEm: new Date().toISOString(), criadoEm: x.criadoEm || new Date().toISOString() }, { merge: true }); }
     await b.commit(); }
