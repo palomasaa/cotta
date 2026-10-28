@@ -293,7 +293,7 @@ form.f,.f{display:grid;gap:12px}
 .partner-box,.partner>div{min-width:0}
 .partner-box .sub.num{font-family:var(--f-body);font-size:12.5px}
 .rowi .end{display:flex;align-items:center;gap:2px}
-.kpi .v.two{font-size:clamp(14px,1.5vw,17px);white-space:normal}
+.kpi .v.two{font-size:clamp(13.5px,1.4vw,16px);white-space:pre-line;line-height:1.45}
 
 /* ---------- gráficos */
 .chart{position:relative;width:100%}
@@ -703,7 +703,7 @@ function svgEl(tag,attrs){const e=document.createElementNS("http://www.w3.org/20
 // cols: [{label, tip:'Mês', vals:[cents...]}], series: [{name,color,kind:'bar'|'line'}]
 function chartCols(cols,series,opt){
   opt=opt||{};const vw=window.innerWidth;const W=Math.round(Math.max(300,Math.min(1180,vw>820?Math.min(vw,1280+248)-248-96:vw-62)));const H=opt.h||(vw>820?240:200),pl=44,pr=8,pt=12,pb=26;
-  const all=cols.flatMap(c=>c.vals);let mx=Math.max(0,...all),mn=Math.min(0,...all);
+  const all=cols.flatMap(c=>c.vals);if(!all.some(v=>v))return h("div",{class:"empty"},ic("trend"),opt.vazio||"O gráfico aparece assim que houver lançamentos neste período.");let mx=Math.max(0,...all),mn=Math.min(0,...all);
   const top=niceMax(mx),bot=mn<0?-niceMax(-mn):0;
   const y=v=>pt+(top-v)/(top-bot)*(H-pt-pb);
   const cw=(W-pl-pr)/cols.length;
@@ -1543,7 +1543,7 @@ async function viewPainel(al){
     header(WS[k].nome,"Painel · "+monthName(S.mes),[monthCtl("mes"),S.canWrite?btnI("plus",acts[0][1],{onclick:acts[0][2]}):null]),
     h("section",{class:"kpis"},
       h("div",{class:"kpi hl"},spark(ser.map(x=>x.l),css("--c-ent")),h("span",{class:"eyebrow",text:"Lucro do mês"}),h("span",{class:"v "+(r.l<0?"neg":""),text:money(r.l)}),h("span",{class:"s",text:"Entrou "+money(r.e)+" · saiu "+money(r.s)})),
-      h("div",{class:"kpi"},h("span",{class:"eyebrow",text:"Divisão do lucro"}),h("span",{class:"v two",text:"P "+money(parteLucro(k,SOCIAS[0],r.l))+" · J "+money(parteLucro(k,SOCIAS[1],r.l))}),h("span",{class:"s",text:"Paloma "+pctDe(k,SOCIAS[0])+"% · Jay "+pctDe(k,SOCIAS[1])+"%"})),
+      h("div",{class:"kpi"},h("span",{class:"eyebrow",text:"Divisão do lucro"}),h("span",{class:"v two",text:"Paloma "+money(parteLucro(k,SOCIAS[0],r.l))+"\nJay "+money(parteLucro(k,SOCIAS[1],r.l))}),h("span",{class:"s",text:"Paloma "+pctDe(k,SOCIAS[0])+"% · Jay "+pctDe(k,SOCIAS[1])+"%"})),
       ...extra.map(x=>h("div",{class:"kpi"},h("span",{class:"eyebrow",text:x[0]}),h("span",{class:"v",text:x[1]}),h("span",{class:"s",text:x[2]})))),
     S.canWrite?h("div",{class:"filters"},...acts.map(a=>btnI(a[0],a[1],{cls:"btn ghost sm",onclick:a[2]}))):null,
     k==="loja"?h("div",{class:"notice",style:"display:flex;gap:10px;align-items:center"},ic("refresh"),h("span",{},sync?"Shopmix sincronizada em "+new Date(sync.em).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"})+" · "+(sync.novos||0)+" novos lançamentos.":"A sincronização da Shopmix roda todo dia às 7h47 e lança vendas e custos no caixa sozinha.")):null,
