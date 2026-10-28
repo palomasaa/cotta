@@ -17,30 +17,39 @@ const dm = s => s.slice(8, 10) + "/" + s.slice(5, 7);
 const todos = async c => (await db.collection(c).get()).docs.map(d => d.data());
 
 const linhas = [];
+// Privacidade: a notificação aparece na tela bloqueada e o log do GitHub é público,
+// então só contamos os tipos de aviso. Nomes de clientes e valores ficam dentro do app.
+const tipos = {};
+const marca = t => { tipos[t] = (tipos[t] || 0) + 1; };
 for (const p of await todos("pedidos")) {
   if (p.status === "cancelado" || p.status === "realizado") continue;
+  if (p.data === hoje || p.data === amanha) marca("pedido");
   if (p.data === hoje) linhas.push(`Hoje${p.hora ? " às " + p.hora : ""}: pedido de ${p.cliente}`);
   else if (p.data === amanha) linhas.push(`Amanhã${p.hora ? " às " + p.hora : ""}: pedido de ${p.cliente}`);
-  if (p.status === "confirmado" && p.data && p.data < hoje && (p.valor || 0) > (p.sinal || 0)) linhas.push(`Falta receber ${brl(p.valor - p.sinal)} de ${p.cliente}`);
+  if (p.status === "confirmado" && p.data && p.data < hoje && (p.valor || 0) > (p.sinal || 0)) { linhas.push(`Falta receber ${brl(p.valor - p.sinal)} de ${p.cliente}`); marca("receber"); }
 }
 const baixos = (await todos("estoque")).filter(i => i.empresa === "chef" && i.minimo > 0 && i.qtd <= i.minimo).map(i => i.nome);
+if (baixos.length) marca("estoque");
 if (baixos.length) linhas.push(`Estoque baixo: ${baixos.slice(0, 4).join(", ")}${baixos.length > 4 ? " e mais " + (baixos.length - 4) : ""}`);
 for (const a of await todos("anuncios")) {
   if (a.status !== "ativo") continue;
-  if (a.fim && a.fim >= hoje && a.fim <= em3) linhas.push(`Anúncio "${a.nome}" termina em ${dm(a.fim)}`);
-  if (a.orcamento > 0 && a.gasto >= a.orcamento) linhas.push(`Anúncio "${a.nome}" passou do orçamento`);
+  if (a.fim && a.fim >= hoje && a.fim <= em3) { linhas.push(`Anúncio "${a.nome}" termina em ${dm(a.fim)}`); marca("anuncio"); }
+  if (a.orcamento > 0 && a.gasto >= a.orcamento) { linhas.push(`Anúncio "${a.nome}" passou do orçamento`); marca("anuncio"); }
 }
-for (const e of await todos("eventos")) if (e.data === hoje) linhas.push(`Hoje${e.hora ? " às " + e.hora : ""}: ${e.titulo}`);
+for (const e of await todos("eventos")) if (e.data === hoje) { linhas.push(`Hoje${e.hora ? " às " + e.hora : ""}: ${e.titulo}`); marca("agenda"); }
 let saldo = 0;
 for (const a of await todos("acertos")) {
   if (a.tipo === "despesa") saldo += a.pagoPor === "Paloma" ? Math.round(a.valor * (100 - a.pctP) / 100) : -Math.round(a.valor * a.pctP / 100);
   else saldo += a.de === "Jay Nanes" ? -a.valor : a.valor;
 }
+if (saldo !== 0 && new Date().getDay() === 1) marca("acerto");
 if (saldo !== 0 && new Date().getDay() === 1) linhas.push(saldo > 0 ? `Acerto: Jay deve ${brl(saldo)} à Paloma` : `Acerto: Paloma deve ${brl(-saldo)} à Jay`);
 
 if (!linhas.length && !teste) { console.log("Nada para avisar hoje."); process.exit(0); }
-const title = linhas.length ? `Jay-Loma · ${linhas.length} ${linhas.length === 1 ? "aviso" : "avisos"} hoje` : "Jay-Loma · teste de alerta";
-const body = linhas.length ? linhas.slice(0, 5).join("\n") : "Os alertas estão funcionando neste aparelho.";
+const NOMES_T = { pedido: ["pedido", "pedidos"], receber: ["valor a receber", "valores a receber"], estoque: ["item para repor", "itens para repor"], anuncio: ["aviso de anúncio", "avisos de anúncio"], agenda: ["compromisso", "compromissos"], acerto: ["acerto entre sócias", "acerto entre sócias"] };
+const resumo = Object.entries(tipos).map(([t, n]) => t === "estoque" || t === "acerto" ? NOMES_T[t][0] : n + " " + NOMES_T[t][n === 1 ? 0 : 1]);
+const title = linhas.length ? `Jay-Loma · ${linhas.length} ${linhas.length === 1 ? "alerta" : "alertas"} hoje` : "Jay-Loma · teste de alerta";
+const body = linhas.length ? resumo.join(" · ") + ". Abra o app para ver os detalhes." : "Os alertas estão funcionando neste aparelho.";
 
 const tokSnap = await db.collection("tokens").get();
 const tokens = tokSnap.docs.map(d => d.id);
@@ -55,4 +64,4 @@ await Promise.all(res.responses.map(async (r, i) => {
   if (c === "messaging/registration-token-not-registered" || c === "messaging/invalid-registration-token" || c === "messaging/invalid-argument") { await db.doc("tokens/" + tokens[i]).delete(); removidos++; }
 }));
 console.log(`Enviado: ${res.successCount} ok, ${res.failureCount} falhas, ${removidos} aparelhos antigos removidos.`);
-console.log(body);
+console.log("Tipos de aviso:", Object.keys(tipos).join(", ") || "nenhum");
