@@ -500,8 +500,8 @@ const STATUS_PED=[["orcamento","Orçamento"],["confirmado","Confirmado"],["reali
 const STATUS_AD=[["planejado","Planejado"],["ativo","No ar"],["pausado","Pausado"],["encerrado","Encerrado"]];
 const WS={
   geral:{nome:"Visão das sócias",curto:"Sócias",sub:"Paloma & Jay · as duas empresas",mods:[["inicio","Visão geral"],["acerto","Acerto entre sócias"],["agenda","Agenda geral"],["integracoes","Integrações"]]},
-  loja:{nome:"Jay-Loma Lojas",curto:"Lojas",sub:"Lojas online · Grupo Shopmix",mods:[["painel","Painel"],["caixa","Caixa"],["anuncios","Anúncios"],["datas","Datas e campanhas"],["agenda","Agenda"]]},
-  chef:{nome:"Jay Personal Chef",curto:"Chef",sub:"Serviços, eventos e aulas",mods:[["painel","Painel"],["pedidos","Pedidos"],["agenda","Agenda de pedidos"],["cardapio","Cardápio"],["caixa","Caixa"],["estoque","Estoque"],["anuncios","Anúncios"],["datas","Datas e campanhas"]]}
+  loja:{nome:"Jay-Loma Lojas",curto:"Lojas",sub:"Lojas online · Grupo Shopmix",mods:[["painel","Painel"],["shopmix","Shopmix"],["caixa","Caixa"],["anuncios","Anúncios"],["datas","Datas e campanhas"],["agenda","Agenda"]]},
+  chef:{nome:"Jay Personal Chef",curto:"Chef",sub:"Serviços, eventos e aulas",mods:[["painel","Painel"],["pedidos","Pedidos"],["cardapio","Menus e receitas"],["agenda","Agenda de pedidos"],["caixa","Caixa"],["estoque","Estoque"],["anuncios","Anúncios"],["datas","Datas e campanhas"]]}
 };
 const MARKS={
   geral:'<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="18" cy="24" r="13" fill="none" stroke="#8f8cff" stroke-width="3"/><circle cx="30" cy="24" r="13" fill="none" stroke="#c39bf5" stroke-width="3"/></svg>',
@@ -524,7 +524,8 @@ const GUIAS={
   "loja:agenda":{p:"Compromissos das lojas e as datas das campanhas e datas comerciais.",s:["Toque num dia para ver os detalhes.","Use + Compromisso para tarefas, como atualizar preços ou conferir o Shopmix."],t:[]},
   "chef:agenda":{p:"A agenda de trabalho da Jay: todos os pedidos do personal chef no calendário, mais as datas comerciais da gastronomia.",s:["Toque num dia para ver os pedidos.","Use + Pedido para marcar um novo serviço."],t:[]},
   "chef:pedidos":{p:"Cada cliente ou evento do personal chef. O pedido passa por quatro situações: Orçamento, Confirmado, Realizado ou Cancelado.",s:["Crie o pedido com data, pessoas e pratos do cardápio.","Quando o cliente fechar, toque em Confirmar e registre o sinal.","Depois do serviço, marque como Realizado e toque em Lançar no caixa."],t:[["Sinal","valor pago antes, para reservar a data"]]},
-  "chef:cardapio":{p:"Os pratos que a Jay oferece, com preço por pessoa. Eles aparecem para escolher dentro de cada pedido.",s:["Importe de uma planilha, de um texto ou de uma foto do cardápio.","Ou cadastre prato por prato em + Prato.","Use Ocultar para tirar um prato de época sem apagar."],t:[]},
+  "chef:cardapio":{p:"Biblioteca de menus prontos e receitas da Jay. Escolha um menu, defina quantas pessoas (até 20) e o app mostra as receitas com as quantidades certas e a lista de compras completa, separada por seção do mercado.",s:["Em Menus prontos, toque em Lista e receitas e ajuste o número de pessoas.","Em Montar menu, escolha os pratos que quiser e salve como um menu seu.","Em Receitas, cadastre as receitas da Jay com os ingredientes por pessoa.","Na lista de compras aparece o que já tem no estoque. Envie a lista pelo WhatsApp ou imprima."],t:[["Por pessoa","quantidade de cada ingrediente para uma porção de evento"],["Por grupo","temperos e ervas, calculados a cada 4 pessoas"],["Preços dos pratos","os valores cobrados por pessoa, usados no orçamento"]]},
+  "loja:shopmix":{p:"Tudo da Shopmix num lugar: os produtos que vocês vendem com o custo e o preço em cada canal, a margem real depois das taxas do Mercado Livre e da Shopee, o lançamento rápido de cada venda e o saldo da conta Shopmix.",s:["Em Produtos e preços, copie a lista da Shopmix (Meus produtos ou Catálogo) e cole: o app lê SKU, nome e custo.","Defina o preço de cada produto no Mercado Livre e na Shopee. O app mostra a margem e sugere o preço para 25% de lucro.","A cada pedido, use Venda rápida: um clique lança a venda, a taxa e o custo.","Registre as recargas de saldo para o app avisar quando estiver acabando."],t:[["Custo Shopmix","quanto a Shopmix cobra pelo produto no seu plano"],["Taxa","comissão e tarifa fixa do marketplace"],["Margem","quanto da venda sobra depois de taxa, custo e imposto"]]},
   "chef:estoque":{p:"O que a Jay tem para cozinhar: ingredientes, bebidas e utensílios. O app avisa quando algo fica abaixo do mínimo.",s:["Cadastre o item com a quantidade e o mínimo.","Ao comprar, use Entrada de compra: o estoque sobe e a despesa vai para o caixa.","Use − e + para os ajustes do dia a dia."],t:[["Mínimo","abaixo disso o app avisa para repor"]]}
 };
 function guia(){
@@ -688,8 +689,8 @@ const IC={
   layers:'<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/>'
 };
 function ic(n,cls){const s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 24 24");s.setAttribute("class","i"+(cls?" "+cls:""));s.setAttribute("aria-hidden","true");s.innerHTML=IC[n]||"";return s;}
-const MOD_IC={inicio:"home",painel:"grid",caixa:"wallet",anuncios:"megaphone",datas:"sparkle",agenda:"calendar",pedidos:"clipboard",cardapio:"book",estoque:"box",acerto:"scale",integracoes:"plug"};
-const TAB_PRIMARY={geral:["inicio","acerto","agenda","integracoes"],loja:["painel","caixa","anuncios","agenda","datas"],chef:["painel","pedidos","agenda","caixa"]};
+const MOD_IC={inicio:"home",painel:"grid",caixa:"wallet",anuncios:"megaphone",datas:"sparkle",agenda:"calendar",pedidos:"clipboard",cardapio:"book",estoque:"box",shopmix:"store",acerto:"scale",integracoes:"plug"};
+const TAB_PRIMARY={geral:["inicio","acerto","agenda","integracoes"],loja:["painel","shopmix","caixa","anuncios"],chef:["painel","pedidos","cardapio","agenda"]};
 function btnI(icon,label,o){o=o||{};return h(o.href?"a":"button",Object.assign({class:o.cls||"btn",type:o.href?null:"button"},o.attrs||{},{onclick:o.onclick||null,href:o.href||null,target:o.href&&/^https?:/.test(o.href)?"_blank":null,rel:o.href?"noopener":null,disabled:o.disabled||null}),icon?ic(icon):null,label?h("span",{text:label}):null);}
 
 // ---------- gráficos (SVG desenhado à mão; dica ao passar o dedo/mouse)
@@ -837,7 +838,7 @@ const S={
   agMes:ymNow(),agSel:today(),agFiltro:ls.get("jl-agf","tudo"),
   fUn:"",fTipo:"",pedFiltro:"proximos",estQ:"",
   data:{lancamentos:[],eventos:[],pedidos:[],cardapio:[],estoque:[],anuncios:[],solicitacoes:[],acertos:[]},
-  cfg:{lojas:[],chef:[],socias:{pct:{loja:50,chef:50},regras:{},pix:{"Paloma":"","Jay Nanes":""}},whatsapp:{numeros:[],modelos:{}},pix:{},sync:{}},membros:null,loaded:new Set(),dismissed:ls.get("jl-dis",{}),priv:ls.get("jl-priv",false)
+  cfg:{lojas:[],chef:[],socias:{pct:{loja:50,chef:50},regras:{},pix:{"Paloma":"","Jay Nanes":""}},whatsapp:{numeros:[],modelos:{}},pix:{},sync:{},shopmix:{},chefLib:{menus:[],receitas:[]}},membros:null,loaded:new Set(),dismissed:ls.get("jl-dis",{}),priv:ls.get("jl-priv",false)
 };
 Object.defineProperty(S,"emp",{get(){return S.ws==="chef"?"chef":"loja";},set(_){}});
 if(!WS[S.ws])S.ws="geral";
@@ -848,7 +849,7 @@ document.documentElement.dataset.ws=S.ws;
 const NORM={
   lancamentos:v=>({empresa:v.empresa==="chef"?"chef":"loja",data:str(v.data),tipo:v.tipo==="saida"?"saida":"entrada",categoria:str(v.categoria)||"Outra",loja:str(v.loja)||GERAL,descricao:str(v.descricao),valor:Math.max(0,Math.round(numv(v.valor))),quemId:typeof v.quemId==="string"?v.quemId:null,criadoEm:str(v.criadoEm),pagoPor:str(v.pagoPor),socia:str(v.socia),origem:str(v.origem)}),
   eventos:v=>({titulo:str(v.titulo)||"Compromisso",data:str(v.data),hora:str(v.hora),empresa:["loja","chef","ambas"].includes(v.empresa)?v.empresa:"ambas",quem:str(v.quem),notas:str(v.notas)}),
-  pedidos:v=>({cliente:str(v.cliente)||"Cliente",contato:str(v.contato),aniversario:str(v.aniversario),data:str(v.data),hora:str(v.hora),local:str(v.local),servico:str(v.servico),pessoas:Math.max(0,Math.round(numv(v.pessoas))),itens:Array.isArray(v.itens)?v.itens.map(str):[],valor:Math.max(0,Math.round(numv(v.valor))),sinal:Math.max(0,Math.round(numv(v.sinal))),status:STATUS_PED.some(s=>s[0]===v.status)?v.status:"orcamento",notas:str(v.notas),lancado:Math.max(0,Math.round(numv(v.lancado)))}),
+  pedidos:v=>({cliente:str(v.cliente)||"Cliente",contato:str(v.contato),aniversario:str(v.aniversario),data:str(v.data),hora:str(v.hora),local:str(v.local),servico:str(v.servico),pessoas:Math.max(0,Math.round(numv(v.pessoas))),itens:Array.isArray(v.itens)?v.itens.map(str):[],valor:Math.max(0,Math.round(numv(v.valor))),sinal:Math.max(0,Math.round(numv(v.sinal))),status:STATUS_PED.some(s=>s[0]===v.status)?v.status:"orcamento",notas:str(v.notas),lancado:Math.max(0,Math.round(numv(v.lancado))),menuId:str(v.menuId),receitas:Array.isArray(v.receitas)?v.receitas.map(str):[]}),
   cardapio:v=>({nome:str(v.nome)||"Prato",categoria:str(v.categoria)||"Sem categoria",preco:Math.max(0,Math.round(numv(v.preco))),descricao:str(v.descricao),ativo:v.ativo!==false}),
   estoque:v=>({nome:str(v.nome)||"Item",empresa:v.empresa==="chef"?"chef":"loja",qtd:numv(v.qtd),unidade:str(v.unidade)||"un",minimo:numv(v.minimo),custo:Math.max(0,Math.round(numv(v.custo))),local:str(v.local)}),
   anuncios:v=>({nome:str(v.nome)||"Campanha",plataforma:str(v.plataforma)||"Outra",empresa:v.empresa==="chef"?"chef":"loja",inicio:str(v.inicio),fim:str(v.fim),orcamento:Math.max(0,Math.round(numv(v.orcamento))),gasto:Math.max(0,Math.round(numv(v.gasto))),gastoLancado:Math.max(0,Math.round(numv(v.gastoLancado))),impressoes:Math.max(0,Math.round(numv(v.impressoes))),cliques:Math.max(0,Math.round(numv(v.cliques))),resultados:Math.max(0,Math.round(numv(v.resultados))),receita:Math.max(0,Math.round(numv(v.receita))),link:str(v.link),criativo:/^data:image\//.test(str(v.criativo))?v.criativo:"",publico:str(v.publico),dataRef:str(v.dataRef),status:STATUS_AD.some(s=>s[0]===v.status)?v.status:"planejado",notas:str(v.notas)}),
@@ -896,7 +897,7 @@ function formModal(title,fields,init,onSave,extra){
     else if(f.type==="textarea")input=h("textarea",{id,value:v??"",maxlength:f.max||600,placeholder:f.ph||""});
     else if(f.type==="checks"){const opts=typeof f.opts==="function"?f.opts():f.opts;const sel=new Set(v||[]);input=h("div",{class:"checks",id},...(opts.length?opts.map(o=>h("label",{},h("input",{type:"checkbox",value:o,checked:sel.has(o)}),o)):[h("span",{class:"hint",text:f.empty||"Nada cadastrado ainda."})]));}
     else if(f.type==="money")input=h("input",{id,type:"text",inputmode:"decimal",placeholder:"0,00",value:centsTxt(v)});
-    else input=h("input",{id,type:f.type||"text",value:v??"",placeholder:f.ph||"",maxlength:f.type==="text"||!f.type?(f.max||120):null,step:f.step||null,min:f.min!=null?f.min:null,inputmode:f.type==="number"?"decimal":null});
+    else input=h("input",{id,type:f.type||"text",value:v??"",placeholder:f.ph||"",maxlength:f.type==="text"||!f.type?(f.max||120):null,step:f.step||null,min:f.min!=null?f.min:null,max:f.max!=null&&f.type==="number"?f.max:null,inputmode:f.type==="number"?"decimal":null});
     const fld=h("div",{class:"field"},f.type==="checks"?h("span",{class:"lbl",text:f.label}):h("label",{for:id,text:f.label}),input);
     if(f.help)fld.append(h("span",{class:"hint",text:f.help}));
     if(f.half){if(pair){pair.append(fld);pair=null;}else{pair=h("div",{class:"two"},fld);rows.push(pair);}}
@@ -941,6 +942,7 @@ function alertas(){
   {const sa=saldoAcerto();if(sa!==0)A.push({id:"ac-"+sa,lv:"info",t:(sa>0?"Jay deve ":"Paloma deve ")+money(Math.abs(sa))+(sa>0?" à Paloma":" à Jay"),d:"Saldo do acerto entre sócias",go:"acerto",emp:"geral"});}
   if(S.me.isOwner&&S.data.solicitacoes.length)A.push({id:"sol-"+S.data.solicitacoes.length,lv:"alta",t:S.data.solicitacoes.length+" pedido(s) de acesso aguardando você",d:"Aprove ou recuse em Acesso",go:"acesso",emp:"geral"});
   ["loja","chef"].forEach(ws=>proximasDatas(ws,60).forEach(d=>{if(d.peso==="alta"&&d.prep<=t&&!planejada(d))A.push({id:"dt-"+d.ref,lv:"info",t:"Hora de preparar: "+d.nome+" ("+fmtD(d.data)+")",d:d.ideia.split(".")[0]+".",go:"datas",emp:ws});}));
+  {const tx=smCfg().taxas;const temRec=S.data.lancamentos.some(l=>l.categoria==="Recarga de saldo Shopmix");const sd=saldoShopmix();if(temRec&&sd<tx.saldoMin)A.push({id:"smsaldo-"+Math.round(sd/1000),lv:sd<=0?"alta":"media",t:"Saldo Shopmix baixo: "+money(sd),d:"Recarregue para os pedidos não ficarem parados",go:"shopmix",emp:"loja"});}
   const ord={alta:0,media:1,info:2};
   return A.filter(a=>!S.dismissed[a.id]).sort((a,b)=>ord[a.lv]-ord[b.lv]);
 }
@@ -989,7 +991,7 @@ async function doRender(){
   const tabbar=h("nav",{class:"tabbar","aria-label":"Telas"},...T.pri.map(k=>{const m=W.mods.find(x=>x[0]===k);return h("button",{type:"button","aria-current":S.view===k?"page":null,onclick:()=>go(k)},ic(MOD_IC[k]),h("span",{text:TAB_SHORT[k]||m[1]}),(k==="inicio"||k==="painel")&&alW.length?h("span",{class:"badge",text:alW.length}):null);}),
     T.rest.length?h("button",{type:"button","aria-current":moreActive?"page":null,onclick:()=>moreSheet(T.rest)},ic("grid"),h("span",{text:moreActive?(TAB_SHORT[S.view]||"Mais"):"Mais"})):null);
   let content;
-  try{content=await ({inicio:viewInicio,painel:viewPainel,caixa:viewCaixa,agenda:viewAgenda,pedidos:viewPedidos,cardapio:viewCardapio,estoque:viewEstoque,anuncios:viewAnuncios,datas:viewDatas,acerto:viewAcerto,integracoes:viewIntegracoes}[S.view]||viewInicio)(S.ws==="geral"?al:alW);}
+  try{content=await ({inicio:viewInicio,painel:viewPainel,caixa:viewCaixa,agenda:viewAgenda,pedidos:viewPedidos,cardapio:viewMenus,shopmix:viewShopmix,estoque:viewEstoque,anuncios:viewAnuncios,datas:viewDatas,acerto:viewAcerto,integracoes:viewIntegracoes}[S.view]||viewInicio)(S.ws==="geral"?al:alW);}
   catch(e){console.error(e);content=h("div",{class:"notice","data-kind":"err",text:"Algo deu errado ao montar esta tela. Recarregue a página."});}
   const ro=!S.canWrite?h("div",{class:"notice",text:"Modo leitura: você vê tudo, mas não consegue salvar. Peça para a administradora liberar seu acesso."}):null;
   const anim=S.anim;S.anim=false;
@@ -998,7 +1000,7 @@ async function doRender(){
   if(anim){window.scrollTo(0,0);countUp(main);}else window.scrollTo(0,scrollY);
   if(focusId){const f=$(focusId);if(f&&f.focus)f.focus({preventScroll:true});}
 }
-const TAB_SHORT={inicio:"Início",acerto:"Acerto",agenda:"Agenda",integracoes:"Integrações",painel:"Painel",caixa:"Caixa",anuncios:"Anúncios",datas:"Datas",pedidos:"Pedidos",cardapio:"Cardápio",estoque:"Estoque"};
+const TAB_SHORT={inicio:"Início",acerto:"Acerto",agenda:"Agenda",integracoes:"Integrações",painel:"Painel",caixa:"Caixa",anuncios:"Anúncios",datas:"Datas",pedidos:"Pedidos",cardapio:"Menus",estoque:"Estoque",shopmix:"Shopmix"};
 window.addEventListener("scroll",()=>{const t=document.querySelector(".topbar");if(t)t.classList.toggle("scrolled",window.scrollY>4);},{passive:true});
 function moreSheet(rest){drawer("Mais telas · "+WS[S.ws].curto,close=>h("div",{class:"menu"},...rest.map(([k,l])=>h("button",{type:"button",onclick:()=>{close();go(k);}},ic(MOD_IC[k]),l,S.view===k?h("span",{class:"end",text:"aberta"}):null))));}
 function go(k){S.view=k;S.anim=true;ls.set("jl-view-"+S.ws,k);render();}
@@ -1241,6 +1243,7 @@ function cardPedido(p){
     p.contato?h("div",{class:"meta",text:"Contato: "+p.contato}):null,
     h("div",{class:"acts"},
       h("button",{class:"btn ghost sm",type:"button",text:"Editar",onclick:()=>editPedido(p)}),
+      p.receitas.length?btnI("clipboard","Lista de compras",{cls:"btn ghost sm",onclick:()=>abrirMenu({id:p.menuId||"ped",nome:(allMenus().find(m=>m.id===p.menuId)||{nome:"Pedido de "+p.cliente}).nome,ocasiao:p.cliente+" · "+fmtDL(p.data),pratos:p.receitas},p.pessoas||1,p)}):null,
       btnI("chat","WhatsApp",{cls:"btn ghost sm",onclick:()=>waPedido(p)}),
       S.cfg.pix.chave&&(p.valor>p.sinal)?btnI("qr","Pix",{cls:"btn ghost sm",onclick:()=>pixModal(p)}):null,
       p.data?btnI("calendar","",{cls:"btn ghost sm",attrs:{"aria-label":"Adicionar ao Google Agenda",title:"Adicionar ao Google Agenda"},href:gcalLink("Jay Personal Chef · "+p.cliente,p.data,p.hora,180,[p.servico,p.pessoas?p.pessoas+" pessoas":"",p.contato,p.itens.join(", "),p.notas].filter(Boolean).join("\n"),p.local)}):null,
@@ -1260,13 +1263,19 @@ function editPedido(p,pre){
     {k:"cliente",label:"Cliente",req:true,half:true},{k:"contato",label:"WhatsApp / contato",half:true,ph:"(61) 9…"},{k:"aniversario",label:"Aniversário do cliente (dd/mm)",ph:"Ex.: 14/03",max:5,help:"Opcional. Aparece em Datas e campanhas para você oferecer um jantar de aniversário."},
     {k:"data",label:"Data",type:"date",req:true,half:true},{k:"hora",label:"Hora",type:"time",half:true},
     {k:"servico",label:"Serviço",type:"select",opts:()=>[...new Set([...S.cfg.chef,"Jantar em casa","Evento","Aula de culinária","Encomenda / marmitas",...(p&&p.servico?[p.servico]:[])])],half:true},
-    {k:"pessoas",label:"Pessoas",type:"number",min:0,half:true},
+    {k:"pessoas",label:"Pessoas (máx. "+MAX_PESSOAS+")",type:"number",min:1,max:MAX_PESSOAS,half:true},
+    {k:"menuId",label:"Menu",type:"select",opts:()=>[["","Sem menu da biblioteca"],...allMenus().map(m=>[m.id,m.nome+" · "+m.pratos.length+" pratos"]),...((p&&p.menuId&&!allMenus().some(m=>m.id===p.menuId))||(pre&&pre.menuId&&!allMenus().some(m=>m.id===pre.menuId))?[[(p||pre).menuId,"Menu montado"]]:[])],help:"Com um menu, o pedido ganha a lista de compras e as receitas calculadas para o número de pessoas."},
     {k:"local",label:"Local / endereço"},
-    {k:"itens",label:"Itens do cardápio",type:"checks",opts:()=>[...new Set([...itensCard,...(p?p.itens:[])])],empty:"Cadastre ou importe o cardápio para escolher os pratos aqui."},
+    {k:"itens",label:"Pratos (preços do cardápio)",type:"checks",opts:()=>[...new Set([...itensCard,...(p?p.itens:[]),...(pre&&pre.itens?pre.itens:[])])],empty:"Cadastre ou importe o cardápio para escolher os pratos aqui."},
     {k:"valor",label:"Valor total (R$)",type:"money",half:true},{k:"sinal",label:"Sinal recebido (R$)",type:"money",half:true},
     {k:"status",label:"Situação",type:"select",opts:STATUS_PED},
     {k:"notas",label:"Observações (restrições, alergias, pedidos especiais)",type:"textarea"}
   ],p||Object.assign({status:"orcamento",pessoas:2,data:today()},pre||{}),async o=>{
+    if(o.pessoas>MAX_PESSOAS){o.pessoas=MAX_PESSOAS;toast("Limite de "+MAX_PESSOAS+" pessoas por pedido: ajustei para "+MAX_PESSOAS+".");}
+    if(o.pessoas<1)o.pessoas=1;
+    const mn=allMenus().find(m=>m.id===o.menuId);
+    o.receitas=mn?mn.pratos.slice():(o.menuId&&((p&&p.menuId===o.menuId)||(pre&&pre.menuId===o.menuId))?((p&&p.receitas&&p.receitas.length?p.receitas:(pre&&pre.receitas))||[]):[]);
+    if(o.receitas.length&&!o.itens.length){const R=allReceitas();o.itens=o.receitas.map(id=>R[id]?R[id].n:id);}
     if(p)await updDoc("pedidos/"+p._id,o);else await addDoc("pedidos",Object.assign(o,{lancado:0,criadoEm:new Date().toISOString()}));
     toast(p?"Pedido atualizado.":"Pedido de "+o.cliente+" salvo.");
   },form=>{
@@ -1605,6 +1614,345 @@ async function viewIntegracoes(){
         h("section",{class:"panel"},h("h2",{text:"Próximas integrações"}),h("p",{class:"hint",text:"API oficial do WhatsApp (mensagens automáticas, centavos por mensagem), API do Mercado Livre e da Shopee para dados direto da fonte e API da Shopmix, se eles liberarem. É só pedir quando quiser ativar."})))));
 }
 
+// ---------- BIBLIOTECA DE MENUS E RECEITAS DO PERSONAL CHEF
+// Quantidades por pessoa (porção de evento). Ingrediente com "f" = quantidade por grupo de até 4 pessoas (temperos, óleos, ervas).
+const ING_CATS=["Carnes, aves e peixes","Hortifrúti","Laticínios e ovos","Mercearia","Padaria","Bebidas","Temperos e ervas","Descartáveis e outros"];
+const ING_CAT_IC={"Carnes, aves e peixes":"box","Hortifrúti":"sparkle","Laticínios e ovos":"box","Mercearia":"box","Padaria":"box","Bebidas":"box","Temperos e ervas":"sparkle","Descartáveis e outros":"box"};
+const C_CARNE=ING_CATS[0],C_HORTI=ING_CATS[1],C_LATI=ING_CATS[2],C_MERC=ING_CATS[3],C_PAD=ING_CATS[4],C_BEB=ING_CATS[5],C_TEMP=ING_CATS[6],C_OUT=ING_CATS[7];
+const TIPOS_PRATO=[["entrada","Entrada"],["principal","Prato principal"],["acompanhamento","Acompanhamento"],["sobremesa","Sobremesa"],["bebida","Bebida"]];
+// [nome, quantidade, unidade, categoria, "f" se for por grupo de 4]
+const RECEITAS={
+  carpaccio:{n:"Carpaccio de carne com rúcula e parmesão",tipo:"entrada",t:20,ing:[["Lagarto limpo (fatiado bem fino)",60,"g",C_CARNE],["Rúcula",20,"g",C_HORTI],["Parmesão em lascas",15,"g",C_LATI],["Alcaparras",5,"g",C_MERC],["Limão-siciliano",0.25,"un",C_HORTI],["Mostarda Dijon",5,"g",C_MERC],["Azeite extravirgem",10,"ml",C_MERC]],prep:["Congele a carne por 1 hora e fatie bem fino (ou peça fatiado no açougue).","Disponha as fatias no prato, sem sobrepor.","Bata azeite, suco de limão e mostarda para o molho.","Finalize com rúcula, parmesão, alcaparras, sal e pimenta-do-reino na hora de servir."]},
+  risoto_cog:{n:"Risoto de cogumelos frescos",tipo:"acompanhamento",t:35,ing:[["Arroz arbóreo",70,"g",C_MERC],["Cogumelo paris",60,"g",C_HORTI],["Shiitake",40,"g",C_HORTI],["Cebola",30,"g",C_HORTI],["Vinho branco seco",30,"ml",C_BEB],["Caldo de legumes",250,"ml",C_MERC],["Manteiga",15,"g",C_LATI],["Parmesão ralado",20,"g",C_LATI],["Azeite extravirgem",15,"ml",C_MERC,"f"]],prep:["Mantenha o caldo quente em fogo baixo.","Doure os cogumelos no azeite e reserve.","Refogue a cebola, junte o arroz e mexa por 1 minuto; deglaceie com o vinho.","Adicione o caldo aos poucos, mexendo, por 16 a 18 minutos.","Volte os cogumelos e finalize fora do fogo com manteiga gelada e parmesão."]},
+  file_vinho:{n:"Medalhão de filé mignon ao molho de vinho tinto",tipo:"principal",t:30,ing:[["Filé mignon (medalhões)",200,"g",C_CARNE],["Vinho tinto seco",50,"ml",C_BEB],["Caldo de carne",50,"ml",C_MERC],["Echalota (ou cebola roxa)",15,"g",C_HORTI],["Manteiga",10,"g",C_LATI],["Açúcar mascavo",3,"g",C_MERC],["Alho",0.5,"dente",C_HORTI],["Tomilho fresco",1,"maço",C_TEMP,"f"]],prep:["Tempere os medalhões com sal e pimenta e deixe em temperatura ambiente por 20 minutos.","Sele em frigideira bem quente, 3 a 4 minutos de cada lado para ponto médio. Reserve.","Na mesma frigideira, refogue echalota e alho, junte vinho, caldo, tomilho e mascavo e reduza à metade.","Finalize o molho com manteiga gelada e sirva sobre os medalhões."]},
+  petit:{n:"Petit gâteau com sorvete de creme",tipo:"sobremesa",t:25,ing:[["Chocolate meio amargo",40,"g",C_MERC],["Manteiga",30,"g",C_LATI],["Ovo",1,"un",C_LATI],["Açúcar",20,"g",C_MERC],["Farinha de trigo",10,"g",C_MERC],["Sorvete de creme",80,"ml",C_LATI]],prep:["Derreta chocolate e manteiga em banho-maria.","Bata ovos e açúcar até clarear, junte o chocolate e a farinha peneirada.","Distribua em forminhas untadas e leve à geladeira (pode ser feito na véspera).","Asse a 220 °C por 7 a 9 minutos: as bordas firmes e o centro mole. Desenforme e sirva com sorvete."]},
+  bruschetta:{n:"Bruschetta de tomate e manjericão",tipo:"entrada",t:15,ing:[["Pão italiano",60,"g",C_PAD],["Tomate italiano",80,"g",C_HORTI],["Manjericão fresco",1,"maço",C_TEMP,"f"],["Alho",0.25,"dente",C_HORTI],["Azeite extravirgem",10,"ml",C_MERC]],prep:["Corte o tomate em cubinhos, sem sementes, e tempere com sal, azeite e manjericão.","Toste as fatias de pão e esfregue o alho.","Cubra com o tomate na hora de servir para não amolecer."]},
+  caprese:{n:"Salada caprese",tipo:"entrada",t:10,ing:[["Muçarela de búfala",60,"g",C_LATI],["Tomate italiano",80,"g",C_HORTI],["Manjericão fresco",1,"maço",C_TEMP,"f"],["Azeite extravirgem",10,"ml",C_MERC],["Redução de balsâmico",5,"ml",C_MERC]],prep:["Fatie tomate e muçarela na mesma espessura.","Intercale no prato com folhas de manjericão.","Finalize com azeite, sal, pimenta e fios de balsâmico."]},
+  lasanha:{n:"Lasanha à bolonhesa",tipo:"principal",t:90,ing:[["Massa de lasanha",70,"g",C_MERC],["Carne moída (patinho)",150,"g",C_CARNE],["Passata de tomate",150,"ml",C_MERC],["Cebola",30,"g",C_HORTI],["Alho",1,"dente",C_HORTI],["Muçarela fatiada",60,"g",C_LATI],["Presunto fatiado",40,"g",C_LATI],["Parmesão ralado",15,"g",C_LATI],["Leite integral",100,"ml",C_LATI],["Manteiga",10,"g",C_LATI],["Farinha de trigo",10,"g",C_MERC],["Noz-moscada",1,"pitada",C_TEMP,"f"]],prep:["Bolonhesa: doure a carne, junte cebola e alho, depois a passata. Cozinhe 30 minutos em fogo baixo.","Bechamel: derreta a manteiga, junte a farinha, depois o leite aos poucos, mexendo até engrossar. Tempere com sal e noz-moscada.","Monte em camadas: molho, massa, bechamel, presunto e muçarela. Termine com molho, bechamel e parmesão.","Cubra com papel-alumínio e asse a 200 °C por 30 minutos; retire o papel e gratine por mais 10."]},
+  tiramisu:{n:"Tiramisù",tipo:"sobremesa",t:30,ing:[["Mascarpone",60,"g",C_LATI],["Creme de leite fresco",40,"ml",C_LATI],["Biscoito champanhe",5,"un",C_MERC],["Café espresso",50,"ml",C_BEB],["Açúcar",20,"g",C_MERC],["Cacau em pó",3,"g",C_MERC]],prep:["Bata o creme de leite em ponto de chantilly com o açúcar e misture delicadamente ao mascarpone.","Molhe rapidamente os biscoitos no café frio.","Monte camadas de biscoito e creme em taças ou travessa.","Leve à geladeira por pelo menos 6 horas e polvilhe cacau na hora de servir."]},
+  picanha:{n:"Picanha na brasa",tipo:"principal",t:40,ing:[["Picanha",250,"g",C_CARNE],["Sal grosso",15,"g",C_TEMP],["Carvão",0.5,"kg",C_OUT]],prep:["Corte a picanha em bifes grossos (3 dedos) a favor da gordura.","Tempere com sal grosso só na hora de ir para a grelha.","Asse com a gordura para baixo primeiro, em brasa alta, e vire uma vez.","Descanse 3 minutos antes de fatiar contra a fibra."]},
+  linguica:{n:"Linguiça toscana",tipo:"principal",t:30,ing:[["Linguiça toscana",120,"g",C_CARNE]],prep:["Asse em brasa média, virando sempre, por 20 a 25 minutos, até dourar por igual.","Sirva fatiada como petisco antes das carnes."]},
+  pao_alho:{n:"Pão de alho caseiro",tipo:"acompanhamento",t:20,ing:[["Pão francês",1.5,"un",C_PAD],["Manteiga",10,"g",C_LATI],["Maionese",10,"g",C_MERC],["Alho",1,"dente",C_HORTI],["Parmesão ralado",5,"g",C_LATI],["Salsinha",1,"maço",C_TEMP,"f"]],prep:["Misture manteiga, maionese, alho amassado, parmesão e salsinha.","Faça cortes no pão sem separar as fatias e recheie.","Embrulhe em papel-alumínio e asse na grelha por 10 minutos; abra e doure."]},
+  farofa_bacon:{n:"Farofa de bacon",tipo:"acompanhamento",t:15,ing:[["Farinha de mandioca torrada",40,"g",C_MERC],["Bacon em cubos",25,"g",C_CARNE],["Manteiga",10,"g",C_LATI],["Cebola",15,"g",C_HORTI],["Salsinha",1,"maço",C_TEMP,"f"]],prep:["Frite o bacon até dourar e junte a manteiga e a cebola.","Acrescente a farinha aos poucos, mexendo até ficar soltinha e dourada.","Acerte o sal e finalize com salsinha."]},
+  vinagrete:{n:"Vinagrete",tipo:"acompanhamento",t:15,ing:[["Tomate",60,"g",C_HORTI],["Cebola",25,"g",C_HORTI],["Pimentão",20,"g",C_HORTI],["Vinagre de vinho branco",10,"ml",C_MERC],["Azeite extravirgem",10,"ml",C_MERC],["Salsinha",1,"maço",C_TEMP,"f"]],prep:["Pique tudo em cubos pequenos e iguais.","Tempere com vinagre, azeite e sal 30 minutos antes de servir."]},
+  abacaxi:{n:"Abacaxi grelhado com canela",tipo:"sobremesa",t:15,ing:[["Abacaxi",0.2,"un",C_HORTI],["Açúcar mascavo",10,"g",C_MERC],["Canela em pó",1,"pitada",C_TEMP,"f"]],prep:["Corte o abacaxi em fatias grossas ou em espetos.","Polvilhe açúcar e canela e grelhe até caramelizar dos dois lados."]},
+  feijoada:{n:"Feijoada completa",tipo:"principal",t:240,ing:[["Feijão preto",80,"g",C_MERC],["Carne-seca",50,"g",C_CARNE],["Costelinha suína defumada",60,"g",C_CARNE],["Lombo suíno salgado",40,"g",C_CARNE],["Paio",40,"g",C_CARNE],["Linguiça calabresa",40,"g",C_CARNE],["Bacon",20,"g",C_CARNE],["Cebola",30,"g",C_HORTI],["Alho",1,"dente",C_HORTI],["Folha de louro",2,"un",C_TEMP,"f"],["Laranja pera (para servir)",0.5,"un",C_HORTI]],prep:["Na véspera: deixe as carnes salgadas de molho, trocando a água 3 vezes, e o feijão de molho.","Cozinhe o feijão com louro na pressão por 25 minutos.","Afervente as carnes salgadas e cozinhe com o feijão; junte defumados e linguiças por mais 40 minutos.","Refogue bacon, cebola e alho, junte uma concha de feijão amassado e devolva à panela para engrossar.","Sirva com arroz, couve, farofa e laranja."]},
+  arroz:{n:"Arroz branco soltinho",tipo:"acompanhamento",t:25,ing:[["Arroz agulhinha",70,"g",C_MERC],["Cebola",10,"g",C_HORTI],["Alho",0.5,"dente",C_HORTI],["Óleo",10,"ml",C_MERC,"f"]],prep:["Refogue cebola e alho no óleo, junte o arroz e frite por 1 minuto.","Cubra com água fervente (2 partes de água para 1 de arroz) e sal.","Cozinhe tampado em fogo baixo até secar; descanse 5 minutos antes de soltar com o garfo."]},
+  couve:{n:"Couve refogada",tipo:"acompanhamento",t:10,ing:[["Couve-manteiga",0.25,"maço",C_HORTI],["Alho",0.5,"dente",C_HORTI],["Azeite extravirgem",10,"ml",C_MERC,"f"]],prep:["Fatie a couve bem fina.","Refogue o alho no azeite, junte a couve e salteie por 1 minuto, só até murchar. Sal na hora."]},
+  brigadeiro_colher:{n:"Brigadeiro de colher",tipo:"sobremesa",t:20,ing:[["Leite condensado",100,"g",C_MERC],["Creme de leite",25,"g",C_LATI],["Chocolate 50% cacau",15,"g",C_MERC],["Manteiga",5,"g",C_LATI]],prep:["Leve tudo ao fogo baixo, mexendo sempre, até desgrudar do fundo da panela.","Sirva morno em potinhos ou taças."]},
+  caipirinha:{n:"Caipirinha de limão",tipo:"bebida",t:5,ing:[["Limão taiti",1,"un",C_HORTI],["Cachaça",50,"ml",C_BEB],["Açúcar",15,"g",C_MERC],["Gelo",150,"g",C_BEB]],prep:["Corte o limão em gomos, tire o miolo branco e amasse com o açúcar.","Complete com gelo e cachaça e mexa. Faça uma versão sem álcool com água com gás."]},
+  ceviche:{n:"Ceviche de peixe branco",tipo:"entrada",t:20,ing:[["Peixe branco fresco (robalo ou tilápia)",80,"g",C_CARNE],["Limão taiti",1,"un",C_HORTI],["Cebola roxa",20,"g",C_HORTI],["Pimenta dedo-de-moça",0.1,"un",C_HORTI],["Coentro",1,"maço",C_TEMP,"f"],["Batata-doce cozida",40,"g",C_HORTI]],prep:["Corte o peixe em cubos de 1,5 cm e mantenha bem gelado.","Tempere com sal, cebola roxa fatiada e pimenta.","Cubra com suco de limão e deixe marinar 5 a 8 minutos.","Finalize com coentro e sirva com batata-doce."]},
+  moqueca:{n:"Moqueca de peixe e camarão",tipo:"principal",t:45,ing:[["Peixe em postas (robalo ou badejo)",180,"g",C_CARNE],["Camarão limpo",80,"g",C_CARNE],["Leite de coco",80,"ml",C_MERC],["Azeite de dendê",10,"ml",C_MERC],["Tomate",70,"g",C_HORTI],["Pimentão colorido",50,"g",C_HORTI],["Cebola",40,"g",C_HORTI],["Limão taiti",0.5,"un",C_HORTI],["Coentro",1,"maço",C_TEMP,"f"]],prep:["Tempere peixe e camarão com limão, sal e alho por 20 minutos.","Na panela de barro, faça camadas de cebola, tomate e pimentão; acomode o peixe por cima.","Regue com leite de coco e dendê, tampe e cozinhe 15 minutos sem mexer.","Junte o camarão nos últimos 5 minutos e finalize com coentro."]},
+  pirao:{n:"Pirão de peixe",tipo:"acompanhamento",t:15,ing:[["Farinha de mandioca fina",20,"g",C_MERC],["Caldo de peixe (da moqueca)",100,"ml",C_MERC]],prep:["Separe parte do caldo quente da moqueca.","Junte a farinha aos poucos, mexendo sem parar, até ficar cremoso."]},
+  mousse_maracuja:{n:"Mousse de maracujá",tipo:"sobremesa",t:15,ing:[["Leite condensado",100,"g",C_MERC],["Creme de leite",50,"g",C_LATI],["Maracujá",1,"un",C_HORTI]],prep:["Bata leite condensado, creme de leite e o suco concentrado da polpa no liquidificador.","Distribua em taças, cubra com sementes e gele por 3 horas."]},
+  creme_abobora:{n:"Creme de abóbora com gengibre",tipo:"entrada",t:35,ing:[["Abóbora cabotiá",200,"g",C_HORTI],["Cebola",30,"g",C_HORTI],["Gengibre",3,"g",C_HORTI],["Caldo de legumes",200,"ml",C_MERC],["Creme de leite",20,"g",C_LATI],["Azeite extravirgem",10,"ml",C_MERC,"f"]],prep:["Refogue cebola e gengibre no azeite.","Junte a abóbora em cubos e o caldo; cozinhe até desmanchar.","Bata no liquidificador, volte ao fogo com o creme de leite e acerte o sal."]},
+  salada_quinoa:{n:"Salada de quinoa com legumes assados",tipo:"entrada",t:40,ing:[["Quinoa",50,"g",C_MERC],["Abobrinha",60,"g",C_HORTI],["Berinjela",50,"g",C_HORTI],["Pimentão colorido",30,"g",C_HORTI],["Grão-de-bico cozido",40,"g",C_MERC],["Hortelã",1,"maço",C_TEMP,"f"],["Limão-siciliano",0.25,"un",C_HORTI],["Azeite extravirgem",15,"ml",C_MERC]],prep:["Cozinhe a quinoa em água com sal por 12 minutos e escorra.","Asse os legumes em cubos com azeite a 220 °C por 25 minutos.","Misture tudo com grão-de-bico, hortelã, raspas e suco de limão."]},
+  nhoque:{n:"Nhoque de batata ao sugo",tipo:"principal",t:60,ing:[["Batata asterix",250,"g",C_HORTI],["Farinha de trigo",60,"g",C_MERC],["Ovo",0.25,"un",C_LATI],["Tomate pelado",150,"g",C_MERC],["Alho",1,"dente",C_HORTI],["Manjericão fresco",1,"maço",C_TEMP,"f"],["Parmesão ralado",15,"g",C_LATI],["Azeite extravirgem",10,"ml",C_MERC]],prep:["Cozinhe as batatas com casca, descasque e passe no espremedor ainda quentes.","Junte ovo, sal e farinha aos poucos até a massa parar de grudar.","Faça rolinhos, corte e cozinhe em água fervente até subirem.","Molho: doure o alho no azeite, junte o tomate e cozinhe 15 minutos; finalize com manjericão e parmesão."]},
+  panna_cotta:{n:"Panna cotta com calda de frutas vermelhas",tipo:"sobremesa",t:20,ing:[["Creme de leite fresco",100,"ml",C_LATI],["Leite integral",30,"ml",C_LATI],["Açúcar",25,"g",C_MERC],["Gelatina incolor",2,"g",C_MERC],["Frutas vermelhas congeladas",50,"g",C_HORTI]],prep:["Hidrate a gelatina conforme a embalagem.","Aqueça creme, leite e parte do açúcar sem ferver, dissolva a gelatina e distribua em taças.","Gele por 4 horas.","Calda: cozinhe as frutas com o restante do açúcar por 8 minutos."]},
+  salpicao:{n:"Salpicão de frango",tipo:"entrada",t:40,ing:[["Peito de frango",80,"g",C_CARNE],["Maionese",30,"g",C_MERC],["Cenoura",30,"g",C_HORTI],["Milho verde em conserva",20,"g",C_MERC],["Uva-passa",10,"g",C_MERC],["Maçã verde",0.25,"un",C_HORTI],["Batata palha",15,"g",C_MERC]],prep:["Cozinhe o frango em água temperada e desfie.","Rale a cenoura e corte a maçã em cubinhos.","Misture tudo com a maionese e gele. Batata palha só na hora de servir."]},
+  pernil:{n:"Pernil assado com laranja",tipo:"principal",t:300,ing:[["Pernil suíno com osso",350,"g",C_CARNE],["Laranja pera",0.5,"un",C_HORTI],["Alho",2,"dente",C_HORTI],["Vinho branco seco",30,"ml",C_BEB],["Folha de louro",2,"un",C_TEMP,"f"]],prep:["Na véspera, fure a carne e tempere com alho, sal, suco de laranja, vinho e louro.","Asse coberto com papel-alumínio a 180 °C por cerca de 40 minutos por quilo.","Retire o papel, regue com o molho e doure por mais 40 minutos."]},
+  arroz_natal:{n:"Arroz com passas e amêndoas",tipo:"acompanhamento",t:30,ing:[["Arroz agulhinha",70,"g",C_MERC],["Uva-passa",10,"g",C_MERC],["Amêndoas laminadas",10,"g",C_MERC],["Manteiga",5,"g",C_LATI],["Cebola",10,"g",C_HORTI]],prep:["Prepare o arroz branco como de costume.","Toste as amêndoas na manteiga e junte as passas.","Misture ao arroz pronto na hora de servir."]},
+  pave:{n:"Pavê de chocolate",tipo:"sobremesa",t:40,ing:[["Biscoito maisena",40,"g",C_MERC],["Leite condensado",100,"g",C_MERC],["Creme de leite",50,"g",C_LATI],["Leite integral",100,"ml",C_LATI],["Amido de milho",5,"g",C_MERC],["Ovo (gema)",1,"un",C_LATI],["Chocolate meio amargo",20,"g",C_MERC]],prep:["Creme branco: cozinhe leite condensado, leite, gema e amido até engrossar.","Ganache: derreta o chocolate com o creme de leite.","Monte camadas de biscoito umedecido no leite, creme e ganache. Gele por 6 horas."]},
+  ovos_mexidos:{n:"Ovos mexidos cremosos",tipo:"principal",t:10,ing:[["Ovo",2,"un",C_LATI],["Manteiga",10,"g",C_LATI],["Creme de leite",15,"g",C_LATI],["Cebolinha",1,"maço",C_TEMP,"f"]],prep:["Bata levemente os ovos com sal.","Cozinhe em fogo baixo com manteiga, mexendo sempre, e tire do fogo ainda úmidos.","Finalize com creme de leite e cebolinha."]},
+  panqueca:{n:"Panquecas americanas com mel e frutas",tipo:"principal",t:25,ing:[["Farinha de trigo",50,"g",C_MERC],["Leite integral",60,"ml",C_LATI],["Ovo",0.5,"un",C_LATI],["Açúcar",8,"g",C_MERC],["Fermento químico",2,"g",C_MERC],["Manteiga",5,"g",C_LATI],["Mel",20,"g",C_MERC],["Frutas vermelhas frescas",40,"g",C_HORTI]],prep:["Misture os secos e, à parte, os líquidos; junte sem bater demais.","Cozinhe porções em frigideira untada até formar bolhas; vire.","Sirva em pilhas com mel e frutas."]},
+  tabua:{n:"Tábua de queijos, frios e frutas",tipo:"entrada",t:20,ing:[["Queijo brie",30,"g",C_LATI],["Presunto parma",25,"g",C_LATI],["Melão",100,"g",C_HORTI],["Uva sem semente",60,"g",C_HORTI],["Pão de fermentação natural",60,"g",C_PAD],["Geleia de frutas",15,"g",C_MERC]],prep:["Fatie o melão e enrole o parma por cima.","Monte a tábua com queijos em temperatura ambiente, frutas, pães e geleia."]},
+  suco_laranja:{n:"Suco de laranja natural",tipo:"bebida",t:10,ing:[["Laranja pera",3,"un",C_HORTI]],prep:["Esprema na hora (3 laranjas rendem cerca de 300 ml) e sirva gelado."]},
+  cafe:{n:"Café coado",tipo:"bebida",t:10,ing:[["Café em pó",10,"g",C_MERC]],prep:["Use 10 g de pó para cada 150 ml de água a 92 °C."]},
+  frango_grelhado:{n:"Frango grelhado com ervas",tipo:"principal",t:20,ing:[["Peito de frango",150,"g",C_CARNE],["Limão taiti",0.25,"un",C_HORTI],["Alho",0.5,"dente",C_HORTI],["Azeite extravirgem",5,"ml",C_MERC]],prep:["Tempere com limão, alho, sal e ervas por 30 minutos.","Grelhe em frigideira bem quente, 4 a 5 minutos de cada lado."]},
+  arroz_integral:{n:"Arroz integral",tipo:"acompanhamento",t:40,ing:[["Arroz integral",50,"g",C_MERC],["Cebola",10,"g",C_HORTI]],prep:["Refogue e cozinhe com 3 partes de água por 35 a 40 minutos."]},
+  feijao:{n:"Feijão carioca temperado",tipo:"acompanhamento",t:50,ing:[["Feijão carioca",40,"g",C_MERC],["Alho",0.5,"dente",C_HORTI],["Cebola",10,"g",C_HORTI],["Folha de louro",1,"un",C_TEMP,"f"]],prep:["Cozinhe na pressão com louro por 25 minutos.","Tempere com alho e cebola refogados."]},
+  legumes:{n:"Legumes no vapor",tipo:"acompanhamento",t:15,ing:[["Brócolis",80,"g",C_HORTI],["Cenoura",50,"g",C_HORTI],["Abobrinha",50,"g",C_HORTI]],prep:["Cozinhe no vapor até ficarem macios e ainda firmes (6 a 8 minutos)."]},
+  embalagem:{n:"Embalagem de marmita",tipo:"bebida",t:0,ing:[["Embalagem de marmita (com tampa)",1,"un",C_OUT],["Etiqueta com data",1,"un",C_OUT]],prep:["Monte, feche, etiquete com nome e data. Validade: 3 dias na geladeira ou 30 dias no freezer."]}
+};
+const MENUS=[
+  {id:"romantico",nome:"Jantar romântico",ocasiao:"Namorados e aniversário de casamento",desc:"Menu a dois, elegante e de execução segura.",pratos:["carpaccio","file_vinho","risoto_cog","petit"],sug:[2,2]},
+  {id:"italiano",nome:"Italiano em família",ocasiao:"Almoço de domingo e aniversários",desc:"Clássicos italianos que agradam todas as idades.",pratos:["bruschetta","caprese","lasanha","tiramisu"],sug:[4,12]},
+  {id:"churrasco",nome:"Churrasco gourmet",ocasiao:"Dia dos Pais, futebol, confraternização",desc:"Carnes nobres, acompanhamentos caseiros e sobremesa na brasa.",pratos:["linguica","picanha","pao_alho","farofa_bacon","vinagrete","arroz","abacaxi"],sug:[6,20]},
+  {id:"feijoada",nome:"Feijoada de sábado",ocasiao:"Encontro de amigos e almoço especial",desc:"Feijoada completa com todos os acompanhamentos.",pratos:["feijoada","arroz","couve","farofa_bacon","brigadeiro_colher","caipirinha"],sug:[8,20]},
+  {id:"mar",nome:"Sabores do mar",ocasiao:"Verão, casa de praia, almoço leve",desc:"Ceviche fresco e moqueca baiana com pirão.",pratos:["ceviche","moqueca","arroz","pirao","mousse_maracuja"],sug:[4,12]},
+  {id:"vegetariano",nome:"Vegetariano leve",ocasiao:"Clientes vegetarianos e jantares leves",desc:"Sem carne, cheio de sabor e cor.",pratos:["creme_abobora","salada_quinoa","nhoque","panna_cotta"],sug:[2,10]},
+  {id:"natal",nome:"Ceia de Natal",ocasiao:"Natal e Réveillon",desc:"Ceia tradicional brasileira, pensada para a família toda.",pratos:["salpicao","pernil","arroz_natal","farofa_bacon","pave"],sug:[8,20]},
+  {id:"brunch",nome:"Brunch",ocasiao:"Chá de bebê, aniversário pela manhã, Dia das Mães",desc:"Café da manhã reforçado e bonito na mesa.",pratos:["tabua","ovos_mexidos","panqueca","suco_laranja","cafe"],sug:[4,16]},
+  {id:"marmitas",nome:"Marmitas da semana",ocasiao:"Encomendas e marmitas fit (por marmita)",desc:"Cada \"pessoa\" é uma marmita pronta.",pratos:["frango_grelhado","arroz_integral","feijao","legumes","embalagem"],sug:[5,20]}
+];
+const MAX_PESSOAS=20;
+function allReceitas(){const out=Object.assign({},RECEITAS);(S.cfg.chefLib.receitas||[]).forEach(r=>{if(r&&r.id)out[r.id]=r;});return out;}
+function allMenus(){return [...MENUS,...(S.cfg.chefLib.menus||[]).filter(m=>m&&m.id)];}
+function qtdIng(ing,p){const [,q,,,f]=ing;return f==="f"?q*Math.ceil(p/4):q*p;}
+// arredonda para compra
+function fmtCompra(q,un){
+  const r=(x,s)=>Math.ceil(x/s-1e-9)*s;const nf=(x,d)=>x.toLocaleString("pt-BR",{maximumFractionDigits:d});
+  if(un==="g"){if(q>=1000)return nf(r(q/1000,0.05),2)+" kg";return nf(q<100?r(q,10):r(q,50),0)+" g";}
+  if(un==="ml"){if(q>=1000)return nf(r(q/1000,0.1),1)+" L";return nf(q<100?r(q,10):r(q,50),0)+" ml";}
+  if(un==="kg")return nf(r(q,0.5),1)+" kg";
+  if(un==="dente"){const d=Math.ceil(q);return d+(d===1?" dente":" dentes")+(d>=6?" (≈ "+Math.ceil(d/10)+(Math.ceil(d/10)===1?" cabeça)":" cabeças)"):"");}
+  if(un==="pitada")return "a gosto";
+  const c=Math.ceil(q-1e-9);return c+" "+(un==="un"?(c===1?"unidade":"unidades"):un+(c>1&&!/s$/.test(un)?"s":""));
+}
+function fmtReceita(q,un){const nf=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:2});if(un==="pitada")return "1 pitada";if(un==="g"&&q>=1000)return nf(q/1000)+" kg";if(un==="ml"&&q>=1000)return nf(q/1000)+" L";return nf(q)+" "+un;}
+function listaCompras(ids,p){
+  const R=allReceitas();const m=new Map();
+  ids.forEach(id=>{const r=R[id];if(!r)return;r.ing.forEach(ing=>{const key=ing[0].toLowerCase()+"|"+ing[2];const cur=m.get(key)||{nome:ing[0],un:ing[2],cat:ing[3]||C_MERC,q:0,usos:[]};cur.q+=qtdIng(ing,p);cur.usos.push(r.n);m.set(key,cur);});});
+  const est=S.data.estoque.filter(i=>i.empresa==="chef");
+  return [...m.values()].map(x=>{const e=est.find(i=>i.nome.toLowerCase()===x.nome.toLowerCase()||x.nome.toLowerCase().startsWith(i.nome.toLowerCase()));return Object.assign(x,{compra:fmtCompra(x.q,x.un),estoque:e||null});}).sort((a,b)=>ING_CATS.indexOf(a.cat)-ING_CATS.indexOf(b.cat)||a.nome.localeCompare(b.nome));
+}
+function listaTexto(titulo,ids,p){const L=listaCompras(ids,p);const out=["Lista de compras · "+titulo+" · "+p+(p===1?" pessoa":" pessoas"),""];ING_CATS.forEach(c=>{const it=L.filter(x=>x.cat===c);if(!it.length)return;out.push(c.toUpperCase());it.forEach(x=>out.push("[ ] "+x.nome+": "+x.compra+(x.estoque?" (estoque: "+x.estoque.qtd.toLocaleString("pt-BR")+" "+x.estoque.unidade+")":"")));out.push("");});return out.join("\n");}
+function pessoasCtl(val,onChange){
+  const lbl=h("b",{class:"num",style:"min-width:34px;text-align:center;font-size:18px",text:String(val)});
+  const set=v=>{v=Math.max(1,Math.min(MAX_PESSOAS,v));val=v;lbl.textContent=String(v);onChange(v);};
+  return h("div",{class:"month",role:"group","aria-label":"Número de pessoas",style:"height:40px"},h("button",{type:"button","aria-label":"Menos uma pessoa",onclick:()=>set(val-1)},ic("left")),h("span",{style:"min-width:auto;display:flex;align-items:center;gap:6px;padding:0 6px"},lbl,h("span",{class:"sub",text:"pessoas"})),h("button",{type:"button","aria-label":"Mais uma pessoa",onclick:()=>set(val+1)},ic("right")));
+}
+// janela do menu: pratos, receitas escaladas e lista de compras
+function abrirMenu(menu,pIni,pedido){
+  const R=allReceitas();let p=Math.max(1,Math.min(MAX_PESSOAS,pIni||(menu.sug?menu.sug[0]:4)));let aba="compras";
+  const body=h("div",{class:"f"});
+  const fill=()=>{
+    const ids=menu.pratos.filter(id=>R[id]);const L=listaCompras(ids,p);
+    const tabs=h("div",{class:"seg2",role:"group","aria-label":"Ver"},...[["compras","Lista de compras"],["receitas","Receitas"]].map(([k,l])=>h("button",{type:"button","aria-pressed":String(aba===k),onclick:()=>{aba=k;fill();}},l)));
+    const ctl=pessoasCtl(p,v=>{p=v;fill();});
+    let content;
+    if(aba==="compras"){
+      content=h("div",{class:"f"},...ING_CATS.map(c=>{const it=L.filter(x=>x.cat===c);if(!it.length)return null;
+        return h("div",{},h("div",{class:"eyebrow",style:"margin:6px 0 2px;font-weight:600",text:c}),h("div",{class:"rows"},...it.map(x=>h("label",{class:"rowi",style:"grid-template-columns:auto minmax(0,1fr) auto;cursor:pointer"},h("input",{type:"checkbox","aria-label":"Comprado: "+x.nome}),h("div",{style:"min-width:0"},h("b",{style:"white-space:normal",text:x.nome}),h("div",{class:"meta",style:"white-space:normal",text:x.usos.length>1?"Usado em "+x.usos.length+" pratos":x.usos[0]})),h("div",{class:"end"},h("span",{class:"num",style:"font-weight:500",text:x.compra}),x.estoque?h("span",{class:"pill "+(x.estoque.qtd>0?"ok":"warn"),text:"estoque "+x.estoque.qtd.toLocaleString("pt-BR")+" "+x.estoque.unidade}):null)))));}),
+        h("p",{class:"hint",text:"Quantidades já arredondadas para compra (embalagens e múltiplos de 50 g). Temperos e ervas estão calculados por grupo de 4 pessoas. Sal e pimenta: a gosto."}));
+    }else{
+      content=h("div",{class:"f"},...TIPOS_PRATO.map(([tp,tl])=>{const rs=ids.filter(id=>R[id].tipo===tp);if(!rs.length)return null;return h("div",{class:"f",style:"gap:10px"},h("div",{class:"eyebrow",style:"font-weight:600",text:tl}),...rs.map(id=>{const r=R[id];
+        return h("details",{class:"panel",style:"padding:12px 14px;gap:8px"},h("summary",{style:"cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-weight:600;list-style:none"},h("span",{text:r.n}),h("span",{class:"sub",text:(r.t?r.t+" min · ":"")+"ver receita"})),
+          h("div",{class:"eyebrow",style:"margin-top:6px",text:"Ingredientes para "+p+(p===1?" pessoa":" pessoas")}),
+          h("ul",{style:"margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px"},...r.ing.map(g=>h("li",{},h("b",{style:"font-weight:500",text:fmtReceita(qtdIng(g,p),g[2])})," de "+g[0].toLowerCase()))),
+          h("div",{class:"eyebrow",style:"margin-top:6px",text:"Modo de preparo"}),
+          h("ol",{style:"margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px"},...(r.prep||[]).map(s=>h("li",{text:s}))));}));}));
+    }
+    body.replaceChildren(...[
+      h("p",{class:"hint",text:(menu.ocasiao?menu.ocasiao+" · ":"")+menu.pratos.map(id=>R[id]?R[id].n:"").filter(Boolean).join(", ")}),
+      h("div",{class:"inline",style:"justify-content:space-between;flex-wrap:wrap"},ctl,tabs),
+      p===MAX_PESSOAS?h("div",{class:"notice",text:"Limite de "+MAX_PESSOAS+" pessoas por pedido. Para eventos maiores, divida em dois pedidos ou fale com a Jay."}):null,
+      content].filter(Boolean));
+  };
+  fill();
+  const titulo=menu.nome;
+  modal(titulo,body,[
+    c=>h("button",{class:"btn ghost",type:"button",text:"Fechar",onclick:c}),
+    ()=>btnI("check","Copiar lista",{cls:"btn ghost",onclick:async()=>{try{await navigator.clipboard.writeText(listaTexto(titulo,menu.pratos,p));toast("Lista copiada.");}catch(_){}}}),
+    ()=>btnI("chat","WhatsApp",{cls:"btn ghost",onclick:()=>window.open("https://wa.me/?text="+encodeURIComponent(listaTexto(titulo,menu.pratos,p)),"_blank","noopener")}),
+    ()=>btnI("print","Imprimir",{cls:"btn ghost",onclick:()=>imprimirMenu(menu,p)}),
+    c=>pedido?btnI("check","Salvar no pedido",{onclick:async()=>{await updDoc("pedidos/"+pedido._id,{menuId:menu.id,receitas:menu.pratos,itens:menu.pratos.map(id=>R[id]?R[id].n:id),pessoas:p});toast("Menu e pessoas salvos no pedido.");c();}}):btnI("plus","Criar pedido",{onclick:()=>{c();editPedido(null,{menuId:menu.id,receitas:menu.pratos,itens:menu.pratos.map(id=>R[id]?R[id].n:id),pessoas:p,servico:/marmita/i.test(menu.nome)?"Encomenda / marmitas":"Jantar em casa"});}})]);
+}
+function imprimirMenu(menu,p){
+  const R=allReceitas();const ids=menu.pratos.filter(id=>R[id]);const L=listaCompras(ids,p);const esc=t=>String(t).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  const html=`<!doctype html><meta charset="utf-8"><title>${esc(menu.nome)}</title><style>body{font:13px/1.5 Georgia,serif;color:#111;margin:28px;max-width:760px}h1{font-size:26px;margin:0}h2{font-size:15px;margin:20px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}h3{font-size:14px;margin:14px 0 4px}ul,ol{margin:4px 0 0;padding-left:18px}.sub{color:#555;font:12px system-ui,sans-serif}.cols{columns:2;column-gap:28px}li{break-inside:avoid}@media print{a{display:none}}</style>
+<p class="sub">Jay Personal Chef</p><h1>${esc(menu.nome)}</h1><p class="sub">${p} ${p===1?"pessoa":"pessoas"} · ${esc(ids.map(id=>R[id].n).join(" · "))}</p>
+<h2>Lista de compras</h2><div class="cols">${ING_CATS.map(c=>{const it=L.filter(x=>x.cat===c);return it.length?`<h3>${esc(c)}</h3><ul>${it.map(x=>`<li>☐ ${esc(x.nome)}: <b>${esc(x.compra)}</b></li>`).join("")}</ul>`:"";}).join("")}</div>
+<h2>Receitas</h2>${ids.map(id=>{const r=R[id];return `<h3>${esc(r.n)}${r.t?` <span class="sub">· ${r.t} min</span>`:""}</h3><ul>${r.ing.map(g=>`<li>${esc(fmtReceita(qtdIng(g,p),g[2]))} de ${esc(g[0].toLowerCase())}</li>`).join("")}</ul><ol>${(r.prep||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ol>`;}).join("")}
+<script>setTimeout(()=>print(),300)<\/script>`;
+  const w=window.open("","_blank");if(!w){toast("Libere as janelas pop-up para imprimir.","err");return;}w.document.write(html);w.document.close();
+}
+// tela: Menus e receitas
+async function viewMenus(){
+  const R=allReceitas();const M=allMenus();
+  if(!S.menuAba)S.menuAba="prontos";
+  const abas=h("div",{class:"seg2",role:"group","aria-label":"Seção"},...[["prontos","Menus prontos"],["montar","Montar menu"],["receitas","Receitas"],["pratos","Preços dos pratos"]].map(([k,l])=>h("button",{type:"button","aria-pressed":String(S.menuAba===k),onclick:()=>{S.menuAba=k;render();}},l)));
+  let content;
+  if(S.menuAba==="prontos"){
+    content=h("div",{class:"cards"},...M.map(m=>h("article",{class:"card"},
+      h("div",{class:"top2"},h("div",{style:"min-width:0"},h("h3",{style:"font-family:var(--f-brand);font-size:21px;font-weight:600",text:m.nome}),h("div",{class:"meta",text:m.ocasiao||"Menu personalizado"})),m.custom?h("span",{class:"pill info",text:"Seu"}):null),
+      m.desc?h("p",{class:"hint",text:m.desc}):null,
+      h("ul",{style:"margin:0;padding-left:18px;display:grid;gap:2px;font-size:13.5px"},...m.pratos.filter(id=>R[id]).map(id=>h("li",{},R[id].n,h("span",{class:"sub",text:" · "+(TIPOS_PRATO.find(t=>t[0]===R[id].tipo)||["",""])[1].toLowerCase()})))),
+      m.sug?h("div",{class:"meta",text:"Ideal para "+m.sug[0]+(m.sug[1]>m.sug[0]?" a "+m.sug[1]:"")+" pessoas"}):null,
+      h("div",{class:"acts"},btnI("clipboard","Lista e receitas",{cls:"btn sm",onclick:()=>abrirMenu(m)}),S.canWrite?btnI("plus","Pedido",{cls:"btn ghost sm",onclick:()=>editPedido(null,{menuId:m.id,receitas:m.pratos,itens:m.pratos.map(id=>R[id]?R[id].n:id),pessoas:m.sug?m.sug[0]:4})}):null,m.custom&&S.canWrite?h("button",{class:"link",type:"button","aria-label":"Excluir menu",onclick:e=>armed(e.currentTarget,"Excluir?",()=>salvarLib({menus:(S.cfg.chefLib.menus||[]).filter(x=>x.id!==m.id)}))},ic("trash")):null))));
+  }else if(S.menuAba==="montar"){
+    if(!S.montar)S.montar={sel:[],p:4,nome:""};const st=S.montar;
+    const grupos=TIPOS_PRATO.map(([tp,tl])=>{const rs=Object.entries(R).filter(([,r])=>r.tipo===tp&&r.n!=="Embalagem de marmita");if(!rs.length)return null;
+      return h("section",{class:"panel"},h("h2",{text:tl}),h("div",{class:"checks",style:"max-height:none;border:0;padding:0"},...rs.map(([id,r])=>h("label",{},h("input",{type:"checkbox",checked:st.sel.includes(id),onchange:e=>{if(e.target.checked)st.sel.push(id);else st.sel=st.sel.filter(x=>x!==id);render();}}),r.n,h("span",{class:"sub",text:r.t?" · "+r.t+" min":""})))));});
+    const nome=h("input",{id:"mm-nome",placeholder:"Ex.: Jantar da Ana",value:st.nome,maxlength:60,oninput:e=>{st.nome=e.target.value;}});
+    const tmp={id:"tmp",nome:st.nome||"Menu montado",ocasiao:"Montado por você",pratos:st.sel};
+    content=h("div",{class:"grid"},h("div",{class:"col"},...grupos.filter(Boolean)),
+      h("div",{class:"col"},h("section",{class:"panel",style:"position:sticky;top:80px"},h("h2",{text:"Seu menu"}),
+        st.sel.length?h("ol",{style:"margin:0;padding-left:18px;display:grid;gap:3px"},...st.sel.map(id=>h("li",{text:R[id]?R[id].n:id}))):h("div",{class:"empty"},ic("book"),"Escolha os pratos ao lado."),
+        h("div",{class:"field"},h("label",{for:"mm-nome",text:"Nome do menu"}),nome),
+        h("div",{class:"filters"},btnI("clipboard","Lista e receitas",{cls:"btn sm",disabled:!st.sel.length,onclick:()=>abrirMenu(Object.assign({},tmp,{nome:st.nome||"Menu montado"}),st.p)}),
+          S.canWrite?btnI("check","Salvar menu",{cls:"btn ghost sm",disabled:!st.sel.length,onclick:async()=>{const m={id:"m"+Date.now().toString(36),nome:st.nome||"Menu sem nome",ocasiao:"Menu personalizado",desc:"",pratos:st.sel.slice(),custom:true};await salvarLib({menus:[...(S.cfg.chefLib.menus||[]),m]});S.montar={sel:[],p:4,nome:""};S.menuAba="prontos";toast("Menu salvo em Menus prontos.");}}):null))));
+  }else if(S.menuAba==="receitas"){
+    const q=(S.recQ||"").toLowerCase();
+    const busca=h("input",{id:"rec-q",type:"search",placeholder:"Buscar receita ou ingrediente",value:S.recQ||"",oninput:e=>{S.recQ=e.target.value;render();},style:"min-width:240px"});
+    const rs=Object.entries(R).filter(([,r])=>!q||r.n.toLowerCase().includes(q)||r.ing.some(g=>g[0].toLowerCase().includes(q)));
+    content=h("div",{class:"col"},h("div",{class:"filters"},busca,S.canWrite?btnI("plus","Nova receita",{cls:"btn sm",onclick:()=>editReceita(null)}):null),
+      h("div",{class:"cards"},...rs.map(([id,r])=>h("article",{class:"card"},h("div",{class:"top2"},h("h3",{text:r.n}),r.custom?h("span",{class:"pill info",text:"Sua"}):null),h("div",{class:"meta",text:(TIPOS_PRATO.find(t=>t[0]===r.tipo)||["","Prato"])[1]+(r.t?" · "+r.t+" min":"")+" · "+r.ing.length+" ingredientes"}),
+        h("div",{class:"acts"},btnI("clipboard","Ver para N pessoas",{cls:"btn ghost sm",onclick:()=>abrirMenu({id:"r-"+id,nome:r.n,pratos:[id]},4)}),r.custom&&S.canWrite?h("button",{class:"link",type:"button",text:"Editar",onclick:()=>editReceita(Object.assign({id},r))}):null)))));
+  }else{
+    const v=await viewCardapio();const kids=[...v.childNodes];kids.shift();content=h("div",{class:"col"},...kids);
+  }
+  return h("div",{class:"col"},
+    header("Menus e receitas","Escolha o menu, defina as pessoas e o app calcula a lista de compras",[S.canWrite?btnI("plus","Novo pedido",{onclick:()=>editPedido(null)}):null]),
+    h("div",{class:"filters"},abas),content);
+}
+async function salvarLib(part){await setDoc("config/chefLib",Object.assign({menus:S.cfg.chefLib.menus||[],receitas:S.cfg.chefLib.receitas||[]},part));}
+function editReceita(r){
+  const txt=r?r.ing.map(g=>[g[0],String(g[1]).replace(".",","),g[2],g[3],g[4]==="f"?"grupo":""].join("; ")).join("\n"):"";
+  formModal(r?"Editar receita":"Nova receita",[
+    {k:"n",label:"Nome do prato",req:true},
+    {k:"tipo",label:"Tipo",type:"select",opts:TIPOS_PRATO,half:true},{k:"t",label:"Tempo (minutos)",type:"number",min:0,half:true},
+    {k:"ing",label:"Ingredientes por pessoa (um por linha)",type:"textarea",max:4000,ph:"Ingrediente; quantidade; unidade; categoria\nEx.: Filé mignon; 200; g; Carnes, aves e peixes\nAzeite; 15; ml; Mercearia; grupo",help:"Unidades: g, ml, un, dente, maço, kg. Escreva \"grupo\" no fim para itens contados por grupo de 4 pessoas (temperos). Categorias: "+ING_CATS.join(", ")+"."},
+    {k:"prep",label:"Modo de preparo (um passo por linha)",type:"textarea",max:4000}
+  ],r?{n:r.n,tipo:r.tipo,t:r.t,ing:txt,prep:(r.prep||[]).join("\n")}:{tipo:"principal",t:30},async o=>{
+    const ing=o.ing.split("\n").map(l=>l.split(";").map(x=>x.trim())).filter(a=>a[0]).map(a=>{const q=numv(String(a[1]||"0").replace(",","."),0);const cat=ING_CATS.find(c=>c.toLowerCase()===String(a[3]||"").toLowerCase())||ING_CATS.find(c=>c.toLowerCase().startsWith(String(a[3]||"").toLowerCase().slice(0,5)))||C_MERC;return /grupo/i.test(a[4]||"")?[a[0],q,a[2]||"un",cat,"f"]:[a[0],q,a[2]||"un",cat];});
+    if(!ing.length)throw new Error("sem ingredientes");
+    const rec={id:r?r.id:"r"+Date.now().toString(36),n:o.n,tipo:o.tipo,t:Math.round(numv(o.t,0)),ing,prep:o.prep.split("\n").map(s=>s.trim()).filter(Boolean),custom:true};
+    await salvarLib({receitas:[...(S.cfg.chefLib.receitas||[]).filter(x=>x.id!==rec.id),rec]});toast("Receita salva.");
+  });
+}
+
+// ---------- SHOPMIX: produtos, precificação, venda rápida e saldo
+// Fluxo Shopmix: o pedido chega do Mercado Livre/Shopee → aparece em "Pedidos não pagos" → a loja paga o custo do produto com o saldo (recarregado por Pix) → a Shopmix envia.
+const TAXAS_PADRAO={mlClassico:13,mlPremium:17,mlFixo:650,shCPF:false,imposto:0,plano:"padrao",saldoMin:5000};
+function smCfg(){const c=S.cfg.shopmix||{};return {produtos:Array.isArray(c.produtos)?c.produtos:[],taxas:Object.assign({},TAXAS_PADRAO,c.taxas||{})};}
+async function smSalvar(part){const c=smCfg();await setDoc("config/shopmix",Object.assign({produtos:c.produtos,taxas:c.taxas},part));}
+function custoProd(p,tx){return tx.plano==="black"&&p.custoBlack?p.custoBlack:p.custo;}
+// taxa do marketplace em centavos por unidade
+function taxaCanal(canal,preco,tx,tipoML){
+  if(canal==="ml"){const pct=(tipoML==="premium"?tx.mlPremium:tx.mlClassico)/100;return Math.round(preco*pct+(preco<7900?tx.mlFixo:0));}
+  const [pct,fixo]=preco<8000?[0.20,400]:preco<10000?[0.14,1600]:preco<20000?[0.14,2000]:[0.14,2600];
+  return Math.round(preco*pct+fixo+(tx.shCPF?300:0));
+}
+function contaVenda(canal,preco,custo,tx,tipoML){const taxa=taxaCanal(canal,preco,tx,tipoML);const imp=Math.round(preco*tx.imposto/100);const lucro=preco-taxa-custo-imp;return {taxa,imp,lucro,margem:preco?lucro/preco*100:0};}
+function precoIdeal(canal,custo,tx,margem,tipoML){let lo=custo,hi=custo*10+20000;for(let i=0;i<50;i++){const mid=(lo+hi)/2;const c=contaVenda(canal,mid,custo,tx,tipoML);if(c.margem<margem)lo=mid;else hi=mid;}return Math.ceil(hi/10)*10;}
+const pct1=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%";
+// lê o texto copiado do catálogo ou de "Meus produtos" da Shopmix: "(SKU) Nome ... R$ preço ... R$ preço BLACK"
+function parseCatalogo(txt){
+  const out=[];const re=/\(([A-Z0-9_\-]{3,})\)\s*([^\n]+)\n+\s*R\$\s*([\d.,]+)(?:\s*\n+\s*R\$\s*([\d.,]+)\s*BLACK)?/gi;let m;
+  while((m=re.exec(txt))){out.push({sku:m[1].trim(),nome:m[2].trim().slice(0,120),custo:parseValor(m[3]),custoBlack:m[4]?parseValor(m[4]):0});}
+  if(!out.length)txt.split("\n").map(l=>l.split(/[;\t]/).map(x=>x.trim())).filter(a=>a.length>=3).forEach(a=>{const v=parseValor(a[2]);if(!isNaN(v)&&a[0])out.push({sku:a[0],nome:a[1]||a[0],custo:v,custoBlack:a[3]?parseValor(a[3])||0:0});});
+  return out.filter(p=>p.sku&&p.custo>0);
+}
+function saldoShopmix(){const L=S.data.lancamentos.filter(l=>l.empresa==="loja");return sum(L.filter(l=>l.categoria==="Recarga de saldo Shopmix"))-sum(L.filter(l=>l.categoria==="Custo do produto (Shopmix)"));}
+async function viewShopmix(){
+  const {produtos,taxas:tx}=smCfg();
+  if(!S.smAba)S.smAba=produtos.length?"venda":"produtos";
+  const saldo=saldoShopmix();const mes=S.data.lancamentos.filter(l=>l.empresa==="loja"&&l.data.slice(0,7)===S.mes);
+  const vendasMes=mes.filter(l=>/^Venda/.test(l.categoria));const custoMes=sum(mes.filter(l=>l.categoria==="Custo do produto (Shopmix)"));const taxasMes=sum(mes.filter(l=>l.categoria==="Taxa do marketplace"));
+  const abas=h("div",{class:"seg2",role:"group","aria-label":"Seção"},...[["venda","Venda rápida"],["produtos","Produtos e preços ("+produtos.length+")"],["saldo","Saldo"],["taxas","Taxas"]].map(([k,l])=>h("button",{type:"button","aria-pressed":String(S.smAba===k),onclick:()=>{S.smAba=k;render();}},l)));
+  let content;
+  if(S.smAba==="venda")content=smVendaRapida(produtos,tx);
+  else if(S.smAba==="produtos")content=smProdutos(produtos,tx);
+  else if(S.smAba==="saldo")content=smSaldo(saldo,tx);
+  else content=smTaxas(tx);
+  return h("div",{class:"col"},
+    header("Shopmix","Produtos, preços, vendas e saldo · "+monthName(S.mes),[monthCtl("mes"),btnI("ext","Abrir Shopmix",{cls:"btn ghost",href:"https://app.gruposhopmix.com.br/dashboard"})]),
+    h("section",{class:"kpis"},
+      (()=>{const temRec=S.data.lancamentos.some(l=>l.categoria==="Recarga de saldo Shopmix");return temRec?h("div",{class:"kpi"+(saldo<tx.saldoMin?" hl":"")},h("span",{class:"eyebrow",text:"Saldo Shopmix estimado"}),h("span",{class:"v "+(saldo<0?"neg":""),text:money(saldo)}),h("span",{class:"s",text:saldo<tx.saldoMin?"Abaixo do mínimo de "+money(tx.saldoMin)+": recarregue":"Recargas menos custos lançados"})):h("button",{class:"kpi",type:"button",style:"text-align:left;cursor:pointer",onclick:()=>{S.smAba="saldo";render();}},h("span",{class:"eyebrow",text:"Saldo Shopmix"}),h("span",{class:"v",style:"font-size:16px;font-family:var(--f-body)",text:"Registre a 1ª recarga"}),h("span",{class:"s",text:"Para o app acompanhar o saldo"}));})(),
+      h("div",{class:"kpi"},h("span",{class:"eyebrow",text:"Vendas no mês"}),h("span",{class:"v",text:money(sum(vendasMes))}),h("span",{class:"s",text:vendasMes.length+" lançamentos"})),
+      h("div",{class:"kpi"},h("span",{class:"eyebrow",text:"Custo Shopmix + taxas"}),h("span",{class:"v",text:money(custoMes+taxasMes)}),h("span",{class:"s",text:"Produtos "+money(custoMes)+" · taxas "+money(taxasMes)})),
+      h("div",{class:"kpi"},h("span",{class:"eyebrow",text:"Margem das vendas"}),h("span",{class:"v",text:sum(vendasMes)?pct1((sum(vendasMes)-custoMes-taxasMes)/sum(vendasMes)*100):"—"}),h("span",{class:"s",text:"Antes de anúncios e plano"}))),
+    h("div",{class:"filters"},abas),content);
+}
+function smVendaRapida(produtos,tx){
+  if(!produtos.length)return h("section",{class:"panel"},h("div",{class:"empty"},ic("store"),"Cadastre primeiro os produtos que vocês vendem em Produtos e preços. Dá para colar direto do catálogo da Shopmix."),btnI("plus","Cadastrar produtos",{cls:"btn sm",attrs:{style:"justify-self:center"},onclick:()=>{S.smAba="produtos";render();}}));
+  const lojas=S.cfg.lojas;
+  const selP=h("select",{id:"vr-prod"},...produtos.map((p,i)=>h("option",{value:String(i),text:p.sku+" · "+p.nome})));
+  const selC=h("select",{id:"vr-canal"},h("option",{value:"ml",text:"Mercado Livre"}),h("option",{value:"sh",text:"Shopee"}));
+  const qtd=h("input",{id:"vr-qtd",type:"number",min:1,value:1,inputmode:"numeric"});
+  const preco=h("input",{id:"vr-preco",type:"text",inputmode:"decimal"});
+  const ped=h("input",{id:"vr-ped",placeholder:"Ex.: 2000012345678",maxlength:40});
+  const data=h("input",{id:"vr-data",type:"date",value:today()});
+  const loja=h("select",{id:"vr-loja"},...[...lojas,GERAL].map(u=>h("option",{value:u,text:u})));
+  const lancCusto=h("input",{type:"checkbox",id:"vr-custo",checked:true});
+  const res=h("div",{class:"partner-box"});
+  const sync=(fromProd)=>{const p=produtos[+selP.value];const c=selC.value;if(fromProd||!preco.value)preco.value=centsTxt(c==="ml"?(p.precoML||0):(p.precoSH||0));
+    const lj=lojas.find(u=>/shopee/i.test(u)===(c==="sh"));if(fromProd!==false&&lj)loja.value=lj;
+    const q=Math.max(1,Math.round(numv(qtd.value,1)));const pv=parseValor(preco.value)||0;const cu=custoProd(p,tx);const k=contaVenda(c,pv,cu,tx,p.tipoML);
+    res.replaceChildren(...[h("div",{class:"stats",style:"grid-template-columns:repeat(4,1fr)"},h("div",{},"Venda",h("b",{text:money(pv*q)})),h("div",{},"Taxa "+(c==="ml"?"ML":"Shopee"),h("b",{text:"− "+money(k.taxa*q)})),h("div",{},"Custo Shopmix",h("b",{text:"− "+money(cu*q)})),h("div",{},"Lucro",h("b",{class:k.lucro>=0?"pos":"neg",text:money(k.lucro*q)+" · "+pct1(k.margem)}))),
+      tx.imposto?h("p",{class:"hint",text:"Inclui imposto de "+tx.imposto+"% ("+money(k.imp*q)+")."}):null,
+      !pv?h("p",{class:"hint neg",text:"Digite o preço de venda."}):k.margem<10?h("p",{class:"hint",style:"color:var(--warn)",text:"Margem baixa. Preço sugerido para 25% de margem: "+money(precoIdeal(c,cu,tx,25,p.tipoML))+"."}):null].filter(Boolean));};
+  [selP].forEach(e=>e.addEventListener("change",()=>sync(true)));selC.addEventListener("change",()=>sync(true));[qtd,preco].forEach(e=>e.addEventListener("input",()=>sync(false)));sync(true);
+  const msg=h("p",{class:"formmsg","aria-live":"polite"});
+  const go=btnI("check","Lançar venda",{onclick:async e=>{
+    const p=produtos[+selP.value];const c=selC.value;const q=Math.max(1,Math.round(numv(qtd.value,1)));const pv=parseValor(preco.value);if(!(pv>0)){msg.textContent="Digite o preço de venda.";msg.className="formmsg neg";return;}
+    const k=contaVenda(c,pv,custoProd(p,tx),tx,p.tipoML);const n=(ped.value.trim()||("m"+Date.now().toString(36))).replace(/[^\w-]/g,"");const canal=c==="ml"?"Mercado Livre":"Shopee";
+    const base={empresa:"loja",data:data.value||today(),loja:loja.value,quemId:S.me.id,criadoEm:new Date().toISOString()};const desc=q+"× "+p.nome+" · pedido "+n;
+    e.currentTarget.disabled=true;
+    try{
+      if(S.data.lancamentos.some(l=>l._id==="shopmix-ped-"+n)){msg.textContent="O pedido "+n+" já foi lançado.";msg.className="formmsg neg";e.currentTarget.disabled=false;return;}
+      await setDoc("lancamentos/shopmix-ped-"+n,Object.assign({},base,{tipo:"entrada",categoria:"Venda "+canal,descricao:desc,valor:pv*q,origem:"venda-rapida",sku:p.sku,qtd:q}));
+      await setDoc("lancamentos/shopmix-taxa-"+n,Object.assign({},base,{tipo:"saida",categoria:"Taxa do marketplace",descricao:"Taxa "+canal+" · pedido "+n,valor:k.taxa*q,pagoPor:CAIXA,origem:"venda-rapida"}));
+      if(lancCusto.checked)await setDoc("lancamentos/shopmix-custo-"+n,Object.assign({},base,{tipo:"saida",categoria:"Custo do produto (Shopmix)",descricao:"Custo Shopmix "+p.sku+" · pedido "+n,valor:custoProd(p,tx)*q,pagoPor:CAIXA,origem:"venda-rapida"}));
+      if(k.imp>0)await setDoc("lancamentos/shopmix-imp-"+n,Object.assign({},base,{tipo:"saida",categoria:"Impostos (DAS/MEI)",descricao:"Imposto da venda · pedido "+n,valor:k.imp*q,pagoPor:CAIXA,origem:"venda-rapida"}));
+      toast("Venda lançada: "+money(pv*q)+" · lucro "+money(k.lucro*q)+".");ped.value="";qtd.value=1;msg.textContent="";e.currentTarget.disabled=false;sync(false);
+    }catch(_){e.currentTarget.disabled=false;}
+  }});
+  return h("div",{class:"grid"},
+    h("section",{class:"panel"},h("div",{class:"panel-head"},h("h2",{text:"Lançar uma venda"}),h("span",{class:"sub",text:"Venda, taxa e custo em um clique"})),
+      h("div",{class:"field"},h("label",{for:"vr-prod",text:"Produto"}),selP),
+      h("div",{class:"two"},h("div",{class:"field"},h("label",{for:"vr-canal",text:"Canal"}),selC),h("div",{class:"field"},h("label",{for:"vr-loja",text:"Loja"}),loja)),
+      h("div",{class:"two"},h("div",{class:"field"},h("label",{for:"vr-qtd",text:"Quantidade"}),qtd),h("div",{class:"field"},h("label",{for:"vr-preco",text:"Preço unitário (R$)"}),preco)),
+      h("div",{class:"two"},h("div",{class:"field"},h("label",{for:"vr-ped",text:"Nº do pedido no marketplace"}),ped),h("div",{class:"field"},h("label",{for:"vr-data",text:"Data"}),data)),
+      res,
+      h("label",{class:"inline",style:"font-size:13.5px;gap:8px;justify-content:flex-start;align-items:flex-start"},lancCusto,"Lançar também o custo Shopmix (desmarque se já pagou e lançou pelo Financeiro)"),
+      msg,h("div",{class:"inline"},go)),
+    h("section",{class:"panel"},h("h2",{text:"Como fica cada venda"}),
+      h("ol",{style:"margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px"},
+        h("li",{text:"Chegou pedido no Mercado Livre ou na Shopee: lance aqui com o número do pedido."}),
+        h("li",{text:"O app registra a venda como entrada e a taxa do marketplace e o custo Shopmix como saídas."}),
+        h("li",{text:"Na Shopmix, abra Pedidos não pagos e pague o pedido com o saldo."}),
+        h("li",{text:"O robô diário confere a Shopmix e não duplica: cada pedido tem um código próprio."})),
+      btnI("ext","Pedidos não pagos na Shopmix",{cls:"btn ghost sm",attrs:{style:"justify-self:start"},href:"https://app.gruposhopmix.com.br/dashboard/order?paid=0"})));
+}
+function smProdutos(produtos,tx){
+  const msg=h("p",{class:"formmsg","aria-live":"polite"});
+  const ta=h("textarea",{id:"sm-cat",style:"min-height:110px",placeholder:"Na Shopmix, abra Meus produtos ou o Catálogo, selecione os produtos (Ctrl+A), copie (Ctrl+C) e cole aqui.\nTambém aceita: SKU; nome; custo; custo Black"});
+  const imp=btnI("download","Ler e importar",{cls:"btn sm",onclick:async()=>{const L=parseCatalogo(ta.value);if(!L.length){msg.textContent="Não encontrei produtos nesse texto. Copie a lista com os códigos (STO…) e os preços.";msg.className="formmsg neg";return;}
+    const novos=produtos.slice();let add=0,upd=0;L.forEach(p=>{const i=novos.findIndex(x=>x.sku===p.sku);if(i>=0){novos[i]=Object.assign({},novos[i],{nome:p.nome,custo:p.custo,custoBlack:p.custoBlack||novos[i].custoBlack||0});upd++;}else{novos.push(Object.assign({precoML:0,precoSH:0,tipoML:"classico"},p));add++;}});
+    await smSalvar({produtos:novos});ta.value="";toast(add+" produtos novos"+(upd?" · "+upd+" custos atualizados":"")+".");}});
+  const linha=(p,i)=>{const cu=custoProd(p,tx);const ml=p.precoML?contaVenda("ml",p.precoML,cu,tx,p.tipoML):null,sh=p.precoSH?contaVenda("sh",p.precoSH,cu,tx):null;
+    const tag=k=>k?h("span",{class:"pill "+(k.margem>=20?"ok":k.margem>=10?"warn":"bad"),text:pct1(k.margem)}):h("span",{class:"pill",text:"sem preço"});
+    return h("tr",{},h("td",{},h("b",{text:p.nome}),h("div",{class:"hint",text:p.sku+(p.custoBlack?" · Black "+money(p.custoBlack):"")})),h("td",{class:"r num",text:money(cu)}),
+      h("td",{class:"r"},h("div",{class:"num",text:p.precoML?money(p.precoML):"—"}),tag(ml)),h("td",{class:"r"},h("div",{class:"num",text:p.precoSH?money(p.precoSH):"—"}),tag(sh)),
+      h("td",{class:"r"},S.canWrite?h("button",{class:"link",type:"button",text:"Preços",onclick:()=>smEditProduto(p,i)}):null));};
+  return h("div",{class:"col"},
+    S.canWrite?h("section",{class:"panel"},h("div",{class:"panel-head"},h("h2",{},ic("download"),"Trazer produtos da Shopmix"),h("span",{class:"sub",text:"Copiar e colar, sem digitar"})),ta,h("div",{class:"inline",style:"flex-wrap:wrap"},imp,btnI("ext","Meus produtos",{cls:"btn ghost sm",href:"https://app.gruposhopmix.com.br/dashboard/product"}),btnI("ext","Catálogo",{cls:"btn ghost sm",href:"https://app.gruposhopmix.com.br/dashboard/catalog"}),btnI("plus","Cadastrar à mão",{cls:"btn ghost sm",onclick:()=>smEditProduto(null,-1)})),msg):null,
+    h("section",{class:"panel"},h("div",{class:"panel-head"},h("h2",{text:"Produtos e margem por canal"}),h("span",{class:"sub",text:"Custo pelo plano "+(tx.plano==="black"?"Black":"padrão")+" · margem depois de taxa e custo"})),
+      produtos.length?h("div",{class:"tablewrap"},h("table",{},h("thead",{},h("tr",{},h("th",{text:"Produto"}),h("th",{class:"r",text:"Custo"}),h("th",{class:"r",text:"Mercado Livre"}),h("th",{class:"r",text:"Shopee"}),h("th",{}))),h("tbody",{},...produtos.map(linha)))):h("div",{class:"empty"},ic("store"),"Nenhum produto ainda.")));
+}
+function smEditProduto(p,i){
+  const {produtos,taxas:tx}=smCfg();const cu=p?custoProd(p,tx):0;
+  const form=formModal(p?"Preços: "+p.nome:"Novo produto",[
+    {k:"sku",label:"SKU Shopmix",req:true,half:true,ph:"STO1234"},{k:"custo",label:"Custo na Shopmix (R$)",type:"money",req:true,half:true},
+    {k:"nome",label:"Nome do produto",req:true},
+    {k:"precoML",label:"Preço no Mercado Livre (R$)",type:"money",half:true},{k:"tipoML",label:"Anúncio ML",type:"select",opts:[["classico","Clássico"],["premium","Premium"]],half:true},
+    {k:"precoSH",label:"Preço na Shopee (R$)",type:"money",half:true},{k:"custoBlack",label:"Custo no plano Black (R$)",type:"money",half:true}
+  ],p||{tipoML:"classico"},async o=>{const novos=produtos.slice();const it={sku:o.sku.toUpperCase(),nome:o.nome,custo:o.custo,custoBlack:o.custoBlack,precoML:o.precoML,precoSH:o.precoSH,tipoML:o.tipoML};if(i>=0)novos[i]=it;else novos.push(it);await smSalvar({produtos:novos});toast("Produto salvo.");},
+  form=>{const info=h("div",{class:"partner-box","aria-live":"polite"});
+    const upd=()=>{const c=parseValor(form.querySelector("#fm-custo").value)||0;const t=form.querySelector("#fm-tipoML").value;const pm=parseValor(form.querySelector("#fm-precoML").value)||0,ps=parseValor(form.querySelector("#fm-precoSH").value)||0;
+      const k1=pm?contaVenda("ml",pm,c,tx,t):null,k2=ps?contaVenda("sh",ps,c,tx):null;
+      info.replaceChildren(...[h("b",{text:"Simulação por unidade"}),
+        h("div",{class:"sub",text:"Mercado Livre: "+(k1?"taxa "+money(k1.taxa)+" · lucro "+money(k1.lucro)+" ("+pct1(k1.margem)+")":"sem preço")}),
+        h("div",{class:"sub",text:"Shopee: "+(k2?"taxa "+money(k2.taxa)+" · lucro "+money(k2.lucro)+" ("+pct1(k2.margem)+")":"sem preço")}),
+        c?h("div",{class:"inline",style:"flex-wrap:wrap;gap:6px"},h("span",{class:"sub",text:"Preço para 25% de margem:"}),h("button",{class:"link",type:"button",text:"ML "+money(precoIdeal("ml",c,tx,25,t)),onclick:()=>{form.querySelector("#fm-precoML").value=centsTxt(precoIdeal("ml",c,tx,25,t));upd();}}),h("button",{class:"link",type:"button",text:"Shopee "+money(precoIdeal("sh",c,tx,25)),onclick:()=>{form.querySelector("#fm-precoSH").value=centsTxt(precoIdeal("sh",c,tx,25));upd();}})):null].filter(Boolean));};
+    ["#fm-custo","#fm-precoML","#fm-precoSH"].forEach(s=>form.querySelector(s).addEventListener("input",upd));form.querySelector("#fm-tipoML").addEventListener("change",upd);form.querySelector(".formmsg").before(info);upd();
+    if(p&&S.canWrite)form.append(h("button",{class:"link",type:"button",text:"Excluir produto",onclick:e=>armed(e.currentTarget,"Confirmar exclusão",async()=>{await smSalvar({produtos:produtos.filter((_,j)=>j!==i)});document.querySelector(".overlay")?.remove();})}));});
+}
+function smSaldo(saldo,tx){
+  const L=S.data.lancamentos.filter(l=>l.empresa==="loja"&&(l.categoria==="Recarga de saldo Shopmix"||l.categoria==="Custo do produto (Shopmix)")).sort((a,b)=>b.data.localeCompare(a.data)).slice(0,30);
+  return h("div",{class:"grid"},
+    h("section",{class:"panel"},h("div",{class:"panel-head"},h("h2",{text:"Movimento do saldo"}),S.canWrite?btnI("plus","Registrar recarga",{cls:"btn sm",onclick:()=>novoLancamento({tipo:"saida",categoria:"Recarga de saldo Shopmix"})}):null),
+      L.length?h("div",{class:"rows"},...L.map(l=>{const rec=l.categoria==="Recarga de saldo Shopmix";return h("div",{class:"rowi"},h("span",{class:"ico "+(rec?"e":"s")},ic(rec?"download":"upload")),h("div",{style:"min-width:0"},h("b",{text:l.descricao||l.categoria}),h("div",{class:"meta",text:fmtDL(l.data)+" · "+(rec?"Recarga":"Custo de pedido")})),h("span",{class:"num "+(rec?"pos":""),text:(rec?"+ ":"− ")+money(l.valor)}));})):h("div",{class:"empty"},ic("wallet"),"Nenhuma recarga ou custo lançado ainda.")),
+    h("section",{class:"panel"},h("h2",{text:"Como o saldo funciona"}),
+      h("p",{class:"hint",text:"Na Shopmix, cada pedido só é enviado depois de pago com o saldo da conta. O app soma as recargas e desconta os custos dos pedidos para estimar quanto ainda tem lá. Quando ficar abaixo do mínimo, aparece um alerta."}),
+      h("div",{class:"notice",text:"Saldo estimado agora: "+money(saldo)+". Mínimo configurado: "+money(tx.saldoMin)+"."}),
+      btnI("ext","Recarregar com Pix na Shopmix",{cls:"btn ghost sm",attrs:{style:"justify-self:start"},href:"https://app.gruposhopmix.com.br/dashboard/financial"})));
+}
+function smTaxas(tx){
+  const f=(id,lbl,val,help)=>h("div",{class:"field"},h("label",{for:id,text:lbl}),h("input",{id,type:"text",inputmode:"decimal",value:val}),help?h("span",{class:"hint",text:help}):null);
+  const plano=h("select",{id:"tx-plano"},h("option",{value:"padrao",text:"Padrão (preço normal do catálogo)"}),h("option",{value:"black",text:"Black (preço com desconto)"}));plano.value=tx.plano;
+  const cpf=h("select",{id:"tx-cpf"},h("option",{value:"nao",text:"CNPJ (sem taxa extra)"}),h("option",{value:"sim",text:"CPF (+R$ 3,00 por item)"}));cpf.value=tx.shCPF?"sim":"nao";
+  return h("section",{class:"panel"},h("div",{class:"panel-head"},h("h2",{text:"Taxas usadas nos cálculos"}),h("span",{class:"sub",text:"Confira no painel de cada marketplace"})),
+    h("div",{class:"two"},f("tx-mlc","Mercado Livre Clássico (%)",String(tx.mlClassico).replace(".",","),"Entre 11% e 14%, conforme a categoria"),f("tx-mlp","Mercado Livre Premium (%)",String(tx.mlPremium).replace(".",","),"Entre 15% e 18%")),
+    h("div",{class:"two"},f("tx-mlf","ML: custo extra em itens abaixo de R$ 79 (R$)",centsTxt(tx.mlFixo),"Desde março/2026 varia com peso e tamanho; use uma média"),f("tx-imp","Imposto sobre a venda (%)",String(tx.imposto).replace(".",","),"MEI paga valor fixo: deixe 0. Simples Nacional: cerca de 6%")),
+    h("div",{class:"two"},h("div",{class:"field"},h("label",{for:"tx-cpf",text:"Conta Shopee"}),cpf),h("div",{class:"field"},h("label",{for:"tx-plano",text:"Plano na Shopmix"}),plano)),
+    f("tx-min","Alerta quando o saldo Shopmix ficar abaixo de (R$)",centsTxt(tx.saldoMin)),
+    h("p",{class:"hint",text:"Shopee 2026: 20% + R$ 4 por item até R$ 79,99; 14% + R$ 16 de R$ 80 a R$ 99,99; 14% + R$ 20 de R$ 100 a R$ 199,99; 14% + R$ 26 acima de R$ 200. Frete grátis obrigatório."}),
+    S.canWrite?btnI("check","Salvar taxas",{cls:"btn sm",attrs:{style:"justify-self:start"},onclick:async()=>{const n=id=>numv(String($(id).value).replace(",","."),0);await smSalvar({taxas:{mlClassico:n("tx-mlc"),mlPremium:n("tx-mlp"),mlFixo:parseValor($("tx-mlf").value)||0,imposto:n("tx-imp"),shCPF:$("tx-cpf").value==="sim",plano:$("tx-plano").value,saldoMin:parseValor($("tx-min").value)||0}});toast("Taxas salvas.");}}):null);
+}
+
 // ---------- DISTRIBUIÇÃO JUSTA DO LUCRO
 // Regras por empresa: modo da participação (fixa, pelo investimento ou mista), reserva de segurança e teto de desconto de dívidas.
 const REGRA_PADRAO={modo:"fixo",peso:50,reserva:20,teto:50};
@@ -1854,6 +2202,8 @@ async function viewAcesso(){
   const sub=(col)=>db.collection(col).onSnapshot(s=>{S.data[col]=s.docs.map(d=>Object.assign(NORM[col](d.data()||{}),{_id:d.id}));S.loaded.add(col);if(!S.firstAnim&&["lancamentos","pedidos","acertos"].every(c=>S.loaded.has(c))){S.firstAnim=true;S.anim=true;}render();},()=>{});
   db.doc("acesso/membros").onSnapshot(s=>{const d=s.exists&&s.data();S.membros=Array.isArray(d&&d.ids)?d.ids.filter(x=>typeof x==="string"):[];S.membrosEmails=Array.isArray(d&&d.emails)?d.emails.map(x=>String(x).toLowerCase()):[];const lt=Array.isArray(d&&d.leitores)?d.leitores.map(x=>String(x).toLowerCase()):[];S.leitura=!S.me.isOwner&&(lt.includes(String(S.me.id).toLowerCase())||(!!S.me.email&&lt.includes(S.me.email)));S.canWrite=!S.leitura;S.loaded.add("acesso");render();},()=>{S.membros=[];S.loaded.add("acesso");render();});
   db.doc("config/whatsapp").onSnapshot(s=>{const d=s.exists&&s.data()||{};S.cfg.whatsapp={numeros:Array.isArray(d.numeros)?d.numeros.filter(x=>x&&typeof x.numero==="string"):[{nome:"Universo Store (WhatsApp Business)",numero:"+55 61 99226-7953",de:"Paloma",uso:"loja"}],modelos:Object.assign({},WA_MODELOS,typeof d.modelos==="object"&&d.modelos?d.modelos:{})};render();},()=>{});
+  db.doc("config/shopmix").onSnapshot(s=>{S.cfg.shopmix=s.exists&&s.data()||{};render();},()=>{});
+  db.doc("config/chefLib").onSnapshot(s=>{const d=s.exists&&s.data()||{};S.cfg.chefLib={menus:Array.isArray(d.menus)?d.menus:[],receitas:Array.isArray(d.receitas)?d.receitas:[]};render();},()=>{});
   db.doc("config/pix").onSnapshot(s=>{const d=s.exists&&s.data()||{};S.cfg.pix={tipo:str(d.tipo)||"telefone",chave:str(d.chave),nome:str(d.nome),cidade:str(d.cidade)};render();},()=>{});
   db.doc("config/sync").onSnapshot(s=>{S.cfg.sync=s.exists&&s.data()||{};render();},()=>{});
   db.doc("config/socias").onSnapshot(s=>{const d=s.exists&&s.data()||{};const pc=d.pct||{};S.cfg.socias={pct:{loja:Math.min(100,Math.max(0,numv(pc.loja,50))),chef:Math.min(100,Math.max(0,numv(pc.chef,50)))},regras:typeof d.regras==="object"&&d.regras?d.regras:{},pix:Object.assign({"Paloma":"","Jay Nanes":""},typeof d.pix==="object"&&d.pix?d.pix:{})};render();},()=>{});
