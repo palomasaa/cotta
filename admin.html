@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16172b">
+<meta name="robots" content="noindex">
+<title>Administração · Jay-Loma</title>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Painel de administração: serviço à parte, só para a administradora. Layout: coluna única com seções numeradas por assunto. */
+:root{--bg:#f4f4f8;--surface:#fff;--surface-2:#eceef5;--line:#dfe1ea;--ink:#16172b;--muted:#646884;--accent:#3d3f63;--accent-ink:#fff;--pos:#127a4b;--pos-bg:#e1f4ea;--neg:#b42330;--neg-bg:#fbe7e9;--warn:#985a00;--warn-bg:#fdf0d8;
+  --f-d:"Bricolage Grotesque",Manrope,system-ui,sans-serif;--f-b:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;--f-n:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1018;--surface:#181a26;--surface-2:#222536;--line:#30344a;--ink:#ecedf6;--muted:#a3a7c2;--accent:#b3b7dd;--accent-ink:#14152a;--pos:#4fd292;--pos-bg:#123224;--neg:#ff7d86;--neg-bg:#3b1a22;--warn:#ffc266;--warn-bg:#3a2a12;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-b)}
+.wrap{max-width:980px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));display:grid;gap:18px}
+.hero{border-radius:18px;padding:22px 24px;color:#f3f3fa;background:radial-gradient(80% 140% at 100% 0%,#2a2c4a 0%,transparent 60%),#16172b;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end}
+.hero small{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#a9abc7;font-weight:700}
+h1,h2{font-family:var(--f-d);margin:0;letter-spacing:-.01em}
+h1{font-size:30px} h2{font-size:19px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
+.panel-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.hint{margin:0;color:var(--muted);font-size:13.5px}
+.btn{border:1px solid transparent;border-radius:10px;padding:9px 14px;font:700 14px var(--f-b);background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line)}
+.btn.danger{background:var(--neg);color:#fff}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hero .btn{background:#fff;color:#16172b}
+.hero .btn.ghost{background:transparent;color:#fff;border-color:rgb(255 255 255 / .3)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0}
+.list{display:grid;gap:8px}
+.item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.item img,.av{width:34px;height:34px;border-radius:50%;object-fit:cover;background:var(--surface-2);display:grid;place-items:center;font-weight:700}
+.sub{font-size:12.5px;color:var(--muted)}
+.pill{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.pill.ok{background:var(--pos-bg);color:var(--pos)} .pill.warn{background:var(--warn-bg);color:var(--warn)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}
+.kpi b{display:block;font:500 20px var(--f-n)}
+.kpi span{font-size:12px;color:var(--muted)}
+.msg{font-size:13.5px;min-height:1.2em;margin:0}
+.msg.err{color:var(--neg)} .msg.ok{color:var(--pos)}
+.danger-zone{border-color:color-mix(in srgb,var(--neg) 40%,var(--line))}
+.gate{max-width:420px;margin:14vh auto;text-align:center;display:grid;gap:14px;padding:24px}
+code{font-family:var(--f-n);font-size:13px;background:var(--surface-2);padding:1px 6px;border-radius:6px}
+ol{margin:0;padding-left:20px;display:grid;gap:6px}
+@media (max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div id="app"><div class="gate"><h2>Painel de administração</h2><p class="hint">Conectando…</p></div></div>
+<script type="module">
+import { firebaseConfig, OWNER_EMAIL, FB } from "./firebase-config.js";
+const { initializeApp } = await import(FB + "firebase-app.js");
+const A = await import(FB + "firebase-auth.js");
+const F = await import(FB + "firebase-firestore.js");
+const app = initializeApp(firebaseConfig);
+const auth = A.getAuth(app);
+const db = F.getFirestore(app);
+const $ = s => document.querySelector(s);
+const esc = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const COLS = ["lancamentos", "eventos", "pedidos", "cardapio", "estoque", "anuncios", "acertos"];
+const NOMES = { lancamentos: "Lançamentos do caixa", eventos: "Compromissos da agenda", pedidos: "Pedidos do chef", cardapio: "Pratos do cardápio", estoque: "Itens de estoque", anuncios: "Campanhas de anúncios", acertos: "Acerto entre sócias", config: "Configurações", perfis: "Perfis", tokens: "Aparelhos com alertas", solicitacoes: "Pedidos de acesso" };
+const APP_URL = new URL("./", location.href).href;
+
+function login(msg) {
+  $("#app").innerHTML = `<div class="gate"><h1>Administração</h1><p class="hint">Jay-Loma · acesso exclusivo da administradora</p><button class="btn" id="go">Entrar com Google</button><p class="msg err">${esc(msg || "")}</p></div>`;
+  $("#go").onclick = async () => { const p = new A.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" }); try { await A.signInWithPopup(auth, p); } catch (e) { if (e.code === "auth/popup-blocked") A.signInWithRedirect(auth, p); } };
+}
+A.onAuthStateChanged(auth, async u => {
+  if (!u) return login();
+  if ((u.email || "").toLowerCase() !== OWNER_EMAIL || !u.emailVerified) {
+    $("#app").innerHTML = `<div class="gate"><h2>Acesso só da administradora</h2><p class="hint">Você entrou como ${esc(u.email)}. Este painel abre apenas para ${esc(OWNER_EMAIL)}.</p><a class="btn ghost" href="./">Ir para o app</a><button class="btn ghost" id="out">Trocar de conta</button></div>`;
+    $("#out").onclick = () => A.signOut(auth); return;
+  }
+  render(u);
+});
+
+async function render(u) {
+  $("#app").innerHTML = `<div class="wrap">
+  <header class="hero"><div><small>Serviço à parte · Jay-Loma</small><h1>Painel de administração</h1><div style="color:#c9c9e6;font-size:13.5px">${esc(u.email)}</div></div>
+    <div class="row"><a class="btn" href="./">Abrir o app</a><button class="btn ghost" id="sair">Sair</button></div></header>
+
+  <section class="panel"><div class="panel-head"><h2>1 · Pessoas com acesso</h2><span class="sub">Quem pode usar o app</span></div>
+    <p class="hint">Cadastre o e-mail Google da sócia para ela entrar direto, ou aprove quando ela pedir acesso pelo app. Você, como administradora, sempre tem acesso.</p>
+    <form class="row" id="addf"><input id="addemail" type="email" placeholder="email.da.socia@gmail.com" style="flex:1" required aria-label="E-mail Google da sócia"><button class="btn">Adicionar sócia</button></form>
+    <p class="msg" id="addmsg"></p>
+    <div id="pedidos" class="list"></div>
+    <div id="membros" class="list"></div>
+  </section>
+
+  <section class="panel"><div class="panel-head"><h2>2 · Alertas no celular</h2><span class="sub">Notificações</span></div>
+    <p class="hint">Cada aparelho em que alguém tocou em "Ativar alertas" aparece aqui. Os avisos do dia (pedidos, estoque baixo, anúncios terminando e acertos pendentes) são enviados todo dia às 8h pelo GitHub.</p>
+    <div id="tokens" class="list"></div>
+    <div class="row"><a class="btn ghost sm" target="_blank" rel="noopener" href="https://github.com/palomasaa/jay-loma/actions/workflows/alertas.yml">Enviar alertas agora (GitHub)</a></div>
+  </section>
+
+  <section class="panel"><div class="panel-head"><h2>3 · Dados guardados</h2><span class="sub">Banco Firestore · São Paulo</span></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="row"><button class="btn" id="bk">Baixar backup completo (.json)</button><label class="btn ghost" style="cursor:pointer">Restaurar de um backup<input type="file" id="rest" accept=".json,application/json" hidden></label></div>
+    <p class="msg" id="bkmsg"></p>
+    <p class="hint">O restaurar aceita o backup deste painel e também o backup do app antigo (aquele que ficava no Claude). Registros com o mesmo código são atualizados, nada é apagado.</p>
+  </section>
+
+  <section class="panel danger-zone"><div class="panel-head"><h2>4 · Excluir dados</h2><span class="pill warn">Não dá para desfazer</span></div>
+    <p class="hint">Baixe um backup antes. Escolha o que apagar, confira quantos registros serão excluídos e confirme digitando EXCLUIR.</p>
+    <div class="row">
+      <select id="dcol" aria-label="O que excluir"><option value="__all">Todos os dados das empresas</option>${COLS.map(c => `<option value="${c}">${NOMES[c]}</option>`).join("")}</select>
+      <select id="demp" aria-label="Empresa"><option value="">As duas empresas</option><option value="loja">Só Jay-Loma Lojas</option><option value="chef">Só Jay Personal Chef</option></select>
+      <input id="dini" type="month" aria-label="De (mês)"><input id="dfim" type="month" aria-label="Até (mês)">
+      <button class="btn ghost" id="dprev">Ver quantos</button></div>
+    <div class="row"><input id="dconf" placeholder="Digite EXCLUIR" aria-label="Confirmação"><button class="btn danger" id="dgo" disabled>Excluir</button></div>
+    <p class="msg" id="dmsg"></p>
+  </section>
+
+  <section class="panel"><div class="panel-head"><h2>5 · Por fora do app</h2><span class="sub">Onde fica cada coisa</span></div>
+    <ol>
+      <li><b>Banco de dados, logins e notificações:</b> <a href="https://console.firebase.google.com/project/jay-loma/overview" target="_blank" rel="noopener">Console do Firebase · projeto jay-loma</a> (plano gratuito Spark).</li>
+      <li><b>Código do app:</b> <a href="https://github.com/palomasaa/jay-loma" target="_blank" rel="noopener">github.com/palomasaa/jay-loma</a>. Cada alteração enviada para lá vai ao ar sozinha em 1 ou 2 minutos.</li>
+      <li><b>Endereço do app:</b> <code>${esc(APP_URL)}</code></li>
+      <li><b>Uso do plano gratuito:</b> <a href="https://console.firebase.google.com/project/jay-loma/usage" target="_blank" rel="noopener">painel de uso</a> (até 50 mil leituras e 20 mil gravações por dia).</li>
+    </ol>
+  </section>
+  </div>`;
+  $("#sair").onclick = () => A.signOut(auth);
+  $("#addf").onsubmit = async e => { e.preventDefault(); const em = $("#addemail").value.trim().toLowerCase(); if (!em) return;
+    await F.setDoc(F.doc(db, "acesso/membros"), { emails: F.arrayUnion(em) }, { merge: true }); $("#addemail").value = ""; $("#addmsg").textContent = em + " pode entrar no app com essa conta Google."; $("#addmsg").className = "msg ok"; pessoas(); };
+  $("#bk").onclick = backup;
+  $("#rest").onchange = restaurar;
+  $("#dprev").onclick = previa;
+  $("#dconf").oninput = () => { $("#dgo").disabled = !($("#dconf").value.trim().toUpperCase() === "EXCLUIR" && alvo.length); };
+  $("#dgo").onclick = excluir;
+  pessoas(); aparelhos(); contagens();
+}
+
+async function perfil(uid) { try { const s = await F.getDoc(F.doc(db, "perfis/" + uid)); return s.exists() ? s.data() : {}; } catch (_) { return {}; } }
+async function pessoas() {
+  const ms = await F.getDoc(F.doc(db, "acesso/membros")); const m = ms.exists() ? ms.data() : {};
+  const ids = m.ids || [], emails = m.emails || [];
+  const sol = await F.getDocs(F.collection(db, "solicitacoes"));
+  $("#pedidos").innerHTML = sol.empty ? "" : `<b>Pedidos de acesso aguardando</b>` + sol.docs.map(d => { const v = d.data(); return `<div class="item"><span class="av">?</span><div><b>${esc(v.nome || "Sem nome")}</b><div class="sub">${esc(v.email || "")} · pediu em ${v.pedidoEm ? new Date(v.pedidoEm).toLocaleString("pt-BR") : "—"}</div></div><div class="row"><button class="btn sm" data-ap="${d.id}" data-em="${esc(v.email || "")}">Aprovar</button><button class="btn ghost sm" data-rc="${d.id}">Recusar</button></div></div>`; }).join("");
+  const rows = [`<div class="item"><span class="av">★</span><div><b>${esc(OWNER_EMAIL)}</b><div class="sub">Administradora · acesso total</div></div><span class="pill ok">Sempre</span></div>`];
+  for (const id of ids) { const p = await perfil(id); rows.push(`<div class="item">${p.foto ? `<img src="${esc(p.foto)}" alt="">` : `<span class="av">${esc((p.nome || "?")[0])}</span>`}<div><b>${esc(p.nome || "Sem nome")}</b><div class="sub">${esc(p.email || id)}</div></div><button class="btn ghost sm" data-rmid="${id}">Remover acesso</button></div>`); }
+  for (const em of emails) rows.push(`<div class="item"><span class="av">@</span><div><b>${esc(em)}</b><div class="sub">Liberado por e-mail · entra com essa conta Google</div></div><button class="btn ghost sm" data-rmem="${esc(em)}">Remover acesso</button></div>`);
+  $("#membros").innerHTML = `<b>Com acesso</b>` + rows.join("");
+  document.querySelectorAll("[data-ap]").forEach(b => b.onclick = async () => { await F.setDoc(F.doc(db, "acesso/membros"), { ids: F.arrayUnion(b.dataset.ap) }, { merge: true }); await F.deleteDoc(F.doc(db, "solicitacoes/" + b.dataset.ap)); pessoas(); });
+  document.querySelectorAll("[data-rc]").forEach(b => b.onclick = async () => { await F.deleteDoc(F.doc(db, "solicitacoes/" + b.dataset.rc)); pessoas(); });
+  document.querySelectorAll("[data-rmid]").forEach(b => b.onclick = async () => { if (b.dataset.armed) { await F.setDoc(F.doc(db, "acesso/membros"), { ids: F.arrayRemove(b.dataset.rmid) }, { merge: true }); pessoas(); } else { b.dataset.armed = 1; b.textContent = "Confirmar remoção"; } });
+  document.querySelectorAll("[data-rmem]").forEach(b => b.onclick = async () => { if (b.dataset.armed) { await F.setDoc(F.doc(db, "acesso/membros"), { emails: F.arrayRemove(b.dataset.rmem) }, { merge: true }); pessoas(); } else { b.dataset.armed = 1; b.textContent = "Confirmar remoção"; } });
+}
+async function aparelhos() {
+  const t = await F.getDocs(F.collection(db, "tokens"));
+  $("#tokens").innerHTML = t.empty ? `<p class="hint">Nenhum aparelho ativou os alertas ainda. No app, toque em "🔔 Ativar alertas neste aparelho".</p>` :
+    t.docs.map(d => { const v = d.data(); const mob = /Android|iPhone|iPad/i.test(v.aparelho || ""); return `<div class="item"><span class="av">${mob ? "📱" : "💻"}</span><div><b>${esc(v.nome || v.email)}</b><div class="sub">${esc((v.aparelho || "").replace(/\(KHTML.*$/, "").slice(0, 90))} · desde ${v.criadoEm ? new Date(v.criadoEm).toLocaleDateString("pt-BR") : "—"}</div></div><button class="btn ghost sm" data-tk="${d.id}">Desligar</button></div>`; }).join("");
+  document.querySelectorAll("[data-tk]").forEach(b => b.onclick = async () => { await F.deleteDoc(F.doc(db, "tokens/" + b.dataset.tk)); aparelhos(); });
+}
+async function contagens() {
+  const out = [];
+  for (const c of COLS) { try { const n = await F.getCountFromServer(F.collection(db, c)); out.push([c, n.data().count]); } catch (_) { out.push([c, "—"]); } }
+  $("#kpis").innerHTML = out.map(([c, n]) => `<div class="kpi"><b>${n}</b><span>${NOMES[c]}</span></div>`).join("");
+}
+async function tudo() {
+  const dados = {};
+  for (const c of [...COLS, "config"]) { const s = await F.getDocs(F.collection(db, c)); dados[c] = s.docs.map(d => Object.assign({ _id: d.id }, d.data())); }
+  return dados;
+}
+async function backup() {
+  $("#bkmsg").textContent = "Preparando…";
+  const d = await tudo();
+  const blob = new Blob([JSON.stringify({ app: "jay-loma", versao: 2, geradoEm: new Date().toISOString(), dados: d }, null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "backup-jay-loma-" + new Date().toISOString().slice(0, 10) + ".json"; a.click();
+  $("#bkmsg").textContent = "Backup baixado. Guarde no Google Drive."; $("#bkmsg").className = "msg ok";
+}
+async function restaurar(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const m = $("#bkmsg"); m.className = "msg"; m.textContent = "Lendo arquivo…";
+  try {
+    const j = JSON.parse(await f.text()); const dados = j.dados || {}; let n = 0;
+    const writes = [];
+    for (const c of COLS) for (const r of (dados[c] || [])) { const { _id, ...rest } = r; if (_id) writes.push([c + "/" + _id, rest]); }
+    if (Array.isArray(dados.config)) for (const r of dados.config) { const { _id, ...rest } = r; if (_id) writes.push(["config/" + _id, rest]); }
+    if (j.config) { // backup do app antigo
+      if (Array.isArray(j.config.lojas)) writes.push(["config/lojas", { lojas: j.config.lojas }]);
+      if (Array.isArray(j.config.chef)) writes.push(["config/chef", { lojas: j.config.chef }]);
+      if (j.config.socias) writes.push(["config/socias", j.config.socias]);
+    }
+    for (let i = 0; i < writes.length; i += 400) { const b = F.writeBatch(db); writes.slice(i, i + 400).forEach(([p, d]) => b.set(F.doc(db, p), d, { merge: true })); await b.commit(); n += Math.min(400, writes.length - i); }
+    m.textContent = n + " registros restaurados."; m.className = "msg ok"; contagens();
+  } catch (err) { m.textContent = "Não deu para restaurar: o arquivo não parece um backup do Jay-Loma."; m.className = "msg err"; }
+  e.target.value = "";
+}
+let alvo = [];
+async function previa() {
+  const col = $("#dcol").value, emp = $("#demp").value, ini = $("#dini").value, fim = $("#dfim").value;
+  const cols = col === "__all" ? COLS : [col]; alvo = [];
+  for (const c of cols) { const s = await F.getDocs(F.collection(db, c)); s.docs.forEach(d => { const v = d.data();
+    if (emp && v.empresa && v.empresa !== emp) return; if (emp && !v.empresa && c !== "pedidos" && c !== "cardapio") return; if (emp === "loja" && (c === "pedidos" || c === "cardapio")) return;
+    const dt = String(v.data || v.inicio || "").slice(0, 7); if (ini && dt && dt < ini) return; if (fim && dt && dt > fim) return; if ((ini || fim) && !dt) return;
+    alvo.push(c + "/" + d.id); }); }
+  $("#dmsg").textContent = alvo.length ? alvo.length + " registros serão excluídos. Para confirmar, digite EXCLUIR." : "Nenhum registro com esses filtros.";
+  $("#dmsg").className = "msg"; $("#dconf").dispatchEvent(new Event("input"));
+}
+async function excluir() {
+  $("#dgo").disabled = true; let n = 0;
+  for (let i = 0; i < alvo.length; i += 400) { const b = F.writeBatch(db); alvo.slice(i, i + 400).forEach(p => b.delete(F.doc(db, p))); await b.commit(); n += Math.min(400, alvo.length - i); }
+  $("#dmsg").textContent = n + " registros excluídos."; $("#dmsg").className = "msg ok"; alvo = []; $("#dconf").value = ""; contagens();
+}
+</script>
+</body>
+</html>

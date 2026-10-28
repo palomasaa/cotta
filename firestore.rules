@@ -1,0 +1,52 @@
+rules_version = '2';
+// Regras de segurança do Jay-Loma
+// Dona (administradora): palomasaaa@gmail.com
+// Só pessoas aprovadas pela dona leem e escrevem os dados das empresas.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isOwner() {
+      return signedIn() && request.auth.token.email == 'palomasaaa@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+    function membros() { return get(/databases/$(database)/documents/acesso/membros).data; }
+    function isMember() {
+      return isOwner() || (signedIn() && exists(/databases/$(database)/documents/acesso/membros) && (
+        request.auth.uid in membros().get('ids', []) ||
+        (request.auth.token.email_verified == true && request.auth.token.email.lower() in membros().get('emails', []))
+      ));
+    }
+
+    // Lista de quem tem acesso: todos logados leem (para saber se entraram), só a dona altera
+    match /acesso/{doc} {
+      allow read: if signedIn();
+      allow write: if isOwner();
+    }
+
+    // Pedidos de acesso: cada pessoa cria/lê o seu; a dona vê e apaga todos
+    match /solicitacoes/{uid} {
+      allow read: if isOwner() || (signedIn() && request.auth.uid == uid);
+      allow create, update: if signedIn() && request.auth.uid == uid;
+      allow delete: if isOwner() || (signedIn() && request.auth.uid == uid);
+    }
+
+    // Perfil (nome e foto) de cada pessoa
+    match /perfis/{uid} {
+      allow read: if isMember();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Aparelhos com notificações ativadas
+    match /tokens/{token} {
+      allow create, update: if isMember() && request.resource.data.uid == request.auth.uid;
+      allow read, delete: if isOwner() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    // Dados das empresas
+    match /{col}/{id} {
+      allow read, write: if isMember() && col in
+        ['lancamentos','eventos','pedidos','cardapio','estoque','anuncios','acertos','config'];
+    }
+  }
+}
