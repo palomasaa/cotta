@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f6f6f8">
+<meta name="theme-color" content="#f4f3ef">
 <meta name="robots" content="noindex">
-<title>Administração · Jay-Loma</title>
+<title>Administração · Cota</title>
 <link rel="icon" href="icons/icon-192.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
 /* Painel de administração: serviço à parte, só para a administradora. Mesmo sistema visual do app (neutro e sóbrio). */
-:root{--bg:#f6f6f8;--surface:#fff;--surface-2:#f2f2f5;--line:#e5e5eb;--line-2:#d6d6de;--ink:#111217;--muted:#6a6c78;--accent:#1f1f2b;--accent-ink:#fff;--pos:#0f7a4a;--pos-bg:#e4f4ec;--neg:#b4232f;--neg-bg:#fbe9eb;--warn:#93590a;--warn-bg:#fcf1dc;
+:root{--bg:#f4f3ef;--surface:#fff;--surface-2:#f1efea;--line:#e3e0d8;--line-2:#d2cec4;--ink:#15171a;--muted:#696c71;--accent:#1d4b3a;--accent-ink:#fff;--pos:#0f7a4a;--pos-bg:#e4f4ec;--neg:#b4232f;--neg-bg:#fbe9eb;--warn:#93590a;--warn-bg:#fcf1dc;
   --f-d:"Geist",system-ui,sans-serif;--f-b:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--f-n:"Geist Mono",ui-monospace,Menlo,monospace}
-@media (prefers-color-scheme:dark){:root{--bg:#0b0b0e;--surface:#131317;--surface-2:#1a1a20;--line:#24242c;--line-2:#32323c;--ink:#ededf1;--muted:#9a9ba7;--accent:#ededf1;--accent-ink:#111217;--pos:#4fd093;--pos-bg:#10291e;--neg:#ff7a84;--neg-bg:#341619;--warn:#f3bb5c;--warn-bg:#2f2210;color-scheme:dark}}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1112;--surface:#16191a;--surface-2:#1c1f21;--line:#262a2c;--line-2:#34393b;--ink:#ecebe6;--muted:#9a9b97;--accent:#86c4a4;--accent-ink:#0b1a13;--pos:#4fd093;--pos-bg:#10291e;--neg:#ff7a84;--neg-bg:#341619;--warn:#f3bb5c;--warn-bg:#2f2210;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.5 var(--f-b);-webkit-font-smoothing:antialiased}
 .wrap{max-width:960px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));display:grid;gap:16px}
@@ -70,7 +70,7 @@ const NOMES = { lancamentos: "Lançamentos do caixa", eventos: "Compromissos da 
 const APP_URL = new URL("./", location.href).href;
 
 function login(msg) {
-  $("#app").innerHTML = `<div class="gate"><h1>Administração</h1><p class="hint">Jay-Loma · acesso exclusivo da administradora</p><button class="btn" id="go">Entrar com Google</button><p class="msg err">${esc(msg || "")}</p></div>`;
+  $("#app").innerHTML = `<div class="gate"><h1>Administração</h1><p class="hint">Cota · acesso exclusivo da administradora</p><button class="btn" id="go">Entrar com Google</button><p class="msg err">${esc(msg || "")}</p></div>`;
   $("#go").onclick = async () => { const p = new A.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" }); try { await A.signInWithPopup(auth, p); } catch (e) { if (e.code === "auth/popup-blocked") A.signInWithRedirect(auth, p); } };
 }
 A.onAuthStateChanged(auth, async u => {
@@ -84,7 +84,7 @@ A.onAuthStateChanged(auth, async u => {
 
 async function render(u) {
   $("#app").innerHTML = `<div class="wrap">
-  <header class="hero"><div><small>Serviço à parte · Jay-Loma</small><h1>Painel de administração</h1><div style="color:#c9c9e6;font-size:13.5px">${esc(u.email)}</div></div>
+  <header class="hero"><div><small>Cota · administração</small><h1>Painel de administração</h1><div style="color:var(--muted);font-size:13.5px">${esc(u.email)}</div></div>
     <div class="row"><a class="btn" href="./">Abrir o app</a><button class="btn ghost" id="sair">Sair</button></div></header>
 
   <section class="panel"><div class="panel-head"><h2>1 · Pessoas com acesso</h2><span class="sub">Quem pode usar o app</span></div>
@@ -203,7 +203,7 @@ async function restaurar(e) {
     }
     for (let i = 0; i < writes.length; i += 400) { const b = F.writeBatch(db); writes.slice(i, i + 400).forEach(([p, d]) => b.set(F.doc(db, p), d, { merge: true })); await b.commit(); n += Math.min(400, writes.length - i); }
     m.textContent = n + " registros restaurados."; m.className = "msg ok"; contagens();
-  } catch (err) { m.textContent = "Não deu para restaurar: o arquivo não parece um backup do Jay-Loma."; m.className = "msg err"; }
+  } catch (err) { m.textContent = "Não deu para restaurar: o arquivo não parece um backup da Cota."; m.className = "msg err"; }
   e.target.value = "";
 }
 let alvo = [];

@@ -1,17 +1,30 @@
 {
-  "name": "Jay-Loma — gestão das sócias",
-  "short_name": "Jay-Loma",
-  "description": "Caixa, pedidos, agenda, estoque, anúncios e acerto entre as sócias da Jay-Loma Lojas e da Jay Personal Chef.",
+  "name": "Cota — gestão de sociedades",
+  "short_name": "Cota",
+  "description": "Resultados, distribuição de lucros, fluxo de caixa e operação das empresas da sociedade.",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f1018",
-  "theme_color": "#16172b",
+  "background_color": "#f4f3ef",
+  "theme_color": "#1d4b3a",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
