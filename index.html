@@ -481,7 +481,7 @@ code.cp{display:block;font:12px var(--f-num);background:var(--surface-2);border:
 "use strict";
 // ---------- constantes de negócio
 const SOC_CATS=["Aporte de sócia","Retirada de sócia","Ressarcimento à sócia"];
-const NON_OP=SOC_CATS;
+const NON_OP=[...SOC_CATS,"Recarga de saldo Shopmix"]; // recarga é dinheiro movido para a carteira Shopmix: não é custo (o custo entra pelo pedido)
 const SOCIAS=["Paloma","Jay Nanes"];
 const CAIXA="Caixa da empresa";
 const GERAL="Empresa (geral)";
