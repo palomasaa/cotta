@@ -3,52 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#16172b">
+<meta name="theme-color" content="#f6f6f8">
 <meta name="robots" content="noindex">
 <title>Administração · Jay-Loma</title>
 <link rel="icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-/* Painel de administração: serviço à parte, só para a administradora. Layout: coluna única com seções numeradas por assunto. */
-:root{--bg:#f4f4f8;--surface:#fff;--surface-2:#eceef5;--line:#dfe1ea;--ink:#16172b;--muted:#646884;--accent:#3d3f63;--accent-ink:#fff;--pos:#127a4b;--pos-bg:#e1f4ea;--neg:#b42330;--neg-bg:#fbe7e9;--warn:#985a00;--warn-bg:#fdf0d8;
-  --f-d:"Bricolage Grotesque",Manrope,system-ui,sans-serif;--f-b:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;--f-n:"IBM Plex Mono",ui-monospace,Menlo,monospace}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1018;--surface:#181a26;--surface-2:#222536;--line:#30344a;--ink:#ecedf6;--muted:#a3a7c2;--accent:#b3b7dd;--accent-ink:#14152a;--pos:#4fd292;--pos-bg:#123224;--neg:#ff7d86;--neg-bg:#3b1a22;--warn:#ffc266;--warn-bg:#3a2a12;color-scheme:dark}}
+/* Painel de administração: serviço à parte, só para a administradora. Mesmo sistema visual do app (neutro e sóbrio). */
+:root{--bg:#f6f6f8;--surface:#fff;--surface-2:#f2f2f5;--line:#e5e5eb;--line-2:#d6d6de;--ink:#111217;--muted:#6a6c78;--accent:#1f1f2b;--accent-ink:#fff;--pos:#0f7a4a;--pos-bg:#e4f4ec;--neg:#b4232f;--neg-bg:#fbe9eb;--warn:#93590a;--warn-bg:#fcf1dc;
+  --f-d:"Geist",system-ui,sans-serif;--f-b:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--f-n:"Geist Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0b0e;--surface:#131317;--surface-2:#1a1a20;--line:#24242c;--line-2:#32323c;--ink:#ededf1;--muted:#9a9ba7;--accent:#ededf1;--accent-ink:#111217;--pos:#4fd093;--pos-bg:#10291e;--neg:#ff7a84;--neg-bg:#341619;--warn:#f3bb5c;--warn-bg:#2f2210;color-scheme:dark}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-b)}
-.wrap{max-width:980px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));display:grid;gap:18px}
-.hero{border-radius:18px;padding:22px 24px;color:#f3f3fa;background:radial-gradient(80% 140% at 100% 0%,#2a2c4a 0%,transparent 60%),#16172b;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end}
-.hero small{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#a9abc7;font-weight:700}
-h1,h2{font-family:var(--f-d);margin:0;letter-spacing:-.01em}
-h1{font-size:30px} h2{font-size:19px}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.5 var(--f-b);-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));display:grid;gap:16px}
+.hero{padding:8px 0 6px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--line);padding-bottom:18px}
+.hero small{font-size:12px;color:var(--muted);font-weight:500}
+h1,h2{font-family:var(--f-d);margin:0;letter-spacing:-.018em;font-weight:600}
+h1{font-size:26px} h2{font-size:15.5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;box-shadow:0 1px 2px rgb(16 16 30 / .04)}
 .panel-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
 .hint{margin:0;color:var(--muted);font-size:13.5px}
-.btn{border:1px solid transparent;border-radius:10px;padding:9px 14px;font:700 14px var(--f-b);background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
-.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line)}
+.btn{border:1px solid transparent;border-radius:10px;padding:8px 13px;font:550 14px var(--f-b);background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;transition:filter .15s}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
 .btn.danger{background:var(--neg);color:#fff}
 .btn.sm{padding:6px 10px;font-size:13px}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.hero .btn{background:#fff;color:#16172b}
-.hero .btn.ghost{background:transparent;color:#fff;border-color:rgb(255 255 255 / .3)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0}
-.list{display:grid;gap:8px}
-.item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
-.item img,.av{width:34px;height:34px;border-radius:50%;object-fit:cover;background:var(--surface-2);display:grid;place-items:center;font-weight:700}
+input,select,textarea{font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:9px 11px;min-width:0}
+.list{display:grid;gap:0}
+.list>b{font-size:13px;font-weight:500;color:var(--muted);padding:6px 0}
+.item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 2px;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item img,.av{width:34px;height:34px;border-radius:50%;object-fit:cover;background:var(--surface-2);display:grid;place-items:center;font-weight:600;font-size:13px;color:var(--muted)}
 .sub{font-size:12.5px;color:var(--muted)}
-.pill{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.pill{font-size:12px;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
 .pill.ok{background:var(--pos-bg);color:var(--pos)} .pill.warn{background:var(--warn-bg);color:var(--warn)}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.kpi{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface)}
 .kpi b{display:block;font:500 20px var(--f-n)}
 .kpi span{font-size:12px;color:var(--muted)}
 .msg{font-size:13.5px;min-height:1.2em;margin:0}
 .msg.err{color:var(--neg)} .msg.ok{color:var(--pos)}
-.danger-zone{border-color:color-mix(in srgb,var(--neg) 40%,var(--line))}
+.danger-zone{border-color:color-mix(in srgb,var(--neg) 35%,var(--line))}
 .gate{max-width:420px;margin:14vh auto;text-align:center;display:grid;gap:14px;padding:24px}
-code{font-family:var(--f-n);font-size:13px;background:var(--surface-2);padding:1px 6px;border-radius:6px}
+code{font-family:var(--f-n);font-size:12.5px;background:var(--surface-2);padding:1px 6px;border-radius:6px}
 ol{margin:0;padding-left:20px;display:grid;gap:6px}
-@media (max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.role{padding:5px 8px;font-size:13px;border-radius:8px}
+@media (max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}.item{grid-template-columns:auto minmax(0,1fr)}.item>:last-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -106,7 +108,14 @@ async function render(u) {
     <p class="hint">O restaurar aceita o backup deste painel e também o backup do app antigo (aquele que ficava no Claude). Registros com o mesmo código são atualizados, nada é apagado.</p>
   </section>
 
-  <section class="panel danger-zone"><div class="panel-head"><h2>4 · Excluir dados</h2><span class="pill warn">Não dá para desfazer</span></div>
+  <section class="panel" id="importar"><div class="panel-head"><h2>4 · Importar da Shopmix e de outros sites</h2><span class="sub" id="syncinfo">—</span></div>
+    <p class="hint">O robô diário cola aqui as vendas e os custos que leu na Shopmix, no Mercado Livre ou na Shopee. Também dá para colar à mão. Cada registro tem um código próprio, então importar duas vezes não duplica.</p>
+    <textarea id="imptxt" rows="6" style="width:100%;font:13px var(--f-n);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px" placeholder='{"origem":"shopmix","lancamentos":[{"id":"shopmix-fin-123","data":"2026-10-28","tipo":"saida","categoria":"Custo do produto (Shopmix)","descricao":"Pedido 123","valor":4990}]}' aria-label="Dados para importar (JSON)"></textarea>
+    <div class="row"><button class="btn" id="impgo">Importar</button></div>
+    <p class="msg" id="impmsg"></p>
+  </section>
+
+  <section class="panel danger-zone"><div class="panel-head"><h2>5 · Excluir dados</h2><span class="pill warn">Não dá para desfazer</span></div>
     <p class="hint">Baixe um backup antes. Escolha o que apagar, confira quantos registros serão excluídos e confirme digitando EXCLUIR.</p>
     <div class="row">
       <select id="dcol" aria-label="O que excluir"><option value="__all">Todos os dados das empresas</option>${COLS.map(c => `<option value="${c}">${NOMES[c]}</option>`).join("")}</select>
@@ -117,7 +126,7 @@ async function render(u) {
     <p class="msg" id="dmsg"></p>
   </section>
 
-  <section class="panel"><div class="panel-head"><h2>5 · Por fora do app</h2><span class="sub">Onde fica cada coisa</span></div>
+  <section class="panel"><div class="panel-head"><h2>6 · Por fora do app</h2><span class="sub">Onde fica cada coisa</span></div>
     <ol>
       <li><b>Banco de dados, logins e notificações:</b> <a href="https://console.firebase.google.com/project/jay-loma/overview" target="_blank" rel="noopener">Console do Firebase · projeto jay-loma</a> (plano gratuito Spark).</li>
       <li><b>Código do app:</b> <a href="https://github.com/palomasaa/jay-loma" target="_blank" rel="noopener">github.com/palomasaa/jay-loma</a>. Cada alteração enviada para lá vai ao ar sozinha em 1 ou 2 minutos.</li>
@@ -134,19 +143,23 @@ async function render(u) {
   $("#dprev").onclick = previa;
   $("#dconf").oninput = () => { $("#dgo").disabled = !($("#dconf").value.trim().toUpperCase() === "EXCLUIR" && alvo.length); };
   $("#dgo").onclick = excluir;
+  $("#impgo").onclick = importarExterno;
+  F.getDoc(F.doc(db, "config/sync")).then(s => { const v = s.exists() ? s.data() : {}; const o = Object.entries(v).map(([k, x]) => k + ": " + (x && x.em ? new Date(x.em).toLocaleString("pt-BR") + " (" + (x.qtd || 0) + ")" : "—")); $("#syncinfo").textContent = o.length ? "Última importação · " + o.join(" · ") : "Nenhuma importação ainda"; }).catch(() => {});
   pessoas(); aparelhos(); contagens();
 }
 
 async function perfil(uid) { try { const s = await F.getDoc(F.doc(db, "perfis/" + uid)); return s.exists() ? s.data() : {}; } catch (_) { return {}; } }
 async function pessoas() {
   const ms = await F.getDoc(F.doc(db, "acesso/membros")); const m = ms.exists() ? ms.data() : {};
-  const ids = m.ids || [], emails = m.emails || [];
+  const ids = m.ids || [], emails = m.emails || [], leit = (m.leitores || []).map(x => String(x).toLowerCase());
+  const roleSel = key => `<div class="row"><select class="role" data-role="${esc(key)}" aria-label="Nível de acesso"><option value="editora"${leit.includes(String(key).toLowerCase()) ? "" : " selected"}>Editora · lança e edita</option><option value="leitura"${leit.includes(String(key).toLowerCase()) ? " selected" : ""}>Só leitura · apenas vê</option></select>`;
   const sol = await F.getDocs(F.collection(db, "solicitacoes"));
   $("#pedidos").innerHTML = sol.empty ? "" : `<b>Pedidos de acesso aguardando</b>` + sol.docs.map(d => { const v = d.data(); return `<div class="item"><span class="av">?</span><div><b>${esc(v.nome || "Sem nome")}</b><div class="sub">${esc(v.email || "")} · pediu em ${v.pedidoEm ? new Date(v.pedidoEm).toLocaleString("pt-BR") : "—"}</div></div><div class="row"><button class="btn sm" data-ap="${d.id}" data-em="${esc(v.email || "")}">Aprovar</button><button class="btn ghost sm" data-rc="${d.id}">Recusar</button></div></div>`; }).join("");
-  const rows = [`<div class="item"><span class="av">★</span><div><b>${esc(OWNER_EMAIL)}</b><div class="sub">Administradora · acesso total</div></div><span class="pill ok">Sempre</span></div>`];
-  for (const id of ids) { const p = await perfil(id); rows.push(`<div class="item">${p.foto ? `<img src="${esc(p.foto)}" alt="">` : `<span class="av">${esc((p.nome || "?")[0])}</span>`}<div><b>${esc(p.nome || "Sem nome")}</b><div class="sub">${esc(p.email || id)}</div></div><button class="btn ghost sm" data-rmid="${id}">Remover acesso</button></div>`); }
-  for (const em of emails) rows.push(`<div class="item"><span class="av">@</span><div><b>${esc(em)}</b><div class="sub">Liberado por e-mail · entra com essa conta Google</div></div><button class="btn ghost sm" data-rmem="${esc(em)}">Remover acesso</button></div>`);
+  const rows = [`<div class="item"><span class="av">P</span><div><b>${esc(OWNER_EMAIL)}</b><div class="sub">Administradora · acesso total</div></div><span class="pill ok">Sempre</span></div>`];
+  for (const id of ids) { const p = await perfil(id); rows.push(`<div class="item">${p.foto ? `<img src="${esc(p.foto)}" alt="">` : `<span class="av">${esc((p.nome || "?")[0])}</span>`}<div><b>${esc(p.nome || "Sem nome")}</b><div class="sub">${esc(p.email || id)}</div></div>${roleSel(id)}<button class="btn ghost sm" data-rmid="${id}">Remover</button></div></div>`); }
+  for (const em of emails) rows.push(`<div class="item"><span class="av">@</span><div><b>${esc(em)}</b><div class="sub">Liberado por e-mail · entra com essa conta Google</div></div>${roleSel(em)}<button class="btn ghost sm" data-rmem="${esc(em)}">Remover</button></div></div>`);
   $("#membros").innerHTML = `<b>Com acesso</b>` + rows.join("");
+  document.querySelectorAll("[data-role]").forEach(sel => sel.onchange = async () => { const k = sel.dataset.role.toLowerCase(); await F.setDoc(F.doc(db, "acesso/membros"), { leitores: sel.value === "leitura" ? F.arrayUnion(k) : F.arrayRemove(k) }, { merge: true }); sel.insertAdjacentHTML("afterend", `<span class="pill ok">Salvo</span>`); setTimeout(() => pessoas(), 900); });
   document.querySelectorAll("[data-ap]").forEach(b => b.onclick = async () => { await F.setDoc(F.doc(db, "acesso/membros"), { ids: F.arrayUnion(b.dataset.ap) }, { merge: true }); await F.deleteDoc(F.doc(db, "solicitacoes/" + b.dataset.ap)); pessoas(); });
   document.querySelectorAll("[data-rc]").forEach(b => b.onclick = async () => { await F.deleteDoc(F.doc(db, "solicitacoes/" + b.dataset.rc)); pessoas(); });
   document.querySelectorAll("[data-rmid]").forEach(b => b.onclick = async () => { if (b.dataset.armed) { await F.setDoc(F.doc(db, "acesso/membros"), { ids: F.arrayRemove(b.dataset.rmid) }, { merge: true }); pessoas(); } else { b.dataset.armed = 1; b.textContent = "Confirmar remoção"; } });
@@ -154,8 +167,8 @@ async function pessoas() {
 }
 async function aparelhos() {
   const t = await F.getDocs(F.collection(db, "tokens"));
-  $("#tokens").innerHTML = t.empty ? `<p class="hint">Nenhum aparelho ativou os alertas ainda. No app, toque em "🔔 Ativar alertas neste aparelho".</p>` :
-    t.docs.map(d => { const v = d.data(); const mob = /Android|iPhone|iPad/i.test(v.aparelho || ""); return `<div class="item"><span class="av">${mob ? "📱" : "💻"}</span><div><b>${esc(v.nome || v.email)}</b><div class="sub">${esc((v.aparelho || "").replace(/\(KHTML.*$/, "").slice(0, 90))} · desde ${v.criadoEm ? new Date(v.criadoEm).toLocaleDateString("pt-BR") : "—"}</div></div><button class="btn ghost sm" data-tk="${d.id}">Desligar</button></div>`; }).join("");
+  $("#tokens").innerHTML = t.empty ? `<p class="hint">Nenhum aparelho ativou os alertas ainda. No app, toque no sino no alto da tela e em Ativar notificações.</p>` :
+    t.docs.map(d => { const v = d.data(); const mob = /Android|iPhone|iPad/i.test(v.aparelho || ""); return `<div class="item"><span class="av">${mob ? "Cel" : "PC"}</span><div><b>${esc(v.nome || v.email)}</b><div class="sub">${esc((v.aparelho || "").replace(/\(KHTML.*$/, "").slice(0, 90))} · desde ${v.criadoEm ? new Date(v.criadoEm).toLocaleDateString("pt-BR") : "—"}</div></div><button class="btn ghost sm" data-tk="${d.id}">Desligar</button></div>`; }).join("");
   document.querySelectorAll("[data-tk]").forEach(b => b.onclick = async () => { await F.deleteDoc(F.doc(db, "tokens/" + b.dataset.tk)); aparelhos(); });
 }
 async function contagens() {
@@ -194,6 +207,22 @@ async function restaurar(e) {
   e.target.value = "";
 }
 let alvo = [];
+async function importarExterno() {
+  const m = $("#impmsg"); m.className = "msg";
+  let j; try { j = JSON.parse($("#imptxt").value); } catch (_) { m.textContent = "O texto não é um JSON válido."; m.className = "msg err"; return; }
+  const origem = String(j.origem || "externo").replace(/[^a-z0-9_-]/gi, "").toLowerCase() || "externo";
+  const L = Array.isArray(j.lancamentos) ? j.lancamentos : [];
+  const ok = L.filter(x => x && x.id && /^\d{4}-\d{2}-\d{2}$/.test(String(x.data)) && Number(x.valor) > 0 && (x.tipo === "entrada" || x.tipo === "saida"));
+  if (!ok.length) { m.textContent = "Nenhum lançamento válido (cada um precisa de id, data AAAA-MM-DD, tipo entrada/saida e valor em centavos)."; m.className = "msg err"; return; }
+  let novos = 0;
+  for (let i = 0; i < ok.length; i += 400) { const b = F.writeBatch(db);
+    for (const x of ok.slice(i, i + 400)) { const id = String(x.id).replace(/[^\w.-]/g, "_").slice(0, 140); const ref = F.doc(db, "lancamentos/" + id);
+      const ex = await F.getDoc(ref); if (!ex.exists()) novos++;
+      b.set(ref, { empresa: x.empresa === "chef" ? "chef" : "loja", data: x.data, tipo: x.tipo, categoria: String(x.categoria || "Outra saída"), loja: String(x.loja || "Empresa (geral)"), descricao: String(x.descricao || ""), valor: Math.round(Number(x.valor)), pagoPor: x.tipo === "saida" ? String(x.pagoPor || "Caixa da empresa") : "", origem: origem, importadoEm: new Date().toISOString(), criadoEm: x.criadoEm || new Date().toISOString() }, { merge: true }); }
+    await b.commit(); }
+  await F.setDoc(F.doc(db, "config/sync"), { [origem]: { em: new Date().toISOString(), qtd: ok.length, novos } }, { merge: true });
+  m.textContent = ok.length + " lançamentos processados (" + novos + " novos, " + (ok.length - novos) + " já existiam e foram atualizados)."; m.className = "msg ok"; $("#imptxt").value = ""; contagens();
+}
 async function previa() {
   const col = $("#dcol").value, emp = $("#demp").value, ini = $("#dini").value, fim = $("#dfim").value;
   const cols = col === "__all" ? COLS : [col]; alvo = [];

@@ -18,6 +18,14 @@ service cloud.firestore {
       ));
     }
 
+    // Só leitura: a dona marca a pessoa em acesso/membros.leitores (uid ou e-mail)
+    function isReader() {
+      return !isOwner() && signedIn() && (
+        request.auth.uid in membros().get('leitores', []) ||
+        (request.auth.token.email != null && request.auth.token.email.lower() in membros().get('leitores', []))
+      );
+    }
+
     // Lista de quem tem acesso: todos logados leem (para saber se entraram), só a dona altera
     match /acesso/{doc} {
       allow read: if signedIn();
@@ -45,7 +53,9 @@ service cloud.firestore {
 
     // Dados das empresas
     match /{col}/{id} {
-      allow read, write: if isMember() && col in
+      allow read: if isMember() && col in
+        ['lancamentos','eventos','pedidos','cardapio','estoque','anuncios','acertos','config'];
+      allow write: if isMember() && !isReader() && col in
         ['lancamentos','eventos','pedidos','cardapio','estoque','anuncios','acertos','config'];
     }
   }

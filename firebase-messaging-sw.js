@@ -19,7 +19,7 @@ self.addEventListener("notificationclick", e => {
   const link = (e.notification.data && (e.notification.data.link || (e.notification.data.FCM_MSG && e.notification.data.FCM_MSG.fcmOptions && e.notification.data.FCM_MSG.fcmOptions.link))) || "./";
   e.waitUntil(clients.matchAll({ type: "window", includeUncontrolled: true }).then(ws => { for (const w of ws) { if ("focus" in w) return w.focus(); } return clients.openWindow(link); }));
 });
-const CACHE = "jay-loma-v1";
+const CACHE = "jay-loma-v2";
 const SHELL = ["./", "./index.html", "./runtime.js", "./firebase-config.js", "./manifest.webmanifest", "./icons/icon-192.png"];
 self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {})); });
 self.addEventListener("activate", e => e.waitUntil((async () => { for (const k of await caches.keys()) if (k !== CACHE) await caches.delete(k); await clients.claim(); })()));

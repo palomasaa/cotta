@@ -53,15 +53,18 @@ function loginScreen(msg) {
   let el = document.getElementById("jl-login");
   if (!el) {
     el = document.createElement("div"); el.id = "jl-login";
-    el.innerHTML = `<style>#jl-login{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:radial-gradient(80% 120% at 100% 0%,#3b3fd6 0%,transparent 55%),radial-gradient(60% 100% at 0% 100%,#6b2fb3 0%,transparent 60%),#0b0d2e;color:#f3f3fa;font-family:Manrope,system-ui,sans-serif}
-#jl-login .box{max-width:400px;width:100%;display:grid;gap:16px;text-align:center}
-#jl-login h1{font-family:"Bricolage Grotesque",Manrope,sans-serif;font-size:34px;margin:0}
-#jl-login p{margin:0;color:#c9c9e6;line-height:1.5}
-#jl-login button{border:0;border-radius:12px;padding:13px 18px;font:700 15px Manrope,sans-serif;background:#fff;color:#16172b;display:flex;gap:10px;align-items:center;justify-content:center;cursor:pointer}
-#jl-login .err{color:#ffb4b9;font-size:14px;min-height:1.2em}</style>
-<div class="box"><img src="icons/icon-192.png" alt="" width="84" height="84" style="justify-self:center;border-radius:20px"><h1>Jay-Loma</h1><p>Gestão das sócias Paloma &amp; Jay — Jay-Loma Lojas e Jay Personal Chef.</p>
+    el.innerHTML = `<style>#jl-login{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:radial-gradient(70% 60% at 50% 0%,#1d1b3f 0%,transparent 70%),#0b0b0e;color:#ededf1;font-family:Geist,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+#jl-login .box{max-width:360px;width:100%;display:grid;gap:14px;text-align:center;animation:jlr .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes jlr{from{opacity:0;transform:translateY(10px)}}
+#jl-login h1{font-size:28px;font-weight:600;letter-spacing:-.02em;margin:6px 0 0}
+#jl-login p{margin:0;color:#9a9ba7;line-height:1.5;font-size:14.5px}
+#jl-login button{margin-top:10px;border:0;border-radius:12px;padding:13px 18px;font:600 15px Geist,system-ui,sans-serif;background:#fff;color:#111217;display:flex;gap:10px;align-items:center;justify-content:center;cursor:pointer;transition:transform .1s}
+#jl-login button:active{transform:scale(.98)}
+#jl-login .err{color:#ff7a84;font-size:14px;min-height:1.2em}
+#jl-login .lock{display:inline-flex;gap:6px;align-items:center;justify-content:center;font-size:12.5px;color:#6d6e7a}</style>
+<div class="box"><img src="icons/icon-192.png" alt="" width="72" height="72" style="justify-self:center;border-radius:18px;box-shadow:0 10px 40px rgb(80 70 220 / .35)"><h1>Jay-Loma</h1><p>Gestão das sócias Paloma &amp; Jay — Jay-Loma Lojas e Jay Personal Chef.</p>
 <button type="button" id="jl-google"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 38.6 44 33 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Entrar com Google</button>
-<p class="err" id="jl-err"></p><p style="font-size:13px">Só quem a administradora aprovar consegue ver os dados.</p></div>`;
+<p class="err" id="jl-err"></p><p class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Acesso privado. Só entra quem a administradora aprovar.</p></div>`;
     document.body.append(el);
     el.querySelector("#jl-google").onclick = async () => {
       const p = new A.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" });
