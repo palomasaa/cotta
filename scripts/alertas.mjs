@@ -48,7 +48,7 @@ if (saldo !== 0 && new Date().getDay() === 1) linhas.push(saldo > 0 ? `Acerto: J
 if (!linhas.length && !teste) { console.log("Nada para avisar hoje."); process.exit(0); }
 const NOMES_T = { pedido: ["pedido", "pedidos"], receber: ["valor a receber", "valores a receber"], estoque: ["item para repor", "itens para repor"], anuncio: ["aviso de anúncio", "avisos de anúncio"], agenda: ["compromisso", "compromissos"], acerto: ["acerto entre sócias", "acerto entre sócias"] };
 const resumo = Object.entries(tipos).map(([t, n]) => t === "estoque" || t === "acerto" ? NOMES_T[t][0] : n + " " + NOMES_T[t][n === 1 ? 0 : 1]);
-const title = linhas.length ? `Jay-Loma · ${linhas.length} ${linhas.length === 1 ? "alerta" : "alertas"} hoje` : "Jay-Loma · teste de alerta";
+const title = linhas.length ? `Cota · ${linhas.length} ${linhas.length === 1 ? "alerta" : "alertas"} hoje` : "Cota · teste de alerta";
 const body = linhas.length ? resumo.join(" · ") + ". Abra o app para ver os detalhes." : "Os alertas estão funcionando neste aparelho.";
 
 const tokSnap = await db.collection("tokens").get();
