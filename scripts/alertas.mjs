@@ -1,7 +1,7 @@
 // Envia os alertas do dia para os celulares (roda no GitHub Actions todo dia às 8h de Brasília)
 import admin from "firebase-admin";
 
-const APP_URL = "https://palomasaa.github.io/jay-loma/";
+const APP_URL = "https://palomasaa.github.io/cotta/";
 const sa = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || "{}");
 if (!sa.project_id) { console.error("Falta o segredo FIREBASE_SERVICE_ACCOUNT no GitHub."); process.exit(1); }
 admin.initializeApp({ credential: admin.credential.cert(sa) });
@@ -48,7 +48,7 @@ if (saldo !== 0 && new Date().getDay() === 1) linhas.push(saldo > 0 ? `Acerto: J
 if (!linhas.length && !teste) { console.log("Nada para avisar hoje."); process.exit(0); }
 const NOMES_T = { pedido: ["pedido", "pedidos"], receber: ["valor a receber", "valores a receber"], estoque: ["item para repor", "itens para repor"], anuncio: ["aviso de anúncio", "avisos de anúncio"], agenda: ["compromisso", "compromissos"], acerto: ["acerto entre sócias", "acerto entre sócias"] };
 const resumo = Object.entries(tipos).map(([t, n]) => t === "estoque" || t === "acerto" ? NOMES_T[t][0] : n + " " + NOMES_T[t][n === 1 ? 0 : 1]);
-const title = linhas.length ? `Cota · ${linhas.length} ${linhas.length === 1 ? "alerta" : "alertas"} hoje` : "Cota · teste de alerta";
+const title = linhas.length ? `COTTA · ${linhas.length} ${linhas.length === 1 ? "alerta" : "alertas"} hoje` : "COTTA · teste de alerta";
 const body = linhas.length ? resumo.join(" · ") + ". Abra o app para ver os detalhes." : "Os alertas estão funcionando neste aparelho.";
 
 const tokSnap = await db.collection("tokens").get();
