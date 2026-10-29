@@ -1,7 +1,7 @@
 rules_version = '2';
-// Regras de segurança do Jay-Loma
+// Regras de segurança da Cota (projeto jay-loma)
 // Dona (administradora): palomasaaa@gmail.com
-// Só pessoas aprovadas pela dona leem e escrevem os dados das empresas.
+// Dados das empresas: só pessoas aprovadas. Página pública: lê catálogo e horários ocupados, cria solicitações validadas.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -17,45 +17,85 @@ service cloud.firestore {
         (request.auth.token.email_verified == true && request.auth.token.email.lower() in membros().get('emails', []))
       ));
     }
-
-    // Só leitura: a dona marca a pessoa em acesso/membros.leitores (uid ou e-mail)
     function isReader() {
       return !isOwner() && signedIn() && (
         request.auth.uid in membros().get('leitores', []) ||
         (request.auth.token.email != null && request.auth.token.email.lower() in membros().get('leitores', []))
       );
     }
+    function canWrite() { return isMember() && !isReader(); }
+    function str(v, max) { return v is string && v.size() <= max; }
 
-    // Lista de quem tem acesso: todos logados leem (para saber se entraram), só a dona altera
     match /acesso/{doc} {
       allow read: if signedIn();
       allow write: if isOwner();
     }
-
-    // Pedidos de acesso: cada pessoa cria/lê o seu; a dona vê e apaga todos
     match /solicitacoes/{uid} {
       allow read: if isOwner() || (signedIn() && request.auth.uid == uid);
       allow create, update: if signedIn() && request.auth.uid == uid;
       allow delete: if isOwner() || (signedIn() && request.auth.uid == uid);
     }
-
-    // Perfil (nome e foto) de cada pessoa
     match /perfis/{uid} {
       allow read: if isMember();
       allow write: if signedIn() && request.auth.uid == uid;
     }
-
-    // Aparelhos com notificações ativadas
     match /tokens/{token} {
       allow create, update: if isMember() && request.resource.data.uid == request.auth.uid;
       allow read, delete: if isOwner() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    // Catálogo e cardápio publicados (sem dados pessoais)
+    match /publico/{doc} {
+      allow read: if true;
+      allow write: if canWrite();
+    }
+
+    // Horários ocupados da chef: só data e minutos de início e fim. Criar falha se o id já existir (evita reserva dupla).
+    match /reservas/{id} {
+      allow read: if true;
+      allow create: if id.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}_chef_[1-5]$')
+        && request.resource.data.keys().hasOnly(['data','empresa','pedido','criadoEm','ini','fim'])
+        && request.resource.data.data == id.split('_')[0]
+        && request.resource.data.empresa == 'chef'
+        && str(request.resource.data.pedido, 40) && str(request.resource.data.criadoEm, 40)
+        && request.resource.data.ini is int && request.resource.data.fim is int
+        && request.resource.data.ini >= 0 && request.resource.data.fim <= 1439 && request.resource.data.ini < request.resource.data.fim;
+      allow update, delete: if canWrite();
+    }
+
+    // Solicitações feitas pela página pública: qualquer pessoa cria, só a equipe lê e trata
+    match /pedidos_site/{id} {
+      allow create: if id.matches('^[cl][a-z0-9]{8,24}$')
+        && request.resource.data.keys().hasOnly(['empresa','status','tipo','nome','whatsapp','data','hora','pessoas','menuId','menuNome','pratos','itens','enc','endereco','restricoes','obs','valorEstimado','origem','reserva','criadoEm'])
+        && request.resource.data.status == 'novo'
+        && request.resource.data.empresa in ['chef','loja']
+        && request.resource.data.tipo in ['casa','casa_cliente','encomenda','loja']
+        && str(request.resource.data.nome, 80) && request.resource.data.nome.size() > 1
+        && str(request.resource.data.whatsapp, 20) && str(request.resource.data.data, 10) && str(request.resource.data.hora, 5)
+        && request.resource.data.pessoas is int && request.resource.data.pessoas >= 0 && request.resource.data.pessoas <= 200
+        && str(request.resource.data.menuId, 40) && str(request.resource.data.menuNome, 80)
+        && request.resource.data.pratos is list && request.resource.data.pratos.size() <= 20
+        && request.resource.data.itens is list && request.resource.data.itens.size() <= 40
+        && request.resource.data.enc is map && request.resource.data.enc.size() <= 40
+        && str(request.resource.data.endereco, 200) && str(request.resource.data.restricoes, 300) && str(request.resource.data.obs, 600)
+        && request.resource.data.valorEstimado is int && request.resource.data.valorEstimado >= 0 && request.resource.data.valorEstimado < 100000000
+        && str(request.resource.data.origem, 40) && str(request.resource.data.reserva, 30) && str(request.resource.data.criadoEm, 40);
+      allow read: if isMember();
+      allow update, delete: if canWrite();
+    }
+
+    // Histórico de alterações: a equipe registra e consulta; ninguém edita ou apaga
+    match /historico/{id} {
+      allow read: if isMember();
+      allow create: if isOwner() || (canWrite() && request.resource.data.quemId == request.auth.uid);
+      allow update, delete: if false;
     }
 
     // Dados das empresas
     match /{col}/{id} {
       allow read: if isMember() && col in
         ['lancamentos','eventos','pedidos','cardapio','estoque','anuncios','acertos','config'];
-      allow write: if isMember() && !isReader() && col in
+      allow write: if canWrite() && col in
         ['lancamentos','eventos','pedidos','cardapio','estoque','anuncios','acertos','config'];
     }
   }

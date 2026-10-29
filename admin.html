@@ -65,8 +65,8 @@ const auth = A.getAuth(app);
 const db = F.getFirestore(app);
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const COLS = ["lancamentos", "eventos", "pedidos", "cardapio", "estoque", "anuncios", "acertos"];
-const NOMES = { lancamentos: "Lançamentos do caixa", eventos: "Compromissos da agenda", pedidos: "Pedidos do chef", cardapio: "Pratos do cardápio", estoque: "Itens de estoque", anuncios: "Campanhas de anúncios", acertos: "Acerto entre sócias", config: "Configurações", perfis: "Perfis", tokens: "Aparelhos com alertas", solicitacoes: "Pedidos de acesso" };
+const COLS = ["lancamentos", "eventos", "pedidos", "cardapio", "estoque", "anuncios", "acertos", "pedidos_site", "reservas", "historico"];
+const NOMES = { lancamentos: "Lançamentos do caixa", eventos: "Compromissos da agenda", pedidos: "Pedidos do chef", cardapio: "Pratos do cardápio", estoque: "Itens de estoque", anuncios: "Campanhas de anúncios", acertos: "Acerto entre sócias", pedidos_site: "Solicitações pela página", reservas: "Horários reservados", historico: "Histórico de alterações", config: "Configurações", perfis: "Perfis", tokens: "Aparelhos com alertas", solicitacoes: "Pedidos de acesso" };
 const APP_URL = new URL("./", location.href).href;
 
 function login(msg) {
