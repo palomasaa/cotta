@@ -1,19 +1,20 @@
-# Jay-Loma
+# COTTA · Gestão societária
 
-App de gestão das sócias **Paloma** e **Jay** para as duas empresas:
+Sistema de gestão das sócias **Paloma** e **Jay** para as duas empresas:
 
-- **Jay-Loma Lojas**: lojas no Mercado Livre e na Shopee, com estoque e envio pela Shopmix
+- **Universo Store** (empresa PALAY): lojas no Mercado Livre e na Shopee, com estoque e envio pela Shopmix
 - **Jay Personal Chef**: serviços, eventos e aulas
 
-**App:** https://palomasaa.github.io/jay-loma/
-**Administração:** https://palomasaa.github.io/jay-loma/admin.html (só a administradora)
+**App:** https://palomasaa.github.io/cotta/
+**Pedidos e vitrine (clientes):** https://palomasaa.github.io/cotta/pedido.html?e=chef · https://palomasaa.github.io/cotta/pedido.html?e=loja
+**Administração:** https://palomasaa.github.io/cotta/admin.html (só a administradora)
 
 ## Como funciona
 
 | Parte | Onde fica |
 |---|---|
 | Telas do app (`index.html`, `runtime.js`) | Este repositório, publicado pelo GitHub Pages |
-| Dados, logins Google e notificações | Firebase, projeto `jay-loma` (plano gratuito Spark, banco em São Paulo) |
+| Dados, logins Google e notificações | Firebase, projeto `jay-loma` (o ID do projeto não pode ser renomeado; o nome visível é COTTA) (plano gratuito Spark, banco em São Paulo) |
 | Regras de segurança do banco | `firestore.rules` (copiar para Firebase → Firestore → Regras) |
 | Alertas diários no celular | `.github/workflows/alertas.yml` + `scripts/alertas.mjs`, todo dia às 8h |
 

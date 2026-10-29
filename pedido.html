@@ -8,12 +8,16 @@
 <meta name="theme-color" content="#f6f3ee">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap">
 <style>
 :root{--bg:#f6f3ee;--surface:#fff;--surface-2:#f1ede6;--line:#e4ddd2;--line-2:#d3c9b9;--ink:#1d1a16;--ink-2:#3b352d;--muted:#6f675c;--accent:#7a4b22;--accent-ink:#fff;--accent-soft:#f3e9de;--pos:#2f6b45;--pos-bg:#e5f0e8;--neg:#a2302a;--neg-bg:#f7e7e5;--wa:#1f8f4e;--r:14px;--f:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--d:"Cormorant Garamond",Georgia,serif}
-:root[data-e="loja"]{--bg:#f4f5f7;--surface-2:#eef0f3;--line:#e1e4ea;--line-2:#cfd4dd;--ink:#14181f;--ink-2:#323946;--muted:#636b78;--accent:#2f4a6b;--accent-soft:#e7edf4;--d:"Geist",ui-sans-serif,system-ui,sans-serif}
+:root[data-e="loja"]{--bg:#f3f5f2;--surface-2:#edf1ee;--line:#dfe6e1;--line-2:#c9d4cd;--ink:#0b2019;--ink-2:#26392f;--muted:#5d6e66;--accent:#0f3a2c;--accent-ink:#f5e7c8;--accent-soft:#e6efe9;--gold:#b48a45;--d:"Montserrat",ui-sans-serif,system-ui,sans-serif}
+:root[data-e="loja"] .brand .mk.img{background:none;padding:0;overflow:hidden;border-radius:50%;box-shadow:0 0 0 1px var(--gold)}
+:root[data-e="loja"] .brand .mk.img img{width:100%;height:100%;display:block}
+:root[data-e="loja"] .hero h1{color:var(--accent)}
+:root[data-e="loja"] .hero h1 em,:root[data-e="loja"] .gold{color:var(--gold)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121110;--surface:#1a1917;--surface-2:#221f1c;--line:#2d2a26;--line-2:#3c3832;--ink:#efebe4;--ink-2:#d2ccc2;--muted:#a19a8f;--accent:#d7a36d;--accent-ink:#1d140b;--accent-soft:#2c2219;--pos:#86cfa3;--pos-bg:#14271c;--neg:#f08b81;--neg-bg:#2f1715;color-scheme:dark}
-  :root[data-e="loja"]:not([data-theme="light"]){--bg:#0f1114;--surface:#171a1f;--surface-2:#1d2128;--line:#272c34;--line-2:#353b45;--accent:#9db6d6;--accent-ink:#0c1420;--accent-soft:#1a2330}}
+  :root[data-e="loja"]:not([data-theme="light"]){--bg:#06120e;--surface:#0b1b15;--surface-2:#10231c;--line:#183128;--line-2:#24453a;--ink:#f1e9d8;--ink-2:#d9cfb9;--muted:#a3a08f;--accent:#d8b36b;--accent-ink:#1a1203;--accent-soft:#1a2a1f}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f);-webkit-font-smoothing:antialiased}
@@ -148,7 +152,7 @@ const qs=new URLSearchParams(location.search);
 const E=qs.get("e")==="loja"?"loja":"chef";
 const ORIGEM=(qs.get("origem")||qs.get("utm_source")||(document.referrer?(()=>{try{return new URL(document.referrer).hostname}catch(_){return ""}})():"direto")||"direto").slice(0,40);
 const MENU_INI=qs.get("menu")||"";
-document.documentElement.dataset.e=E;
+document.documentElement.dataset.e=E;if(E==="loja"){const fl=document.querySelector("link[rel=icon]");if(fl)fl.href="icons/universo-128.png";};
 const $=s=>document.querySelector(s);
 const brl=new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"});
 const money=c=>brl.format((c||0)/100);
@@ -179,7 +183,7 @@ let P=null,RES=[],C=null;
 const st={tipo:"casa",menu:null,pessoas:0,enc:{},data:"",hora:"",mes:"",cart:{},q:""};
 const vals={};
 const sigla=n=>String(n||"").split(/[\s-]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase();
-function header(){return h("header",{class:"top"},h("div",{class:"brand"},h("span",{class:"mk",text:P.empresa.sigla||sigla(P.empresa.nome)}),h("div",{},h("b",{text:P.empresa.nome}),h("span",{text:P.empresa.sub||""}))),P.whatsapp?h("a",{class:"btn ghost sm",href:waLink(P.whatsapp,"Olá! Vim pela página de pedidos e queria falar com um consultor."),target:"_blank",rel:"noopener"},"Falar com consultor"):null);}
+function header(){return h("header",{class:"top"},h("div",{class:"brand"},(E==="loja"?h("span",{class:"mk img"},h("img",{src:"icons/universo-128.png",alt:""})):h("span",{class:"mk",text:P.empresa.sigla||sigla(P.empresa.nome)})),h("div",{},h("b",{text:P.empresa.nome}),h("span",{text:P.empresa.sub||""}))),P.whatsapp?h("a",{class:"btn ghost sm",href:waLink(P.whatsapp,"Olá! Vim pela página de pedidos e queria falar com um consultor."),target:"_blank",rel:"noopener"},"Falar com consultor"):null);}
 const fab=()=>P.whatsapp?h("a",{class:"btn wa fab",href:waLink(P.whatsapp,resumoTexto("Olá! Estou montando um pedido e queria tirar uma dúvida.")),target:"_blank",rel:"noopener","aria-label":"Conversar pelo WhatsApp"},"WhatsApp"):null;
 
 // =================== CHEF

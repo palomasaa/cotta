@@ -1,5 +1,5 @@
 rules_version = '2';
-// Regras de segurança da Cota (projeto jay-loma)
+// Regras de segurança do COTTA (projeto jay-loma)
 // Dona (administradora): palomasaaa@gmail.com
 // Dados das empresas: só pessoas aprovadas. Página pública: lê catálogo e horários ocupados, cria solicitações validadas.
 service cloud.firestore {
@@ -89,6 +89,11 @@ service cloud.firestore {
       allow read: if isMember();
       allow create: if isOwner() || (canWrite() && request.resource.data.quemId == request.auth.uid);
       allow update, delete: if false;
+    }
+
+    // Campanhas de anúncios: área reservada só da administradora
+    match /campanhas/{id} {
+      allow read, write: if isOwner();
     }
 
     // Dados das empresas

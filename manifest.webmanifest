@@ -1,14 +1,14 @@
 {
-  "name": "Cota — gestão de sociedades",
-  "short_name": "Cota",
-  "description": "Resultados, distribuição de lucros, fluxo de caixa e operação das empresas da sociedade.",
+  "name": "COTTA — gestão societária",
+  "short_name": "COTTA",
+  "description": "Resultados, investimentos, distribuição de lucros e operação das empresas da sociedade.",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f4f3ef",
-  "theme_color": "#1d4b3a",
+  "background_color": "#f2f5f3",
+  "theme_color": "#0a241c",
   "icons": [
     {
       "src": "icons/icon-192.png",

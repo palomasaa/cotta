@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f4f3ef">
 <meta name="robots" content="noindex">
-<title>Administração · Cota</title>
-<link rel="icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<title>Administração · COTTA</title>
+<link rel="icon" href="icons/favicon-64.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
 /* Painel de administração: serviço à parte, só para a administradora. Mesmo sistema visual do app (neutro e sóbrio). */
-:root{--bg:#f4f3ef;--surface:#fff;--surface-2:#f1efea;--line:#e3e0d8;--line-2:#d2cec4;--ink:#15171a;--muted:#696c71;--accent:#1d4b3a;--accent-ink:#fff;--pos:#0f7a4a;--pos-bg:#e4f4ec;--neg:#b4232f;--neg-bg:#fbe9eb;--warn:#93590a;--warn-bg:#fcf1dc;
-  --f-d:"Geist",system-ui,sans-serif;--f-b:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--f-n:"Geist Mono",ui-monospace,Menlo,monospace}
+:root{--bg:#f2f5f3;--surface:#fff;--surface-2:#edf2ef;--line:#dfe7e2;--line-2:#c8d5cd;--ink:#0a241c;--muted:#5d7068;--accent:#14513f;--accent-ink:#fff;--pos:#0f7a4a;--pos-bg:#e4f4ec;--neg:#b4232f;--neg-bg:#fbe9eb;--warn:#93590a;--warn-bg:#fcf1dc;
+  --f-d:"Montserrat","Inter",system-ui,sans-serif;--f-b:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--f-n:"Geist Mono",ui-monospace,Menlo,monospace}
 @media (prefers-color-scheme:dark){:root{--bg:#0f1112;--surface:#16191a;--surface-2:#1c1f21;--line:#262a2c;--line-2:#34393b;--ink:#ecebe6;--muted:#9a9b97;--accent:#86c4a4;--accent-ink:#0b1a13;--pos:#4fd093;--pos-bg:#10291e;--neg:#ff7a84;--neg-bg:#341619;--warn:#f3bb5c;--warn-bg:#2f2210;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.5 var(--f-b);-webkit-font-smoothing:antialiased}
@@ -65,12 +65,12 @@ const auth = A.getAuth(app);
 const db = F.getFirestore(app);
 const $ = s => document.querySelector(s);
 const esc = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const COLS = ["lancamentos", "eventos", "pedidos", "cardapio", "estoque", "anuncios", "acertos", "pedidos_site", "reservas", "historico"];
-const NOMES = { lancamentos: "Lançamentos do caixa", eventos: "Compromissos da agenda", pedidos: "Pedidos do chef", cardapio: "Pratos do cardápio", estoque: "Itens de estoque", anuncios: "Campanhas de anúncios", acertos: "Acerto entre sócias", pedidos_site: "Solicitações pela página", reservas: "Horários reservados", historico: "Histórico de alterações", config: "Configurações", perfis: "Perfis", tokens: "Aparelhos com alertas", solicitacoes: "Pedidos de acesso" };
+const COLS = ["lancamentos", "eventos", "pedidos", "cardapio", "estoque", "anuncios", "acertos", "pedidos_site", "reservas", "historico", "campanhas"];
+const NOMES = { lancamentos: "Lançamentos do caixa", eventos: "Compromissos da agenda", pedidos: "Pedidos do chef", cardapio: "Pratos do cardápio", estoque: "Itens de estoque", anuncios: "Campanhas de anúncios", acertos: "Acerto entre sócias", pedidos_site: "Solicitações pela página", reservas: "Horários reservados", historico: "Histórico de alterações", config: "Configurações", perfis: "Perfis", tokens: "Aparelhos com alertas", solicitacoes: "Pedidos de acesso" , campanhas: "Campanhas (reservado)" };
 const APP_URL = new URL("./", location.href).href;
 
 function login(msg) {
-  $("#app").innerHTML = `<div class="gate"><h1>Administração</h1><p class="hint">Cota · acesso exclusivo da administradora</p><button class="btn" id="go">Entrar com Google</button><p class="msg err">${esc(msg || "")}</p></div>`;
+  $("#app").innerHTML = `<div class="gate"><h1>Administração</h1><p class="hint">COTTA · acesso exclusivo da administradora</p><button class="btn" id="go">Entrar com Google</button><p class="msg err">${esc(msg || "")}</p></div>`;
   $("#go").onclick = async () => { const p = new A.GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" }); try { await A.signInWithPopup(auth, p); } catch (e) { if (e.code === "auth/popup-blocked") A.signInWithRedirect(auth, p); } };
 }
 A.onAuthStateChanged(auth, async u => {
@@ -84,7 +84,7 @@ A.onAuthStateChanged(auth, async u => {
 
 async function render(u) {
   $("#app").innerHTML = `<div class="wrap">
-  <header class="hero"><div><small>Cota · administração</small><h1>Painel de administração</h1><div style="color:var(--muted);font-size:13.5px">${esc(u.email)}</div></div>
+  <header class="hero"><div><small>COTTA · administração</small><h1>Painel de administração</h1><div style="color:var(--muted);font-size:13.5px">${esc(u.email)}</div></div>
     <div class="row"><a class="btn" href="./">Abrir o app</a><button class="btn ghost" id="sair">Sair</button></div></header>
 
   <section class="panel"><div class="panel-head"><h2>1 · Pessoas com acesso</h2><span class="sub">Quem pode usar o app</span></div>
@@ -98,7 +98,7 @@ async function render(u) {
   <section class="panel"><div class="panel-head"><h2>2 · Alertas no celular</h2><span class="sub">Notificações</span></div>
     <p class="hint">Cada aparelho em que alguém tocou em "Ativar alertas" aparece aqui. Os avisos do dia (pedidos, estoque baixo, anúncios terminando e acertos pendentes) são enviados todo dia às 8h pelo GitHub.</p>
     <div id="tokens" class="list"></div>
-    <div class="row"><a class="btn ghost sm" target="_blank" rel="noopener" href="https://github.com/palomasaa/jay-loma/actions/workflows/alertas.yml">Enviar alertas agora (GitHub)</a></div>
+    <div class="row"><a class="btn ghost sm" target="_blank" rel="noopener" href="https://github.com/palomasaa/cotta/actions/workflows/alertas.yml">Enviar alertas agora (GitHub)</a></div>
   </section>
 
   <section class="panel"><div class="panel-head"><h2>3 · Dados guardados</h2><span class="sub">Banco Firestore · São Paulo</span></div>
@@ -129,7 +129,7 @@ async function render(u) {
   <section class="panel"><div class="panel-head"><h2>6 · Por fora do app</h2><span class="sub">Onde fica cada coisa</span></div>
     <ol>
       <li><b>Banco de dados, logins e notificações:</b> <a href="https://console.firebase.google.com/project/jay-loma/overview" target="_blank" rel="noopener">Console do Firebase · projeto jay-loma</a> (plano gratuito Spark).</li>
-      <li><b>Código do app:</b> <a href="https://github.com/palomasaa/jay-loma" target="_blank" rel="noopener">github.com/palomasaa/jay-loma</a>. Cada alteração enviada para lá vai ao ar sozinha em 1 ou 2 minutos.</li>
+      <li><b>Código do app:</b> <a href="https://github.com/palomasaa/cotta" target="_blank" rel="noopener">github.com/palomasaa/cotta</a>. Cada alteração enviada para lá vai ao ar sozinha em 1 ou 2 minutos.</li>
       <li><b>Endereço do app:</b> <code>${esc(APP_URL)}</code></li>
       <li><b>Uso do plano gratuito:</b> <a href="https://console.firebase.google.com/project/jay-loma/usage" target="_blank" rel="noopener">painel de uso</a> (até 50 mil leituras e 20 mil gravações por dia).</li>
     </ol>
@@ -184,8 +184,8 @@ async function tudo() {
 async function backup() {
   $("#bkmsg").textContent = "Preparando…";
   const d = await tudo();
-  const blob = new Blob([JSON.stringify({ app: "jay-loma", versao: 2, geradoEm: new Date().toISOString(), dados: d }, null, 2)], { type: "application/json" });
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "backup-jay-loma-" + new Date().toISOString().slice(0, 10) + ".json"; a.click();
+  const blob = new Blob([JSON.stringify({ app: "cotta", versao: 4, geradoEm: new Date().toISOString(), dados: d }, null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "backup-cotta-" + new Date().toISOString().slice(0, 10) + ".json"; a.click();
   $("#bkmsg").textContent = "Backup baixado. Guarde no Google Drive."; $("#bkmsg").className = "msg ok";
 }
 async function restaurar(e) {
@@ -203,7 +203,7 @@ async function restaurar(e) {
     }
     for (let i = 0; i < writes.length; i += 400) { const b = F.writeBatch(db); writes.slice(i, i + 400).forEach(([p, d]) => b.set(F.doc(db, p), d, { merge: true })); await b.commit(); n += Math.min(400, writes.length - i); }
     m.textContent = n + " registros restaurados."; m.className = "msg ok"; contagens();
-  } catch (err) { m.textContent = "Não deu para restaurar: o arquivo não parece um backup da Cota."; m.className = "msg err"; }
+  } catch (err) { m.textContent = "Não deu para restaurar: o arquivo não parece um backup do COTTA."; m.className = "msg err"; }
   e.target.value = "";
 }
 let alvo = [];

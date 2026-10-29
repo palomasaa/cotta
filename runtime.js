@@ -53,16 +53,16 @@ function loginScreen(msg) {
   let el = document.getElementById("jl-login");
   if (!el) {
     el = document.createElement("div"); el.id = "jl-login";
-    el.innerHTML = `<style>#jl-login{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:#f4f3ef;color:#15171a;font-family:Geist,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+    el.innerHTML = `<style>#jl-login{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:radial-gradient(120% 80% at 50% 0%,#e3f0e9 0%,#f2f5f3 60%);color:#0a241c;font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
 #jl-login .box{max-width:360px;width:100%;display:grid;gap:14px;text-align:center;animation:jlr .5s cubic-bezier(.2,.8,.2,1)}
 @keyframes jlr{from{opacity:0;transform:translateY(10px)}}
-#jl-login h1{font-size:28px;font-weight:600;letter-spacing:-.02em;margin:6px 0 0}
-#jl-login p{margin:0;color:#696c71;line-height:1.5;font-size:14.5px}
-#jl-login button{margin-top:10px;border:0;border-radius:12px;padding:13px 18px;font:600 15px Geist,system-ui,sans-serif;background:#1d4b3a;color:#fff;display:flex;gap:10px;align-items:center;justify-content:center;cursor:pointer;transition:transform .1s}
+#jl-login h1{font:700 30px Montserrat,Inter,system-ui,sans-serif;letter-spacing:.12em;margin:4px 0 0}#jl-login .tag{font:500 11px Montserrat,Inter,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#2f8a6b;margin-top:-6px}
+#jl-login p{margin:0;color:#5d7068;line-height:1.5;font-size:14.5px}
+#jl-login button{margin-top:10px;border:0;border-radius:12px;padding:13px 18px;font:600 15px Inter,system-ui,sans-serif;background:linear-gradient(135deg,#0a261e,#14513f 55%,#2b8366);color:#fff;box-shadow:0 12px 26px -14px rgb(10 50 38 / .9);display:flex;gap:10px;align-items:center;justify-content:center;cursor:pointer;transition:transform .1s}
 #jl-login button:active{transform:scale(.98)}
 #jl-login .err{color:#a2302a;font-size:14px;min-height:1.2em}
-#jl-login .lock{display:inline-flex;gap:6px;align-items:center;justify-content:center;font-size:12.5px;color:#999b9f}@media (prefers-color-scheme:dark){#jl-login{background:#0f1112;color:#ecebe6}#jl-login p{color:#9a9b97}#jl-login button{background:#86c4a4;color:#0b1a13}}</style>
-<div class="box"><img src="icons/icon-192.png" alt="" width="72" height="72" style="justify-self:center;border-radius:16px"><h1>Cota</h1><p>Gestão de sociedades: resultados, distribuição de lucros e operação das empresas.</p>
+#jl-login .lock{display:inline-flex;gap:6px;align-items:center;justify-content:center;font-size:12.5px;color:#999b9f}@media (prefers-color-scheme:dark){#jl-login{background:radial-gradient(120% 80% at 50% 0%,#0f2a20 0%,#06120e 60%);color:#e4efea}#jl-login p{color:#86a095}#jl-login button{background:linear-gradient(135deg,#2b8366,#4fb38c);color:#03130d}}</style>
+<div class="box"><img src="icons/cotta-mark.png" alt="" width="84" height="84" style="justify-self:center;background:#fff;border-radius:22px;padding:12px;box-shadow:0 14px 30px -18px rgb(10 50 38 / .6)"><h1>COTTA</h1><p class="tag">Gestão societária</p><p>Resultados, investimentos e distribuição de lucros das suas empresas.</p>
 <button type="button" id="jl-google"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 38.6 44 33 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Entrar com Google</button>
 <p class="err" id="jl-err"></p><p class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Acesso privado. Só entra quem a administradora aprovar.</p></div>`;
     document.body.append(el);
@@ -112,7 +112,7 @@ async function salvarToken() {
   return !!token;
 }
 if (messaging && typeof Notification !== "undefined" && Notification.permission === "granted") salvarToken().catch(() => {});
-if (messaging) M.onMessage(messaging, p => { const n = p.notification || {}; if (swReg) swReg.showNotification(n.title || "Cota", { body: n.body || "", icon: "icons/icon-192.png", data: { link: "./" } }); });
+if (messaging) M.onMessage(messaging, p => { const n = p.notification || {}; if (swReg) swReg.showNotification(n.title || "COTTA", { body: n.body || "", icon: "icons/icon-192.png", data: { link: "./" } }); });
 window.JL = {
   pushStatus: () => !messaging ? "indisponivel" : (typeof Notification === "undefined" ? "indisponivel" : Notification.permission),
   enablePush: async () => { if (!messaging) return "indisponivel"; const p = await Notification.requestPermission(); if (p !== "granted") return p; try { await salvarToken(); return "granted"; } catch (_) { return "erro"; } },
