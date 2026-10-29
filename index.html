@@ -736,6 +736,13 @@ details>summary{list-style:none}details>summary::-webkit-details-marker{display:
 @media (max-width:820px){.cmp .mt{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:820px){.mtop{min-width:0;flex:1 1 auto}.mtop b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.topbar .sp{display:none}}
 
+.donos{display:grid;gap:10px}
+.dono{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface-2)}
+.dono .dn{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.dono .dn .meta{color:var(--muted);font-size:12.5px}
+.donoo{gap:6px;align-items:center}.donoo .pin{width:72px}
+table.lojasdist{font-size:12.5px}table.lojasdist td.r,table.lojasdist th.r{white-space:nowrap}
+
 </style>
 
 
@@ -1117,7 +1124,7 @@ const S={
   agMes:ymNow(),agSel:today(),agFiltro:ls.get("jl-agf","tudo"),
   fUn:"",fTipo:"",pedFiltro:"proximos",estQ:"",
   data:{lancamentos:[],eventos:[],pedidos:[],cardapio:[],estoque:[],anuncios:[],solicitacoes:[],acertos:[],reservas:[],pedidos_site:[],historico:[],campanhas:[]},
-  cfg:{lojas:[],chef:[],socias:{pct:{loja:50,chef:50},regras:{},pix:{"Paloma":"","Jay Nanes":""}},whatsapp:{numeros:[],modelos:{}},pix:{},sync:{},shopmix:{},chefLib:{menus:[],receitas:[]},precos:{itens:{},cmv:30},org:null,site:{},publico:{},cmp:{}},membros:null,loaded:new Set(),dismissed:ls.get("jl-dis",{}),priv:ls.get("jl-priv",false)
+  cfg:{lojas:[],chef:[],socias:{pct:{loja:50,chef:50},regras:{},pix:{"Paloma":"","Jay Nanes":""}},whatsapp:{numeros:[],modelos:{}},pix:{},sync:{},shopmix:{},chefLib:{menus:[],receitas:[]},precos:{itens:{},cmv:30},org:null,site:{},publico:{},cmp:{},donos:{lojas:{},rateio:"venda"}},membros:null,loaded:new Set(),dismissed:ls.get("jl-dis",{}),priv:ls.get("jl-priv",false)
 };
 Object.defineProperty(S,"emp",{get(){return S.ws==="chef"?"chef":"loja";},set(_){}});
 if(!WS[S.ws])S.ws="geral";
@@ -2377,15 +2384,15 @@ function distPanel(emp){
     row("Reserva de segurança ("+d.R.reserva+"%)",d.reserva,{sign:"− ",hint:"Fica no caixa para imprevistos e reinvestimento."}),
     row("Ressarcimentos pagos agora",d.ressT,{sign:"− ",hint:d.devP+d.devJ?("A empresa deve "+money(d.devP)+" a "+nP+" e "+money(d.devJ)+" a "+nJ+". Teto: "+d.R.teto+"% do disponível"+(d.ressFica?" · ficam "+money(d.ressFica)+" para o próximo mês":"")+"."):"Nada a ressarcir."}),
     row("Lucro a distribuir",d.aDividir,{strong:true}),
-    row(nP+" · "+pctDe(emp,SOCIAS[0],ym)+"%",d.parteP,{hint:"Participação "+(d.pc.base==="fixa"?"fixa":d.pc.base==="investimento"?"pelo capital investido":d.pc.base==="misto"?"mista (capital + trabalho)":d.pc.base)}),
-    row(nJ+" · "+pctDe(emp,SOCIAS[1],ym)+"%",d.parteJ),
+    row(nP+" · "+Math.round(d.pc.p*10)/10+"%",d.parteP,{hint:"Participação "+(d.pc.base==="fixa"?"fixa":d.pc.base==="investimento"?"pelo capital investido":d.pc.base==="misto"?"mista (capital + trabalho)":d.pc.base==="lojas"?"de acordo com a dona de cada loja":d.pc.base)}),
+    row(nJ+" · "+Math.round((100-d.pc.p)*10)/10+"%",d.parteJ),
     d.desc?row("Compensação do acerto: "+d.devedora.split(" ")[0]+" → "+(d.devedora===SOCIAS[0]?nJ:nP),d.desc,{sign:"⇄ ",hint:"Teto de "+d.R.teto+"% da parte"+(d.dividaFica?" · ficam "+money(d.dividaFica)+" para o próximo mês":"")+"."}):null));
   const liq=h("div",{class:"co saldo "+emp,style:"min-height:0;cursor:default"},h("div",{class:"nums",style:"grid-template-columns:1fr 1fr"},
     ...[[nP,d.liqP,d.ressP,d.proP],[nJ,d.liqJ,d.ressJ,d.proJ]].map(([n,l,rs,pr])=>h("div",{},h("span",{text:n+" recebe"}),h("b",{text:money(Math.max(0,l))}),h("span",{class:"sub",text:[pr?"pró-labore "+money(pr):"",rs?"ressarcimento "+money(rs):""].filter(Boolean).join(" · ")||" "})))));
   const fisc=d.irrf.length?h("div",{class:"notice","data-kind":"warn"},h("b",{text:"Atenção fiscal (Lei 15.270/2025)"}),h("div",{text:d.irrf.map(x=>x.nome.split(" ")[0]+" receberia "+money(x.total)+" de lucros desta empresa no mês: acima de R$ 50 mil, a empresa deve reter 10% de IR na fonte sobre o valor total ("+money(x.ret)+").").join(" ")+" Confirme com a contabilidade antes de pagar."})):null;
-  const reg=S.canWrite&&d.aDividir+d.ressT+d.proT>0?(d.feita?h("span",{class:"pill ok",text:"Distribuição registrada"}):btnI("check","Registrar distribuição de "+monthName(ym).split(" ")[0].toLowerCase(),{cls:"btn sm",onclick:async e=>{e.currentTarget.disabled=true;await registrarDist(d);}})):null;
+  const reg=S.canWrite&&(d.aDividir+d.ressT+d.proT>0||(d.subsidio&&d.subsidio.valor>0))?(d.feita?h("span",{class:"pill ok",text:"Distribuição registrada"}):btnI("check","Registrar distribuição de "+monthName(ym).split(" ")[0].toLowerCase(),{cls:"btn sm",onclick:async e=>{e.currentTarget.disabled=true;await registrarDist(d);}})):null;
   return h("section",{class:"panel"},h("div",{class:"panel-head"},h("h2",{},mark(emp),W.nome),reg),
-    d.lucro<=0?h("div",{class:"notice",text:"Sem lucro em "+monthName(ym)+". Nada a distribuir: a prioridade é recompor o caixa. O prejuízo será compensado nos próximos meses antes de qualquer distribuição."}):null,
+    d.lucro<=0&&!d.lojas?h("div",{class:"notice",text:"Sem lucro em "+monthName(ym)+". Nada a distribuir: a prioridade é recompor o caixa. O prejuízo será compensado nos próximos meses antes de qualquer distribuição."}):null,
     h("div",{class:"tablewrap"},t),liq,fisc);
 }
 async function registrarDist(d){
@@ -3084,7 +3091,9 @@ function pagueiBolso(pre){
   pre=pre||{};let tipo=pre.k||"shopmix";
   const quem=chipsSel(SOCIAS.map(n=>[n,n.split(" ")[0]]),pre.quem||euSocia());
   const tp=BOLSO_TIPOS.find(t=>t.k===tipo);
-  const emp=chipsSel([["loja",empNome("loja")],["chef",empNome("chef")]],pre.emp||(tp&&tp.emp)||(S.ws==="chef"?"chef":"loja"));
+  const emp=chipsSel([["loja",empNome("loja")],["chef",empNome("chef")]],pre.emp||(tp&&tp.emp)||(S.ws==="chef"?"chef":"loja"),v=>{ljF.hidden=v!=="loja"||!S.cfg.lojas.length;});
+  const lj=chipsSel([[GERAL,"Todas as lojas"],...S.cfg.lojas.map(x=>[x,x])],pre.loja||GERAL);
+  const ljF=h("div",{class:"field",hidden:emp.get()!=="loja"||!S.cfg.lojas.length},h("span",{class:"lbl",text:"Qual loja"}),lj);
   const oq=chipsSel(BOLSO_TIPOS.map(t=>[t.k,t.l]),tipo,v=>{tipo=v;const t=BOLSO_TIPOS.find(x=>x.k===v);if(t&&t.emp)emp.set(t.emp);if(!desc.dataset.mexeu)desc.value=t?t.l:"";});
   const val=moneyIn("pb-valor",pre.valor),data=h("input",{id:"pb-data",type:"date",value:pre.data||today()});
   const desc=h("input",{id:"pb-desc",maxlength:120,value:pre.descricao||(tp?tp.l:""),oninput:()=>{desc.dataset.mexeu=1;}});
@@ -3094,13 +3103,13 @@ function pagueiBolso(pre){
     h("div",{class:"field"},h("span",{class:"lbl",text:"Quem pagou"}),quem),
     h("div",{class:"field"},h("span",{class:"lbl",text:"O que foi"}),oq),
     h("div",{class:"two"},h("div",{class:"field"},h("label",{for:"pb-valor",text:"Valor (R$)"}),val),h("div",{class:"field"},h("label",{for:"pb-data",text:"Data"}),data)),
-    h("div",{class:"field"},h("span",{class:"lbl",text:"Para qual empresa"}),emp),
+    h("div",{class:"field"},h("span",{class:"lbl",text:"Para qual empresa"}),emp),ljF,
     h("div",{class:"field"},h("label",{for:"pb-desc",text:"Descrição"}),desc),
     h("label",{class:"chk",style:"display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-2)"},div,"Dividir só entre as sócias (não entra no caixa da empresa)"),msg);
   const salvar=async close=>{const v=parseValor(val.value);if(!(v>0)){msg.textContent="Digite o valor.";msg.className="formmsg neg";val.focus();return;}
-    const nome=quem.get(),e=emp.get(),t=BOLSO_TIPOS.find(x=>x.k===tipo)||BOLSO_TIPOS[BOLSO_TIPOS.length-1];const d=data.value||today();const ds=desc.value.trim()||t.l;
-    try{if(div.checked)await addDoc("acertos",{tipo:"despesa",data:d,descricao:ds,empresa:e,valor:v,pagoPor:nome,pctP:50,mensal:false,obs:"",criadoEm:new Date().toISOString()});
-      else await addDoc("lancamentos",{empresa:e,data:d,tipo:"saida",categoria:t.cat(e),pagoPor:nome,socia:nome,loja:GERAL,descricao:ds,valor:v,origem:"bolso",quemId:S.me.id,criadoEm:new Date().toISOString()});
+    const nome=quem.get(),e=emp.get(),lja=e==="loja"?lj.get():GERAL,t=BOLSO_TIPOS.find(x=>x.k===tipo)||BOLSO_TIPOS[BOLSO_TIPOS.length-1];const d=data.value||today();const ds=desc.value.trim()||t.l;
+    try{if(div.checked)await addDoc("acertos",{tipo:"despesa",data:d,descricao:ds,empresa:e,valor:v,pagoPor:nome,pctP:e==="loja"&&lja!==GERAL&&typeof donoPct==="function"?donoPct(lja):pctDe(e,SOCIAS[0]),mensal:false,obs:"",criadoEm:new Date().toISOString()});
+      else await addDoc("lancamentos",{empresa:e,data:d,tipo:"saida",categoria:t.cat(e),pagoPor:nome,socia:nome,loja:lja,descricao:ds,valor:v,origem:"bolso",quemId:S.me.id,criadoEm:new Date().toISOString()});
       toast(money(v)+" pago por "+nome.split(" ")[0]+" registrado.");close();}catch(_){msg.textContent="Não deu para salvar. Tente de novo.";msg.className="formmsg neg";}};
   modal("Paguei do meu bolso",body,[c=>h("button",{class:"btn ghost",type:"button",text:"Cancelar",onclick:c}),c=>h("button",{class:"btn",type:"button",text:"Salvar",disabled:!S.canWrite,onclick:()=>salvar(c)})]);
   setTimeout(()=>val.focus(),60);
@@ -3231,6 +3240,14 @@ const PLATS=[
   {k:"amazon",n:"Amazon Ads",d:"Produtos na Amazon",c:"#ff9900",ink:"#111",i:"A",u:"https://advertising.amazon.com/"},
   {k:"magalu",n:"Magalu",d:"Parceiro Magalu",c:"#0086ff",i:"MG",u:"https://universo.magalu.com/"},
   {k:"spotify",n:"Spotify Ads",d:"Áudio e podcasts",c:"#1db954",ink:"#062b14",i:"SP",u:"https://ads.spotify.com/"},
+  {k:"threads",n:"Threads",d:"Pelo Meta Ads",c:"#101010",i:"@",u:"https://adsmanager.facebook.com/adsmanager/manage/campaigns"},
+  {k:"reddit",n:"Reddit Ads",d:"Comunidades",c:"#ff4500",i:"R",u:"https://ads.reddit.com/"},
+  {k:"waze",n:"Waze Ads",d:"Motoristas por perto",c:"#33ccff",ink:"#06303d",i:"W",u:gU("https://ads.google.com/aw/overview")},
+  {k:"taboola",n:"Taboola",d:"Anúncios em portais",c:"#1758a8",i:"Tb",u:"https://ads.taboola.com/"},
+  {k:"outbrain",n:"Outbrain",d:"Anúncios em portais",c:"#f05023",i:"Ob",u:"https://my.outbrain.com/"},
+  {k:"aliexpress",n:"AliExpress",d:"Vendedor",c:"#e43225",i:"Ae",u:"https://gsp.aliexpress.com/"},
+  {k:"shein",n:"SHEIN",d:"Vendedor",c:"#222222",i:"SH",u:"https://sellerhub.shein.com/"},
+  {k:"tiktokshop",n:"TikTok Shop",d:"Loja no TikTok",c:"#fe2c55",i:"TS",u:"https://seller-br.tiktok.com/"},
   {k:"outra",n:"Outra plataforma",d:"Panfleto, influenciador…",c:"#5d7068",i:"+",u:""}];
 const CMP_TIPOS=[
   {k:"shopee",l:"Vender mais na Shopee",d:"Anúncio dentro da Shopee",emp:"loja",plat:"shopee"},
@@ -3360,6 +3377,109 @@ Object.assign(GUIAS,{
   "geral:campanhas":{p:"Sua área reservada de anúncios. Só a administradora vê.",s:["Toque numa plataforma para abrir o gerenciador dela já na sua conta.","“Nova campanha”: escolha o que quer, a verba e o período. O COTTA cria um link com rastreio e abre a plataforma.","Atualize o gasto e os cliques de vez em quando. Pedidos que chegam pelo link são contados sozinhos."],t:[["Retorno","vendas ÷ valor investido"]]}});
 GUIAS["loja:anuncios"]=GUIAS["loja:anuncios"]||GUIAS["geral:campanhas"];
 
+// ================= v4.1 · COTTA: dona(s) de cada loja =================
+// Cada loja (ML, Shopee, outras dentro da Shopmix) tem a sua divisão entre as sócias.
+// Resultado de cada loja → parte de cada sócia. Custos gerais (sem loja) são rateados entre as lojas.
+// Prejuízo de uma loja é de quem é dona dela: se o lucro de uma sócia cobriu, a outra fica devendo; o que sobrar é abatido só dos lucros futuros dela.
+const tot=a=>a.reduce((x,y)=>x+y,0);
+const RATEIOS=[["venda","Pela venda de cada loja"],["igual","Igual entre as lojas"],["padrao","Pela divisão padrão"]];
+function temDonos(){return Object.keys((S.cfg.donos||{}).lojas||{}).length>0;}
+function donoPct(loja,ym){const v=((S.cfg.donos||{}).lojas||{})[loja];return v==null?pctCalc("loja",ym).p:v;}
+function lojasMov(ym){
+  const L=S.data.lancamentos.filter(l=>l.empresa==="loja"&&l.data.slice(0,7)===ym&&!NON_OP.includes(l.categoria));
+  const per={},g={e:0,s:0};
+  L.forEach(l=>{const k=l.loja&&l.loja!==GERAL?l.loja:null;const o=k?(per[k]=per[k]||{e:0,s:0}):g;o[l.tipo==="entrada"?"e":"s"]+=l.valor;});
+  S.cfg.lojas.forEach(k=>{per[k]=per[k]||{e:0,s:0};});
+  return {per,g};}
+function lojaShares(ym){
+  const {per,g}=lojasMov(ym);const ks=Object.keys(per);const lg=g.e-g.s;const R=(S.cfg.donos||{}).rateio||"venda";
+  const totE=tot(ks.map(k=>per[k].e));
+  const w={};if(ks.length&&R!=="padrao")ks.forEach(k=>{w[k]=R==="venda"&&totE?per[k].e/totE:1/ks.length;});
+  const rows=ks.map(k=>{const l=per[k].e-per[k].s;const rat=Math.round(lg*(w[k]||0));const adj=l+rat;const p=donoPct(k,ym);const P=Math.round(adj*p/100);return {loja:k,e:per[k].e,s:per[k].s,l,rat,adj,p,P,J:adj-P};});
+  let P=tot(rows.map(r=>r.P)),J=tot(rows.map(r=>r.J));
+  const resto=lg-tot(rows.map(r=>r.rat));
+  if(resto){const a=Math.round(resto*pctCalc("loja",ym).p/100);P+=a;J+=resto-a;}
+  return {rows,lg,resto,P,J,total:P+J,rateio:R};}
+// dentro do mês: prejuízo de uma sócia coberto pelo lucro da outra vira dívida entre elas
+function passoLojas(P,J){let sub=null;
+  if(P>0&&J<0){const v=Math.min(P,-J);sub={de:SOCIAS[1],para:SOCIAS[0],valor:v};P-=v;J+=v;}
+  else if(J>0&&P<0){const v=Math.min(J,-P);sub={de:SOCIAS[0],para:SOCIAS[1],valor:v};J-=v;P+=v;}
+  return {P,J,sub};}
+function carryLojas(ym){
+  const L=S.data.lancamentos.filter(l=>l.empresa==="loja");if(!L.length)return {cP:0,cJ:0};
+  let m=L.reduce((a,l)=>{const x=l.data.slice(0,7);return x&&x<a?x:a;},ym);let cP=0,cJ=0,g=0;
+  while(m<ym&&g++<240){const s=lojaShares(m);const x=passoLojas(s.P,s.J);cP=Math.max(0,cP-x.P);cJ=Math.max(0,cJ-x.J);m=shiftMonth(m,1);}
+  return {cP,cJ};}
+const _distOrig=distribuicao;
+distribuicao=function(emp,ym){
+  const d=_distOrig(emp,ym);if(emp!=="loja"||!temDonos())return d;
+  const R=d.R;const sh=lojaShares(ym);const x=passoLojas(sh.P,sh.J);const c=R.compensa===false?{cP:0,cJ:0}:carryLojas(ym);
+  const bP=Math.max(0,x.P-c.cP),bJ=Math.max(0,x.J-c.cJ);const base=bP+bJ;
+  const prej=Math.max(0,x.P)+Math.max(0,x.J)-base;const prejFica=Math.max(0,c.cP-x.P)+Math.max(0,c.cJ-x.J);
+  const proP0=Math.max(0,Math.round(numv(R.proP))),proJ0=Math.max(0,Math.round(numv(R.proJ))),proT0=proP0+proJ0;
+  const proT=Math.min(base,proT0);const proP=proT0?Math.round(proT*proP0/proT0):0,proJ=proT-proP;
+  const apos=base-proT;const reserva=Math.round(apos*R.reserva/100);const disp=apos-reserva;const teto=R.teto/100;
+  const devP=d.devP,devJ=d.devJ,devT=devP+devJ;const ressT=Math.min(devT,Math.round(disp*teto));
+  const ressP=devT?Math.round(ressT*devP/devT):0,ressJ=ressT-ressP;
+  const aDividir=disp-ressT;const parteP=base?Math.round(aDividir*bP/base):0,parteJ=aDividir-parteP;
+  const sa=d.sa;let desc=0,devedora=null;
+  if(sa>0){desc=Math.min(sa,Math.round(parteJ*teto));devedora=SOCIAS[1];}else if(sa<0){desc=Math.min(-sa,Math.round(parteP*teto));devedora=SOCIAS[0];}
+  const ajP=devedora===SOCIAS[1]?desc:devedora===SOCIAS[0]?-desc:0;
+  const divP=Math.max(0,parteP+ajP),divJ=Math.max(0,parteJ-ajP);
+  const ymPag=ymNow();const jaP=d.feita?0:divPagoMes(emp,SOCIAS[0],ymPag),jaJ=d.feita?0:divPagoMes(emp,SOCIAS[1],ymPag);
+  const irrf=[[SOCIAS[0],divP+jaP],[SOCIAS[1],divJ+jaJ]].filter(([,v])=>v>LIM_DIV).map(([n,v])=>({nome:n,total:v,ret:Math.round(v*.1)}));
+  const p=base?Math.round(bP/base*1000)/10:pctCalc("loja",ym).p;
+  return Object.assign({},d,{pc:{p,cP:0,cJ:0,base:"lojas"},prej,prejFica,proP,proJ,proT,proFalta:proT0-proT,reserva,disp,ressT,ressP,ressJ,ressFica:devT-ressT,aDividir,parteP,parteJ,desc,devedora,dividaFica:Math.abs(sa)-desc,divP,divJ,liqP:divP+ressP+proP,liqJ:divJ+ressJ+proJ,irrf,lojas:sh,subsidio:x.sub,carry:c});
+};
+const _pctDeOrig=pctDe;
+pctDe=function(emp,nome,ym){if(emp!=="loja"||!temDonos())return _pctDeOrig(emp,nome,ym);const s=lojaShares(ym||S.mes);const p=s.total>0?Math.min(100,Math.max(0,s.P/s.total*100)):pctCalc("loja",ym).p;return Math.round((nome===SOCIAS[0]?p:100-p)*10)/10;};
+const _parteOrig=parteLucro;
+parteLucro=function(emp,nome,l){if(emp!=="loja"||!temDonos())return _parteOrig(emp,nome,l);const s=lojaShares(S.mes);return nome===SOCIAS[0]?s.P:s.J;};
+const _regOrig=registrarDist;
+registrarDist=async function(d){await _regOrig(d);
+  if(d.subsidio&&d.subsidio.valor>0){const sb=d.subsidio;try{await addDoc("acertos",{tipo:"despesa",data:today(),descricao:"Prejuízo de loja coberto · "+monthName(d.ym),empresa:"loja",valor:sb.valor,pagoPor:sb.para,pctP:sb.para===SOCIAS[0]?0:100,mensal:false,obs:"As lojas de "+sb.de.split(" ")[0]+" tiveram prejuízo e foram cobertas pelo lucro das lojas de "+sb.para.split(" ")[0]+".",criadoEm:new Date().toISOString()});}catch(_){}}};
+// ---------- tela: dona(s) de cada loja
+const DONO_OPTS=()=>[["p",SOCIAS[0].split(" ")[0]+" 100%"],["j",SOCIAS[1].split(" ")[0]+" 100%"],["m","50/50"],["o","Outra"]];
+const modoDe=v=>v==null?"":v===100?"p":v===0?"j":v===50?"m":"o";
+function donasPanel(){
+  const lojas=S.cfg.lojas;const nP=SOCIAS[0].split(" ")[0],nJ=SOCIAS[1].split(" ")[0];
+  const st=Object.assign({},(S.cfg.donos||{}).lojas||{});let rat=(S.cfg.donos||{}).rateio||"venda";
+  const sh=lojaShares(S.mes);const byL=Object.fromEntries(sh.rows.map(r=>[r.loja,r]));
+  const msg=h("p",{class:"formmsg","aria-live":"polite"});
+  const linha=k=>{const r=byL[k];
+    const pin=h("input",{type:"number",min:0,max:100,step:1,inputmode:"numeric",class:"pin","aria-label":"Parte de "+nP+" em "+k+" (%)",value:st[k]==null?"":String(st[k]),oninput:()=>{st[k]=Math.min(100,Math.max(0,numv(pin.value,50)));lbl.textContent=nJ+" "+(100-st[k])+"%";}});
+    const lbl=h("span",{class:"hint",text:st[k]==null?"":nJ+" "+(100-st[k])+"%"});
+    const outra=h("span",{class:"inline donoo",hidden:modoDe(st[k])!=="o"},h("span",{class:"hint",text:nP}),pin,h("span",{class:"hint",text:"%"}),lbl);
+    const ch=chipsSel(DONO_OPTS(),modoDe(st[k]),v=>{st[k]=v==="p"?100:v==="j"?0:v==="m"?50:(st[k]==null||[0,50,100].includes(st[k])?70:st[k]);pin.value=String(st[k]);lbl.textContent=nJ+" "+(100-st[k])+"%";outra.hidden=v!=="o";});
+    return h("div",{class:"dono"},h("div",{class:"dn"},h("b",{text:k}),r?h("span",{class:"meta",text:monthName(S.mes).split(" ")[0]+": "+money(r.adj)+" → "+nP+" "+money(r.P)+" · "+nJ+" "+money(r.J)}):null,st[k]==null?h("span",{class:"pill",text:"Usa a divisão padrão"}):null),ch,outra);};
+  const ratSel=chipsSel(RATEIOS,rat,v=>{rat=v;});
+  const novo=h("input",{maxlength:40,placeholder:"Nova loja (ex.: Jay Store ML)","aria-label":"Nova loja"});
+  const salvar=async ev=>{const b=ev.currentTarget;b.disabled=true;try{
+      const n=novo.value.trim();if(n&&!lojas.some(x=>x.toLowerCase()===n.toLowerCase()))await setDoc("config/lojas",{lojas:[...lojas,n]});
+      const L=Object.fromEntries(Object.entries(st).filter(([k,v])=>v!=null&&(lojas.includes(k)||k===n)));
+      await setDoc("config/donos",{lojas:L,rateio:rat,em:new Date().toISOString(),quem:S.me.nome||""});
+      logHist("alterou","config","donos",{lojas:L,rateio:rat},["lojas"]);toast("Divisão das lojas salva.");}catch(_){msg.textContent="Não deu para salvar.";msg.className="formmsg neg";}b.disabled=false;};
+  return h("section",{class:"panel"},
+    h("div",{class:"panel-head"},h("h2",{},mark("loja"),"Dona de cada loja"),h("span",{class:"sub",text:"Vale para ganhos, custos e repasses"})),
+    lojas.length?h("div",{class:"donos"},...lojas.map(linha)):h("div",{class:"empty"},ic("store"),"Cadastre as lojas abaixo."),
+    h("div",{class:"field"},h("span",{class:"lbl",text:"Custos sem loja (ex.: mensalidade Shopmix)"}),ratSel),
+    sh.lg?h("p",{class:"hint",text:"Neste mês: "+money(Math.abs(sh.lg))+(sh.lg<0?" de custos gerais rateados.":" de receitas gerais rateadas.")}):null,
+    S.canWrite?h("div",{class:"row",style:"gap:8px;flex-wrap:wrap"},novo,h("button",{class:"btn",type:"button",text:"Salvar",onclick:salvar})):null,msg);
+}
+function lojasDistBox(d){
+  if(!d.lojas)return null;const nP=SOCIAS[0].split(" ")[0],nJ=SOCIAS[1].split(" ")[0];
+  return h("div",{class:"tablewrap"},h("table",{class:"lojasdist"},h("thead",{},h("tr",{},h("th",{text:"Loja"}),h("th",{class:"r",text:"Resultado"}),h("th",{class:"r",text:"Divisão"}),h("th",{class:"r",text:nP}),h("th",{class:"r",text:nJ}))),
+    h("tbody",{},...d.lojas.rows.map(r=>h("tr",{},h("td",{},h("div",{text:r.loja}),r.rat?h("div",{class:"hint",text:(r.rat<0?"inclui ":"inclui +")+money(r.rat)+" de rateio"}):null),h("td",{class:"r num "+(r.adj<0?"neg":""),text:money(r.adj)}),h("td",{class:"r hint",text:r.p+"/"+(100-r.p)}),h("td",{class:"r num",text:money(r.P)}),h("td",{class:"r num",text:money(r.J)}))),
+      d.lojas.resto?h("tr",{},h("td",{text:"Gerais (divisão padrão)"}),h("td",{class:"r num",text:money(d.lojas.resto)}),h("td",{}),h("td",{}),h("td",{})):null,
+      h("tr",{style:"font-weight:600"},h("td",{text:"Total"}),h("td",{class:"r num",text:money(d.lojas.total)}),h("td",{}),h("td",{class:"r num",text:money(d.lojas.P)}),h("td",{class:"r num",text:money(d.lojas.J)})))),
+    d.subsidio?h("div",{class:"notice","data-kind":"warn",text:"As lojas de "+d.subsidio.de.split(" ")[0]+" deram prejuízo e foram cobertas por "+money(d.subsidio.valor)+" do lucro das lojas de "+d.subsidio.para.split(" ")[0]+". Ao registrar a distribuição, isso entra no acerto: "+d.subsidio.de.split(" ")[0]+" fica devendo esse valor."}):null,
+    d.carry&&(d.carry.cP||d.carry.cJ)?h("p",{class:"hint",text:"Prejuízo anterior ainda a compensar: "+[d.carry.cP?nP+" "+money(d.carry.cP):"",d.carry.cJ?nJ+" "+money(d.carry.cJ):""].filter(Boolean).join(" · ")+". Sai só dos lucros futuros de quem teve o prejuízo."}):null);
+}
+const _distPanelOrig=distPanel;
+distPanel=function(emp){const el=_distPanelOrig(emp);if(emp!=="loja"||!temDonos())return el;const ym=S.distMes||shiftMonth(ymNow(),-1);const box=lojasDistBox(distribuicao(emp,ym));if(box){const tw=el.querySelector(".tablewrap");tw?el.insertBefore(box,tw):el.append(box);}return el;};
+const _viewAcertoOrig=viewAcerto;
+viewAcerto=async function(){const el=await _viewAcertoOrig();const p=donasPanel();if(el&&el.children.length>1)el.insertBefore(p,el.children[1]);else el&&el.append(p);return el;};
+
 // ---------- conexão
 (async()=>{
   const [db,user,assets,sample,downloads]=await Promise.all(["db","user","assets","sample","downloads"].map(n=>claude.use(n)));
@@ -3372,6 +3492,7 @@ GUIAS["loja:anuncios"]=GUIAS["loja:anuncios"]||GUIAS["geral:campanhas"];
   db.doc("config/shopmix").onSnapshot(s=>{S.cfg.shopmix=s.exists&&s.data()||{};render();},()=>{});
   db.doc("config/chefLib").onSnapshot(s=>{const d=s.exists&&s.data()||{};S.cfg.chefLib={menus:Array.isArray(d.menus)?d.menus:[],receitas:Array.isArray(d.receitas)?d.receitas:[]};render();},()=>{});
   db.doc("config/pix").onSnapshot(s=>{const d=s.exists&&s.data()||{};S.cfg.pix={tipo:str(d.tipo)||"telefone",chave:str(d.chave),nome:str(d.nome),cidade:str(d.cidade)};render();},()=>{});
+  db.doc("config/donos").onSnapshot(s=>{const d=s.exists&&s.data()||{};const L=d.lojas&&typeof d.lojas==="object"?d.lojas:{};S.cfg.donos={lojas:Object.fromEntries(Object.entries(L).map(([k,v])=>[str(k),Math.min(100,Math.max(0,Math.round(numv(v,50))))])),rateio:["venda","igual","padrao"].includes(d.rateio)?d.rateio:"venda"};render();},()=>{});
   db.doc("config/site").onSnapshot(s=>{S.cfg.site=s.exists&&s.data()||{};render();},()=>{});
   ["chef","loja"].forEach(k=>db.doc("publico/"+k).onSnapshot(s=>{const d=s.exists&&s.data()||null;S.cfg.publico[k]=d?{base:str(d.base)}:null;S.loaded.add("pub-"+k);},()=>{}));
   db.doc("config/org").onSnapshot(s=>{applyOrg(s.exists&&s.data()||{});render();},()=>{});
